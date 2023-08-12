@@ -33,6 +33,11 @@ class _MyHomePage22State extends State<MyHomePage22> {
   late int indeksik = 0;
   late MapZoomPanBehavior _zoomPanBehavior;
 
+  late Color myBlue = Color.fromRGBO(120, 120, 200, 1.0);
+  late Color myGreen = Color.fromRGBO(120, 200, 120, 1.0);
+  late Color myYellow = Color.fromRGBO(120, 200, 200, 1.0);
+
+
   @override
   void initState() {
     _data = const <Model>[
@@ -74,7 +79,7 @@ class _MyHomePage22State extends State<MyHomePage22> {
       Model("Cuba", Color.fromRGBO(120, 200, 120, 1.0), "Cuba", "North America" ),
       Model("Northern Cyprus", Color.fromRGBO(120, 200, 120, 1.0), "N. Cyprus", "Asia" ),
       Model("Cyprus", Color.fromRGBO(120, 200, 120, 1.0), "Cyprus", "Asia" ),
-      Model("Czech Republic", Color.fromRGBO(120, 200, 120, 1.0), "Czech Republic", "Europe" ),
+      Model("Czech Republic", Color.fromRGBO(120, 200, 120, 1.0), "Czech Rep.", "Europe" ),
       Model("Germany", Color.fromRGBO(120, 200, 120, 1.0), "Germany", "Europe" ),
       Model("Djibouti", Color.fromRGBO(120, 200, 120, 1.0), "Djibouti", "Africa" ),
       Model("Denmark", Color.fromRGBO(120, 200, 120, 1.0), "Denmark", "Europe" ),
@@ -218,9 +223,10 @@ class _MyHomePage22State extends State<MyHomePage22> {
       shapeDataField: 'name',
       //shapeDataField: 'continent',
       dataCount: _data.length,
-      primaryValueMapper: (int index) => _data[index].admin,
+      primaryValueMapper: (int index) => _data[index].name,
       dataLabelMapper: (int index) => _data[index].blank,
       shapeColorValueMapper: (int index) => _data[index].color,
+      //shapeColorValueMapper: (int index) => myBlue,
     );
 
     _zoomPanBehavior = MapZoomPanBehavior()
