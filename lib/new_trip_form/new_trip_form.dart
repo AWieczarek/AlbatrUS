@@ -6,24 +6,25 @@ import 'package:country_state_city/country_state_city.dart' as countries;
 class NewTripForm extends StatefulWidget {
   const NewTripForm({super.key});
 
-  static countries.Country country ;
-
   @override
   _NewTripFormState createState() => _NewTripFormState();
 }
 
 class _NewTripFormState extends State<NewTripForm> {
   final _formKey = GlobalKey<FormState>();
-  String? _country;
+  String _countryISO = 'PL';
   String? _city;
   String? _description;
   DateTime? _startDate;
   DateTime? _endDate;
   int? _rating;
 
-  void getCountry(){
-    CountrSelector();
+  void _onItemSelected(String selectedItem) {
+    setState(() {
+      _countryISO = selectedItem;
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,82 +38,17 @@ class _NewTripFormState extends State<NewTripForm> {
           key: _formKey,
           child: Column(
             children: [
-              CountrSelector() ,
+              CountrSelector(
+                countrySelected: _onItemSelected,
+              ) ,
               const SizedBox(height: 10),
-              CitySelector(
-                country: null,
+              Container(
+                height: 100,
+                child: CitySelector(
+                  countryISO: _countryISO,
+                ),
               ),
               const SizedBox(height: 10),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Description'),
-                onSaved: (value) {
-                  _description = value;
-                },
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        final selectedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2101),
-                        );
-                        if (selectedDate != null) {
-                          setState(() {
-                            _startDate = selectedDate;
-                          });
-                        }
-                      },
-                      child: const Text('Select trip start date'),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        final selectedDate = await showDatePicker(
-                          context: context,
-                          initialDate: _startDate ?? DateTime.now(),
-                          firstDate: _startDate ?? DateTime.now(),
-                          lastDate: DateTime(2101),
-                        );
-                        if (selectedDate != null) {
-                          setState(() {
-                            _endDate = selectedDate;
-                          });
-                        }
-                      },
-                      child: const Text('Select trip end date'),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  const Text('Rate:'),
-                  const SizedBox(width: 10),
-                  DropdownButton<int>(
-                    value: _rating,
-                    onChanged: (value) {
-                      setState(() {
-                        _rating = value;
-                      });
-                    },
-                    items: List.generate(10, (index) {
-                      return DropdownMenuItem<int>(
-                        value: index + 1,
-                        child: Text((index + 1).toString()),
-                      );
-                    }),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
