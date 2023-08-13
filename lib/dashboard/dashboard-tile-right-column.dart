@@ -11,24 +11,21 @@ class _RightColumnState extends State<RightColumn> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         //Icon(Icons.accessible),
         IconButton(
           iconSize: 34.0,
           icon: Icon(
               isBird ? Icons.accessible : Icons.accessible_forward),
+          color: Colors.black,
           onPressed: () {
             setState(() {
               isBird = !isBird;
             });
           },
         ),
-        const SizedBox(
-          height: 5.0,
-          width: 5.0,
-        ),
-        const Icon(Icons.arrow_forward_ios),
+        const Icon(Icons.keyboard_arrow_down),
       ],
     );
   }
