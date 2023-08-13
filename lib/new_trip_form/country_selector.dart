@@ -2,16 +2,16 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:country_state_city/country_state_city.dart' as countries;
 
-class CountrSelector extends StatefulWidget {
-  CountrSelector({super.key, required this.countrySelected});
+class CountrySelector extends StatefulWidget {
+  CountrySelector({super.key, required this.countrySelected});
 
   final ValueChanged<countries.Country> countrySelected;
 
   @override
-  State<CountrSelector> createState() => _CountrSelectorState();
+  State<CountrySelector> createState() => _CountrySelectorState();
 }
 
-class _CountrSelectorState extends State<CountrSelector> {
+class _CountrySelectorState extends State<CountrySelector> {
   countries.Country? _selectedCountry;
 
   @override

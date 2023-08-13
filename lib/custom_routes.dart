@@ -4,6 +4,8 @@ import 'package:albatrus/dashboard/post_list.dart';
 import 'package:albatrus/login/login_code_page.dart';
 import 'package:albatrus/login/login_username_page.dart';
 import 'package:albatrus/my_home.dart';
+import 'package:albatrus/new_trip_form/new_trip_form.dart';
+import 'package:albatrus/settings/settings_screen.dart';
 import 'package:albatrus/trip-details/details.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +18,8 @@ var customRoutes = <String, WidgetBuilder>{
   AppRoutes.loginCode: (_) => const LoginCodePage(),
   AppRoutes.loginUsername: (_) => const LoginUsernamePage(),
   AppRoutes.home: (_) => MyHome(),
+  AppRoutes.newTripForm: (_) => const NewTripForm(),
+  AppRoutes.settingsScreen: (_) => const SettingsScreen(),
   AppRoutes.postList: (_) => PostList(),
   AppRoutes.postDetails: (context) {
     var args = ModalRoute.of(context)?.settings.arguments;
