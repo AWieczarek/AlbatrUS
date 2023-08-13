@@ -8,6 +8,10 @@ void main() {
 class AsiaSandbox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return DashboardItem();
+    return DashboardItem(
+      name: 'asia',
+      date: DateTime.now(),
+      place: 'radom',
+    );
   }
 }

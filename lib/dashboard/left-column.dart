@@ -1,16 +1,15 @@
-import 'package:albatrus/dashboard/dashboard-item.dart';
 import 'package:flutter/material.dart';
+
+import 'date-format.dart';
 
 class LeftColumn extends StatelessWidget {
   final String name;
   final String country;
-  final String date;
 
   const LeftColumn({
     super.key,
     required this.name,
     required this.country,
-    required this.date,
   });
 
   @override
@@ -21,15 +20,31 @@ class LeftColumn extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Icon(Icons.person),
-            Text( name,
+            const Icon(
+              Icons.person,
+              size: 34.0),
+            const SizedBox(
+              height: 5.0,
+              width: 10.0,
+            ),
+            Text(
+              name,
               style: const TextStyle(fontSize: 21),
             ),
           ],
         ),
-        Text(
-          '${date} visited ${country}',
-          style: const TextStyle(fontSize: 18),
+        Row(
+          children: [
+            DateWidget(date: DateTime.now()),
+            const SizedBox(
+              height: 5.0,
+              width: 5.0,
+            ),
+            Text(
+              'visited ${country}',
+              style: const TextStyle(fontSize: 18),
+            ),
+          ],
         ),
       ],
     );
