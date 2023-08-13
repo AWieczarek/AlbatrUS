@@ -1,9 +1,9 @@
-import 'dart:math';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'api_routes.dart';
+import 'models/trip.dart';
 
 class MyHome extends StatefulWidget {
   MyHome({Key? key}) : super(key: key);
@@ -76,6 +76,13 @@ class _MyHomeState extends State<MyHome> {
             children: [
               Text("Witaj, ${username}"),
               Text("Kręcący sie ziemniak!"),
+              ElevatedButton(
+                  onPressed: () async {
+                    Trip trip = Trip(country: "Rosja", city: "Moskwa", dateFrom: DateTime.now(), dateTo: DateTime.now(), description: "Dupa dupa dupa", rate: 4);
+
+                    final docTrip = FirebaseFirestore.instance.collection('trips');
+                    await docTrip.add(trip.toJson());
+                    }, child: Text("Przypierdol albatrosa"))
             ],
           ),
         ),
