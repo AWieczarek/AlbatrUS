@@ -1,9 +1,10 @@
-import 'dart:math';
-
+import 'package:albatrus/database_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'api_routes.dart';
+import 'models/trip.dart';
 
 class MyHome extends StatefulWidget {
   MyHome({Key? key}) : super(key: key);
@@ -85,6 +86,8 @@ class _MyHomeState extends State<MyHome> {
 
   Future<void> logOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
-    Navigator.of(context).pushNamed(AppRoutes.login);
+    if(context.mounted){
+      Navigator.of(context).pushNamed(AppRoutes.login);
+    }
   }
 }
