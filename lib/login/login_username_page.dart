@@ -1,7 +1,8 @@
+import 'package:albatrus/database_service.dart';
+import 'package:albatrus/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 
 class LoginUsernamePage extends StatefulWidget {
   const LoginUsernamePage({Key? key}) : super(key: key);
@@ -65,19 +66,27 @@ class _LoginUsernamePageState extends State<LoginUsernamePage> {
                   onPressed: _isLoading
                       ? null
                       : () async {
-                    setState(() => _isLoading = true);
-                    try {
-                      await auth.currentUser!.updateDisplayName(name);
-                      if(context.mounted){
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                            "/home", (route) => false);
-                      }
-                    } catch (e) {
-                      _showErrorSnackBar('An unexpected error occurred. Please try again.');
-                    } finally {
-                      setState(() => _isLoading = false);
-                    }
-                  },
+                          setState(() => _isLoading = true);
+                          try {
+                            await auth.currentUser!.updateDisplayName(name);
+                            var uid2 = auth.currentUser!.uid;
+                            UserData user = UserData(
+                                id: uid2,
+                                username: name,
+                                creationDate: DateTime.now());
+                            DatabaseService.createUsername(uid2, user);
+
+                            if (context.mounted) {
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  "/home", (route) => false);
+                            }
+                          } catch (e) {
+                            _showErrorSnackBar(
+                                'An unexpected error occurred. Please try again.');
+                          } finally {
+                            setState(() => _isLoading = false);
+                          }
+                        },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: Colors.black,
@@ -97,4 +106,3 @@ class _LoginUsernamePageState extends State<LoginUsernamePage> {
     );
   }
 }
-

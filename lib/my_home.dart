@@ -1,4 +1,6 @@
 import 'package:albatrus/database_service.dart';
+import 'package:albatrus/models/trip_user.dart';
+import 'package:albatrus/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -77,7 +79,7 @@ class _MyHomeState extends State<MyHome> {
             children: [
               Text("Witaj, ${username}"),
               Text("Kręcący sie ziemniak!"),
-            ],
+            ]
           ),
         ),
       ),

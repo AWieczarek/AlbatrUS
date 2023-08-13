@@ -1,5 +1,10 @@
 import 'dart:convert';
 
+import 'package:albatrus/models/trip_user.dart';
+import 'package:albatrus/models/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 Trip tripFromJson(String str) => Trip.fromJson(json.decode(str));
 
 String tripToJson(Trip data) => json.encode(data.toJson());
@@ -11,6 +16,7 @@ class Trip {
   DateTime dateTo;
   String description;
   int rate;
+  TripUser user;
 
   Trip({
     required this.country,
@@ -19,23 +25,32 @@ class Trip {
     required this.dateTo,
     required this.description,
     required this.rate,
+    required this.user,
   });
 
-  factory Trip.fromJson(Map<String, dynamic> json) => Trip(
-    country: json["country"],
-    city: json["city"],
-    dateFrom: DateTime.parse(json["date_from"]),
-    dateTo: DateTime.parse(json["date_to"]),
-    description: json["description"],
-    rate: json["rate"],
-  );
+  factory Trip.fromJson(Map<String, dynamic> json) =>
+      Trip(
+        country: json["country"],
+        city: json["city"],
+        dateFrom: (json["date_from"] as Timestamp).toDate(),
+        dateTo: (json["date_to"] as Timestamp).toDate(),
+        description: json["description"],
+        rate: json["rate"],
+        user: TripUser.fromJson(json['user']),
+      );
 
   Map<String, dynamic> toJson() => {
-    "country": country,
-    "city": city,
-    "date_from": dateFrom.toIso8601String(),
-    "date_to": dateTo.toIso8601String(),
-    "description": description,
-    "rate": rate,
-  };
+        "country": country,
+        "city": city,
+        "date_from": dateFrom.toIso8601String(),
+        "date_to": dateTo.toIso8601String(),
+        "description": description,
+        "rate": rate,
+        "user": user.toJson(),
+      };
+
+  @override
+  String toString() {
+    return 'Trip{country: $country, city: $city, dateFrom: $dateFrom, dateTo: $dateTo, description: $description, rate: $rate, user: $user}';
+  }
 }
