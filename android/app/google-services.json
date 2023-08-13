@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "849261405521",
+    "project_id": "albatrus-c711f",
+    "storage_bucket": "albatrus-c711f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:849261405521:android:86b5fe6fd08a08470c9f70",
+        "android_client_info": {
+          "package_name": "com.albatrUS.albatrus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "849261405521-80fessfbivrkg652qob8p95r6mnq915u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDw9Slz5d8Bv42rilLAL3iaicqxgq6K5aQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "849261405521-80fessfbivrkg652qob8p95r6mnq915u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
