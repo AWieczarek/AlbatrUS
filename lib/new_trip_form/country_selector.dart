@@ -5,7 +5,7 @@ import 'package:country_state_city/country_state_city.dart' as countries;
 class CountrSelector extends StatefulWidget {
   CountrSelector({super.key, required this.countrySelected});
 
-  final ValueChanged<String> countrySelected;
+  final ValueChanged<countries.Country> countrySelected;
 
   @override
   State<CountrSelector> createState() => _CountrSelectorState();
@@ -17,52 +17,63 @@ class _CountrSelectorState extends State<CountrSelector> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
         child: FutureBuilder<List<countries.Country>>(
             future: countries.getAllCountries(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const SafeArea(
-                  top: false,
-                  child: Scaffold(
-                    body: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
+                return const Center(
+                  child: CircularProgressIndicator(),
                 );
               } else if (snapshot.hasError) {
-                return SafeArea(
-                  top: false,
-                  child: Scaffold(
-                    body: Center(
-                      child: Text('Error: ${snapshot.error}'),
-                    ),
-                  ),
-                );
+                return const Text('Country Selector Error');
               } else if (snapshot.hasData) {
-              return DropdownSearch<countries.Country>(
-                  enabled: true,
-                  onChanged: (value) {
-                    _selectedCountry = value;
-                    widget.countrySelected(value!.isoCode);
-                  },
-                  selectedItem: _selectedCountry,
-                  items:
-                      snapshot.data!,
-                  dropdownDecoratorProps: const DropDownDecoratorProps(
-                    dropdownSearchDecoration: InputDecoration(
-                      labelText: "Country",
-                      hintText: "Select country",
+                return Flex(direction: Axis.horizontal, children: [
+                  Expanded(
+                    child: DropdownSearch<countries.Country>(
+                      enabled: true,
+                      onChanged: (value) {
+                        _selectedCountry = value;
+                        widget.countrySelected(value!);
+                        print("dupa");//TODO do refactoru z errorBuilderami i empty builderami, może wyeliminuje to laga
+                      },
+                      selectedItem: _selectedCountry,
+                      items: snapshot.data!,
+                      itemAsString: (countries.Country x) {
+                        return x.name;
+                      },
+                      compareFn: (i, s) => i==s,
+                      popupProps: PopupPropsMultiSelection.bottomSheet (
+                        //TODO dodać wyszarzenie tła
+                        searchDelay: const Duration(milliseconds: 300),
+                        searchFieldProps: TextFieldProps(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                        ),
+                        showSelectedItems: true,
+                        // onItemAdded:
+                        showSearchBox: true,
+                      ),
+                      dropdownDecoratorProps: DropDownDecoratorProps(
+                        dropdownSearchDecoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.grey[100],
+                          labelText: "Country",
+                          hintText: "Select country",
+                        ),
+                      ),
+                      // snapshot.data!.map((el) => el.name.toString()).toList(),
+                      filterFn: (countries.Country item, String query) {
+                        return item.name
+                            .toLowerCase()
+                            .contains(query.toLowerCase());
+                      },
                     ),
                   ),
-                  itemAsString: (countries.Country x){
-                    return x.name;
-                  },
-                  // snapshot.data!.map((el) => el.name.toString()).toList(),
-                  filterFn: (countries.Country item, String query) {
-                    return item.name.toLowerCase().contains(query.toLowerCase());
-                  },
-                );
+                ]);
               } else {
                 return const Text("Inconsistant");
               }
