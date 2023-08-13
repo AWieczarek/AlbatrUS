@@ -13,8 +13,8 @@ class DateWidget extends StatelessWidget {
     String formattedDate = DateFormat('dd-MM-yyyy').format(currentDate);
 
     return Text(
-        '$formattedDate',
-        style: TextStyle(fontSize: 18.0),
+        formattedDate,
+        style: const TextStyle(fontSize: 14.0),
     );
   }
 }
