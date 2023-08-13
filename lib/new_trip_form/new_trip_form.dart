@@ -4,6 +4,7 @@ import 'package:albatrus/new_trip_form/date_range_picker.dart';
 import 'package:albatrus/new_trip_form/rating_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:country_state_city/country_state_city.dart' as countries;
+import 'package:flutter/services.dart';
 
 class NewTripForm extends StatefulWidget {
   const NewTripForm({super.key});
@@ -14,6 +15,8 @@ class NewTripForm extends StatefulWidget {
 
 class _NewTripFormState extends State<NewTripForm> {
   final _formKey = GlobalKey<FormState>();
+
+  TextEditingController _descriptionController = TextEditingController();
   countries.Country? _country;
   String _countryISO = "PL";
   countries.City? _city;
@@ -52,10 +55,17 @@ class _NewTripFormState extends State<NewTripForm> {
           "${_country!.name} ${_city!.name} ${_description} ${_startDate} ${_endDate} ${_rating}";
     });
   }
+  @override
+  void dispose() {
+    _descriptionController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('New Trip'),
       ),
@@ -70,15 +80,19 @@ class _NewTripFormState extends State<NewTripForm> {
               countryISO: _countryISO,
               citySelected: _citySelected,
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.all(16.0),
               child: TextField(
+                controller: _descriptionController,
+                onChanged: (value) {
+                  setState(() {
+                    _description = value;
+                  });
+                },
                 minLines: 3,
                 maxLines: null,
                 keyboardType: TextInputType.multiline,
                 decoration: InputDecoration(
-                  // filled: true, //<-- SEE HERE
-                  // fillColor: Colors.grey[150], //<-- SEE HE
                   labelText: "Description",
                   hintText: 'Enter Description...',
                 ),
@@ -100,7 +114,7 @@ class _NewTripFormState extends State<NewTripForm> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(
+                SizedBox(
                   width: 200,
                   child: Text(
                     _result,
