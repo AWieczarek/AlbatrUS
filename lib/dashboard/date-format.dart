@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart;
+import 'package:intl/intl.dart';
 
-class MyDateWidget extends StatelessWidget {
+class DateWidget extends StatelessWidget {
+
+  final DateTime date;
+
+  DateWidget({super.key, required this.date});
+
   @override
   Widget build(BuildContext context) {
-    DateTime currentDate = DateTime.now();
-    String formattedDate = DateFormat('yyyy-MM-dd').format(currentDate);
+    DateTime currentDate = date;
+    String formattedDate = DateFormat('dd-MM-yyyy').format(currentDate);
 
-    return Container(
-      padding: EdgeInsets.all(16.0),
-      child: Text(
-        'Formatted Date: $formattedDate',
+    return Text(
+        '$formattedDate',
         style: TextStyle(fontSize: 18.0),
-      ),
     );
   }
 }
