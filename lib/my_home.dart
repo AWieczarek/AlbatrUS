@@ -13,7 +13,6 @@ class MyHome extends StatefulWidget {
 }
 
 class _MyHomeState extends State<MyHome> {
-
   @override
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
@@ -23,28 +22,51 @@ class _MyHomeState extends State<MyHome> {
       child: Scaffold(
         appBar: AppBar(),
         drawer: Drawer(
-          child:  ListView(
+          child: Column(
             children: [
-             SizedBox(
-               child: Padding(
-                 padding: const EdgeInsets.all(12.0),
-                 child: Row(
-                   mainAxisAlignment: MainAxisAlignment.start,
-                   children: [
-                   CircleAvatar(
-                     child: Icon(Icons.person),
-                     minRadius: 20,
-                     maxRadius: 30,
-                   ),
-                   Padding(
-                     padding: const EdgeInsets.all(18.0),
-                     child: Text(username!,
-                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),),
-                   ),
-                 ],),
-               ),
-             ),
-              Divider(),
+              Expanded(
+                child: ListView(
+                  children: [
+                    SizedBox(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              child: Icon(Icons.person),
+                              minRadius: 20,
+                              maxRadius: 30,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(18.0),
+                              child: Text(
+                                username!,
+                                style: TextStyle(
+                                    fontSize: 24, fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Divider(),
+                  ],
+                ),
+              ),
+              Align(
+                alignment: FractionalOffset.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: IconButton(
+                    onPressed: () async {
+                      logOut(context);
+                    },
+                    icon: const Icon(Icons.logout),
+                    iconSize: 30,
+                  ),
+                ),
+              )
             ],
           ),
         ),
@@ -54,15 +76,11 @@ class _MyHomeState extends State<MyHome> {
             children: [
               Text("Witaj, ${username}"),
               Text("Kręcący sie ziemniak!"),
-              ElevatedButton(onPressed: () async {
-                logOut(context);
-              }, child: Text("Log out"))
             ],
           ),
         ),
       ),
     );
-
   }
 
   Future<void> logOut(BuildContext context) async {
