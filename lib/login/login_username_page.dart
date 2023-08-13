@@ -3,17 +3,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
-
-  static String verify = "";
+class LoginUsernamePage extends StatefulWidget {
+  const LoginUsernamePage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<LoginUsernamePage> createState() => _LoginUsernamePageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  String phoneNumber = "";
+class _LoginUsernamePageState extends State<LoginUsernamePage> {
+  FirebaseAuth auth = FirebaseAuth.instance;
+  String name = "";
   bool _isLoading = false;
 
   void _showErrorSnackBar(String message) {
@@ -35,26 +34,25 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                "Dawaj numera, śmierdziela:",
+                "Jak cię zwą:",
                 style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500),
               ),
               const SizedBox(
                 height: 20,
               ),
-              IntlPhoneField(
-                flagsButtonPadding: const EdgeInsets.all(8),
-                dropdownIconPosition: IconPosition.trailing,
+              TextField(
                 decoration: const InputDecoration(
                   focusedBorder: OutlineInputBorder(
+                    // borderSide: BorderSide(color: Colors.black), // Customize the color here
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                   ),
                   border: OutlineInputBorder(
+                    // borderSide: BorderSide(color: Colors.black),
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                   ),
                 ),
-                initialCountryCode: 'PL',
-                onChanged: (phone) {
-                  phoneNumber = phone.completeNumber;
+                onChanged: (value) {
+                  name = value;
                 },
               ),
               const SizedBox(
@@ -69,20 +67,15 @@ class _LoginPageState extends State<LoginPage> {
                       : () async {
                     setState(() => _isLoading = true);
                     try {
-                      await FirebaseAuth.instance.verifyPhoneNumber(
-                        phoneNumber: phoneNumber,
-                        verificationCompleted: (PhoneAuthCredential credential) {},
-                        verificationFailed: (FirebaseAuthException e) {
-                          _showErrorSnackBar('Phone number verification failed. Please check the number and try again.');
-                        },
-                        codeSent: (String verificationId, int? resendToken) {
-                          LoginPage.verify = verificationId;
-                          Navigator.of(context).pushNamed('/login/code');
-                        },
-                        codeAutoRetrievalTimeout: (String verificationId) {},
-                      );
+                      await auth.currentUser!.updateDisplayName(name);
+                      if(context.mounted){
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            "/home", (route) => false);
+                      }
                     } catch (e) {
                       _showErrorSnackBar('An unexpected error occurred. Please try again.');
+                    } finally {
+                      setState(() => _isLoading = false);
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -94,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   child: _isLoading
                       ? CircularProgressIndicator()
-                      : Text('Send Code'),
+                      : Text('Continue'),
                 ),
               ),
             ],
