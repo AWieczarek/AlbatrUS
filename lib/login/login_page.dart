@@ -55,17 +55,29 @@ class _LoginPageState extends State<LoginPage> {
                   height: 50,
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: getCode,
+                    onPressed: () async {
+                      setState(() => _isLoading = true);
+                      await FirebaseAuth.instance.verifyPhoneNumber(
+                        phoneNumber: phoneNumber,
+                        verificationCompleted:
+                            (PhoneAuthCredential credential) {},
+                        verificationFailed: (FirebaseAuthException e) {},
+                        codeSent: (String verificationId, int? resendToken) {
+                          LoginPage.verify = verificationId;
+                          Navigator.of(context).pushNamed('/login/code');
+                        },
+                        codeAutoRetrievalTimeout: (String verificationId) {},
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.black,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50)),
                     ),
-                    child: Visibility(
-                        visible: !_isLoading,
-                        replacement: Center(child: CircularProgressIndicator()),
-                        child: const Text("Log in")),
+                    child: _isLoading
+                        ? CircularProgressIndicator() // Show loading indicator while isLoading is true
+                        : Text('Send Code'),
                   ))
             ],
           ),
@@ -73,20 +85,6 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-  Future<void> getCode() async {
-    setState(() => _isLoading = true);
-    await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: phoneNumber,
-      verificationCompleted: (PhoneAuthCredential credential) {},
-      verificationFailed: (FirebaseAuthException e) {},
-      codeSent: (String verificationId, int? resendToken) {
-        LoginPage.verify = verificationId;
-        Navigator.of(context).pushNamed('/login/code');
-      },
-      codeAutoRetrievalTimeout: (String verificationId) {},
-    );
-    print("nie");
-    setState(() => _isLoading = false);
-  }
 }
+
+

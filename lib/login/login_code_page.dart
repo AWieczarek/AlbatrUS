@@ -14,6 +14,8 @@ class LoginCodePage extends StatefulWidget {
 class _LoginCodePageState extends State<LoginCodePage> {
   FirebaseAuth auth = FirebaseAuth.instance;
   String smsCode = "";
+  bool _isLoading = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +52,7 @@ class _LoginCodePageState extends State<LoginCodePage> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () async {
+                      setState(() => _isLoading = true);
                       PhoneAuthCredential credential = PhoneAuthProvider
                           .credential(
                           verificationId: LoginPage.verify, smsCode: smsCode);
@@ -64,7 +67,9 @@ class _LoginCodePageState extends State<LoginCodePage> {
                           borderRadius: BorderRadius.circular(50)
                       ),
                     ),
-                    child: const Text("Submit"),
+                    child: _isLoading
+                        ? CircularProgressIndicator() // Show loading indicator while isLoading is true
+                        : Text('Login in'),
                   ))
             ],
           ),
