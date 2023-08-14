@@ -1,8 +1,8 @@
 import 'dart:ffi';
 
-import 'package:albatrus/dashboard/date-format.dart';
-import 'package:albatrus/dashboard/dashboard-tile-left-column.dart';
-import 'package:albatrus/dashboard/dashboard-tile-right-column.dart';
+import 'package:albatrus/dashboard/date_format.dart';
+import 'package:albatrus/dashboard/dashboard_tile_left_column.dart';
+import 'package:albatrus/dashboard/dashboard_tile_right_column.dart';
 import 'package:flutter/material.dart';
 import 'package:albatrus/models/trip.dart';
 

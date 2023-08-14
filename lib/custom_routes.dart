@@ -1,5 +1,5 @@
 import 'package:albatrus/dashboard/asia_sandbox.dart';
-import 'package:albatrus/dashboard/dashboard-tile.dart';
+import 'package:albatrus/dashboard/dashboard_tile.dart';
 import 'package:albatrus/dashboard/post_list.dart';
 import 'package:albatrus/login/login_code_page.dart';
 import 'package:albatrus/login/login_username_page.dart';

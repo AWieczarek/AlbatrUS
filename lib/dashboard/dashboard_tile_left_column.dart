@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'date-format.dart';
+import 'date_format.dart';
 
 class LeftColumn extends StatelessWidget {
   final String name;
