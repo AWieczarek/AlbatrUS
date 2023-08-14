@@ -20,7 +20,8 @@ class _MapScreenState extends State<MapScreen> {
 
   late List<MyModel> _data;
   late MapShapeSource _mapSource;
-  late int countryClickedIndex = -1;
+  late int _oldCountryClickedIndex = -1;
+  late int _newCountryClickedIndex = -1;
   late MapZoomPanBehavior _zoomPanBehavior;
   late bool _snackTime = false;
   late SnackBar _snackBar;
@@ -51,8 +52,8 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
 
-
     _data = <MyModel>[
+      MyModel("AlbatrUS", _backgroundCountryColor, "AlbatrUS", "AlbatrUS" ),
       MyModel("Afghanistan", _defaultCountryColor, "Afghanistan", "Asia" ),
       MyModel("Angola", _defaultCountryColor, "Angola", "Africa" ),
       MyModel("Albania", _defaultCountryColor, "Albania", "Europe" ),
@@ -230,211 +231,83 @@ class _MapScreenState extends State<MapScreen> {
       MyModel("Zimbabwe", _defaultCountryColor, "Zimbabwe", "Africa" ),
     ];
 
-    _countriesFromMap = ["Afghanistan", "Angola", "Albania", "United Arab Emirates", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Burundi", "Belgium", "Benin", "Burkina Faso", "Bangladesh", "Bulgaria", "Bahamas", "Bosnia and Herz.", "Belarus", "Belize", "Bolivia", "Brazil", "Brunei", "Bhutan", "Botswana", "Central African Rep.", "Canada", "Switzerland", "Chile", "China", "Côte d'Ivoire", "Cameroon", "Dem. Rep. Congo", "Congo", "Colombia", "Costa Rica", "Cuba", "N. Cyprus", "Cyprus", "Czech Rep.", "Germany", "Djibouti", "Denmark", "Dominican Rep.", "Algeria", "Ecuador", "Egypt", "Eritrea", "Spain", "Estonia", "Ethiopia", "Finland", "Fiji", "Falkland Is.", "France", "Gabon", "United Kingdom", "Georgia", "Ghana", "Guinea", "Gambia", "Guinea-Bissau", "Eq. Guinea", "Greece", "Greenland", "Guatemala", "Guyana", "Honduras", "Croatia", "Haiti", "Hungary", "Indonesia", "India", "Ireland", "Iran", "Iraq", "Iceland", "Israel", "Italy", "Jamaica", "Jordan", "Japan", "Kazakhstan", "Kenya", "Kyrgyzstan", "Cambodia", "Korea", "Kosovo", "Kuwait", "Lao PDR", "Lebanon", "Liberia", "Libya", "Sri Lanka", "Lesotho", "Lithuania", "Luxembourg", "Latvia", "Morocco", "Moldova", "Madagascar", "Mexico", "Macedonia", "Mali", "Myanmar", "Montenegro", "Mongolia", "Mozambique", "Mauritania", "Malawi", "Malaysia", "Namibia", "New Caledonia", "Niger", "Nigeria", "Nicaragua", "Netherlands", "Norway", "Nepal", "New Zealand", "Oman", "Pakistan", "Panama", "Peru", "Philippines", "Papua New Guinea", "Poland", "Puerto Rico", "Dem. Rep. Korea", "Portugal", "Paraguay", "Palestine", "Qatar", "Romania", "Russia", "Rwanda", "W. Sahara", "Saudi Arabia", "Sudan", "S. Sudan", "Senegal", "Solomon Is.", "Sierra Leone", "El Salvador", "Somaliland", "Somalia", "Serbia", "Suriname", "Slovakia", "Slovenia", "Sweden", "Swaziland", "Syria", "Chad", "Togo", "Thailand", "Tajikistan", "Turkmenistan", "Timor-Leste", "Trinidad and Tobago", "Tunisia", "Turkey", "Taiwan", "Tanzania", "Uganda", "Ukraine", "Uruguay", "United States of America", "Uzbekistan", "Venezuela", "Vietnam", "Vanuatu", "Yemen", "South Africa", "Zambia", "Zimbabwe"];
+    _countriesFromMap = ["AlbatrUS", "Afghanistan", "Angola", "Albania", "United Arab Emirates", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Burundi", "Belgium", "Benin", "Burkina Faso", "Bangladesh", "Bulgaria", "Bahamas", "Bosnia and Herz.", "Belarus", "Belize", "Bolivia", "Brazil", "Brunei", "Bhutan", "Botswana", "Central African Rep.", "Canada", "Switzerland", "Chile", "China", "Côte d'Ivoire", "Cameroon", "Dem. Rep. Congo", "Congo", "Colombia", "Costa Rica", "Cuba", "N. Cyprus", "Cyprus", "Czech Rep.", "Germany", "Djibouti", "Denmark", "Dominican Rep.", "Algeria", "Ecuador", "Egypt", "Eritrea", "Spain", "Estonia", "Ethiopia", "Finland", "Fiji", "Falkland Is.", "France", "Gabon", "United Kingdom", "Georgia", "Ghana", "Guinea", "Gambia", "Guinea-Bissau", "Eq. Guinea", "Greece", "Greenland", "Guatemala", "Guyana", "Honduras", "Croatia", "Haiti", "Hungary", "Indonesia", "India", "Ireland", "Iran", "Iraq", "Iceland", "Israel", "Italy", "Jamaica", "Jordan", "Japan", "Kazakhstan", "Kenya", "Kyrgyzstan", "Cambodia", "Korea", "Kosovo", "Kuwait", "Lao PDR", "Lebanon", "Liberia", "Libya", "Sri Lanka", "Lesotho", "Lithuania", "Luxembourg", "Latvia", "Morocco", "Moldova", "Madagascar", "Mexico", "Macedonia", "Mali", "Myanmar", "Montenegro", "Mongolia", "Mozambique", "Mauritania", "Malawi", "Malaysia", "Namibia", "New Caledonia", "Niger", "Nigeria", "Nicaragua", "Netherlands", "Norway", "Nepal", "New Zealand", "Oman", "Pakistan", "Panama", "Peru", "Philippines", "Papua New Guinea", "Poland", "Puerto Rico", "Dem. Rep. Korea", "Portugal", "Paraguay", "Palestine", "Qatar", "Romania", "Russia", "Rwanda", "W. Sahara", "Saudi Arabia", "Sudan", "S. Sudan", "Senegal", "Solomon Is.", "Sierra Leone", "El Salvador", "Somaliland", "Somalia", "Serbia", "Suriname", "Slovakia", "Slovenia", "Sweden", "Swaziland", "Syria", "Chad", "Togo", "Thailand", "Tajikistan", "Turkmenistan", "Timor-Leste", "Trinidad and Tobago", "Tunisia", "Turkey", "Taiwan", "Tanzania", "Uganda", "Ukraine", "Uruguay", "United States of America", "Uzbekistan", "Venezuela", "Vietnam", "Vanuatu", "Yemen", "South Africa", "Zambia", "Zimbabwe"];
 
-    _mapSource = MapShapeSource.asset(
-      'assets/world_map.json',
-      shapeDataField: 'name',
-      dataCount: _data.length,
-      primaryValueMapper: (int index) => _data[index].name, //this is needed to connect models to places on map - DONT CHANGE!
-      dataLabelMapper: (int index) => _data[index].blank, //this is shown as a name of country
-      shapeColorValueMapper: (int index) => _data[index].color,
-      //shapeColorValueMapper: (int index) => myYellow,
-    );
-
-    _zoomPanBehavior = MapZoomPanBehavior(enableDoubleTapZooming: false, minZoomLevel: 1, maxZoomLevel: 50)
-      ..zoomLevel = 4
-      ..focalLatLng = MapLatLng(19.0759837, 72.8776559)
-      ..toolbarSettings = MapToolbarSettings();
+    prepareMap();
 
     getTrips();
 
     super.initState();
   }
 
-  late int fidget=0;
+  late int fidget = -1;
+  late int tempFidget = -1;
+
+  double printingOne() {
+    print("i'm printing ONE YOLO2137");
+    refreshMap();
+    return 0;
+  }
+
+  String printingName() {
+    print("i'm printing name YOLO2137");
+    return "name";
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Center(
-          child: SfMaps(
-            layers: <MapShapeLayer>[
-              MapShapeLayer(
-                source: _mapSource,
-                zoomPanBehavior: _zoomPanBehavior,
-                strokeColor: _defaultStrokeColor,
-                strokeWidth: 1,
-                showDataLabels: true,
-                selectedIndex: countryClickedIndex,
-                selectionSettings: MapSelectionSettings(
-                  color: _selectedCountryColor,
-                  strokeColor: _selectedStrokeColor,
-                ),
-                //legend: const MapLegend(MapElement.shape),
-                tooltipSettings: MapTooltipSettings(
-                    color: Colors.grey[400],
-                    strokeColor: Colors.grey[700],
-                    strokeWidth: 2),
-                onSelectionChanged: (int index) {
-                  if (_snackTime == false) {
-                    _snackTime = true;
-                    _snackBar = SnackBar(
-                      content: Column(
-                        children: [
-                          Text(_data[index].name),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: ElevatedButton(
-                                    onPressed: (){
-                                      print("open site of country ${index}");
-                                    },
-                                    child: Text("open",style: const TextStyle(
-                                      color: Colors.green,
-                                    ),)
-                                ),
-                              ),
-                              Expanded(
-                                child: ElevatedButton(
-                                    onPressed: (){
-                                      print("blue ${index}");
-                                      _data[index].color = _myVisitedCountryColor;
-                                      setState(() {
-                                        _mapSource = MapShapeSource.asset(
-                                          'assets/world_map.json',
-                                          shapeDataField: 'name',
-                                          dataCount: _data.length,
-                                          primaryValueMapper: (int index) => _data[index].name, //this is needed to connect models to places on map - DONT CHANGE!
-                                          dataLabelMapper: (int index) => _data[index].blank, //this is shown as a name of country
-                                          shapeColorValueMapper: (int index) => _data[index].color,
-                                          //shapeColorValueMapper: (int index) => myBlue,
-                                        );
-                                      });
-                                    },
-                                    child: Text("blue",style: const TextStyle(
-                                      color: Colors.blue,
-                                    ),)
-                                ),
-                              ),
-                              Expanded(
-
-
-                                child: ElevatedButton(
-                                    onPressed: (){
-                                      print("yellow ${index}");
-                                      if(_data[index].color == Colors.black) {print("tak");}
-                                    },
-                                    child: Text("yellow",style: const TextStyle(
-                                      color: Colors.yellow,
-                                    ),)
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      duration: Duration(days: 1),
-                      dismissDirection: DismissDirection.none,
-                    );
-
-                    ScaffoldMessenger.of(context).showSnackBar(_snackBar);
-                  }
-                  else{
-                    if(index != countryClickedIndex){
-                      _snackBar = SnackBar(
-                        content: Column(
-                          children: [
-                            Text(_data[index].name),
-                            Row(
-                              children: [
-                                ElevatedButton(
-                                    onPressed: (){
-                                      print("open site of country ${index}");
-                                    },
-                                    child: Text("open",style: const TextStyle(
-                                      color: Colors.green,
-                                    ),)
-                                ),
-                                ElevatedButton(
-                                    onPressed: (){
-                                      print("blue ${index}");
-                                      _data[index].color = _myVisitedCountryColor;
-                                      setState(() {
-                                        _mapSource = MapShapeSource.asset(
-                                          'assets/world_map.json',
-                                          shapeDataField: 'name',
-                                          dataCount: _data.length,
-                                          primaryValueMapper: (int index) => _data[index].name, //this is needed to connect models to places on map - DONT CHANGE!
-                                          dataLabelMapper: (int index) => _data[index].blank, //this is shown as a name of country
-                                          shapeColorValueMapper: (int index) => _data[index].color,
-                                          //shapeColorValueMapper: (int index) => myBlue,
-                                        );
-                                      });
-                                    },
-                                    child: Text("blue",style: const TextStyle(
-                                      color: Colors.blue,
-                                    ),)
-                                ),ElevatedButton(
-                                    onPressed: (){
-                                      print("yellow ${index}");
-                                      if(_data[index].color == Colors.black) {print("tak");}
-                                    },
-                                    child: Text("yellow",style: const TextStyle(
-                                      color: Colors.yellow,
-                                    ),)
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                        duration: Duration(days: 1),
-                        dismissDirection: DismissDirection.none,
-                      );
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                      ScaffoldMessenger.of(context).showSnackBar(_snackBar);
-                    }
-                    else{
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                      _snackTime = false;
-                    }
-                  }
-
-                  setState(() {
-                    countryClickedIndex = index;
-                  });
-
-                  print("clicked country ${countryClickedIndex}");
-                },
-                /*dataLabelSettings: MapDataLabelSettings(
-                    textStyle: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                        fontSize:
-                        Theme.of(context).textTheme.bodySmall!.fontSize),
-                  ),*/
+    return SafeArea(
+      top: false,
+      child: //Scaffold(
+        /*body:*/ Stack(
+          children: [
+            Container(
+              color: _backgroundCountryColor,
+            ),
+            Center(
+              child: SfMaps(
+                layers: <MapShapeLayer>[
+                  MapShapeLayer(
+                    source: _mapSource,
+                    zoomPanBehavior: _zoomPanBehavior,
+                    strokeColor: _defaultStrokeColor,
+                    strokeWidth: 1, //TO DO
+                    showDataLabels: true,
+                    onSelectionChanged: (int index) {
+                      _newCountryClickedIndex = index;
+                      print("you clicked on country: $_newCountryClickedIndex");
+                      tempFidget = funWithSelectedCountries();
+                      setState(() {
+                        fidget = tempFidget;
+                      });
+                      _oldCountryClickedIndex = _newCountryClickedIndex;
+                    },
+                    selectedIndex: fidget,
+                    selectionSettings: MapSelectionSettings(
+                      color: _selectedCountryColor,
+                      strokeColor: _selectedStrokeColor,
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-        Positioned(
-            top: 0,
-            right: 0,
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 100, right: 10),
-                  child: IconButton(
-                    color: Colors.black,
-                    icon: Icon(Icons.search), //to jest wyszukiwarka
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('tu będą filtry'),
-                            content: Padding(
+            ),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 100, right: 10),
+                    child: IconButton(
+                      color: Colors.black,
+                      icon: Icon(Icons.search), //to jest wyszukiwarka
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('tu będą filtry'),
+                              content: Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -455,16 +328,16 @@ class _MapScreenState extends State<MapScreen> {
                                       ),
                                     ]
                                 )
-                            ),
-                          );
-                        },
-                      );
-                    },
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 20, right: 10),
-                  child: IconButton(
+                  Padding(
+                    padding: EdgeInsets.only(top: 20, right: 10),
+                    child: IconButton(
                       color: Colors.black,
                       icon: Icon(Icons.pedal_bike), // to jest pedalarz
                       onPressed: () {
@@ -477,25 +350,57 @@ class _MapScreenState extends State<MapScreen> {
                               actions: [
                                 TextButton(
                                   onPressed: () {
-                                    setState(() {
-                                      temp = 1;
-                                    });
+                                    refreshMap();
                                     Navigator.of(context).pop();
+                                    print("ALE ODSWIERZYLEM MAPE!");
                                   },
-                                  child: Text('Zamknij'),
+                                  child: Text('WYPIERDALAJ'),
                                 ),
                               ],
                             );
                           },
                         );
                       }
-                  ),
-                )
-              ],
-            )
-        )
-      ],
+                    ),
+                  )
+                ],
+              )
+            ),
+          ],
+        ),
+      //),
     );
+  }
+
+  void prepareMap() {
+    _mapSource = MapShapeSource.asset(
+      'assets/world_map.json',
+      shapeDataField: printingName(),
+      dataCount: _data.length,
+      primaryValueMapper: (int index) => _data[index].name, //this is needed to connect models to places on map - DONT CHANGE!
+      dataLabelMapper: (int index) => _data[index].blank, //this is shown as a name of country
+      shapeColorValueMapper: (int index) => _data[index].color,
+      //shapeColorValueMapper: (int index) => myYellow,
+    );
+
+    _zoomPanBehavior = MapZoomPanBehavior(enableDoubleTapZooming: false, minZoomLevel: 1, maxZoomLevel: 50)
+      ..zoomLevel = 4
+      ..focalLatLng = MapLatLng(19.0759837, 72.8776559)
+      ..toolbarSettings = MapToolbarSettings();
+  }
+
+  void refreshMap() {
+    setState(() {
+      _mapSource = MapShapeSource.asset(
+        'assets/world_map.json',
+        shapeDataField: 'name',
+        dataCount: _data.length,
+        primaryValueMapper: (int index) => _data[index].name, //this is needed to connect models to places on map - DONT CHANGE!
+        dataLabelMapper: (int index) => _data[index].blank, //this is shown as a name of country
+        shapeColorValueMapper: (int index) => _data[index].color,
+        //shapeColorValueMapper: (int index) => myBlue,
+      );
+    });
   }
 
   Future<void> getTrips() async {
@@ -518,6 +423,103 @@ class _MapScreenState extends State<MapScreen> {
     setState(() {
       temp = temp + 1;
     });
+  }
+
+  int funWithSelectedCountries() {
+    print("i'm in funWithSelectedCountries");
+    int ret = 0;
+    if (_newCountryClickedIndex == 0) {
+      _snackTime = false;
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ret = -1;
+    }
+    else{
+      if (_snackTime == false) {
+        _snackTime = true;
+        _snackBar = createSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+        ret = _newCountryClickedIndex;
+      }
+      else{
+        if(_newCountryClickedIndex != _oldCountryClickedIndex){
+          _snackBar = createSnackBar();
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+          ret = _newCountryClickedIndex;
+        }
+        else{
+          _snackTime = false;
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ret = -1;
+        }
+      }
+    }
+    print("clicked country ${_newCountryClickedIndex}");
+
+    print("you clicked on country: $ret");
+    return ret;
+  }
+
+  //int entranceSnackbar
+
+  SnackBar createSnackBar() {
+    SnackBar _tempSnackBar = SnackBar(
+      content: Column(
+        children: [
+          Text(_data[_newCountryClickedIndex].name),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                    onPressed: (){
+                      print("open site of country ${_newCountryClickedIndex}");
+                    },
+                    child: Text("open",style: const TextStyle(
+                      color: Colors.green,
+                    ),)
+                ),
+              ),
+              Expanded(
+                child: ElevatedButton(
+                    onPressed: (){
+                      print("blue ${_newCountryClickedIndex}");
+                      _data[_newCountryClickedIndex].color = _myVisitedCountryColor;
+                      setState(() {
+                        _mapSource = MapShapeSource.asset(
+                          'assets/world_map.json',
+                          shapeDataField: 'name',
+                          dataCount: _data.length,
+                          primaryValueMapper: (int index) => _data[index].name, //this is needed to connect models to places on map - DONT CHANGE!
+                          dataLabelMapper: (int index) => _data[index].blank, //this is shown as a name of country
+                          shapeColorValueMapper: (int index) => _data[index].color,
+                          //shapeColorValueMapper: (int index) => myBlue,
+                        );
+                      });
+                    },
+                    child: Text("blue",style: const TextStyle(
+                      color: Colors.blue,
+                    ),)
+                ),
+              ),
+              Expanded(
+                child: ElevatedButton(
+                    onPressed: (){
+                      print("yellow ${_newCountryClickedIndex}");
+                      if(_data[_newCountryClickedIndex].color == Colors.black) {print("tak");}
+                    },
+                    child: Text("yellow",style: const TextStyle(
+                      color: Colors.yellow,
+                    ),)
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+      duration: Duration(days: 1),
+      dismissDirection: DismissDirection.none,
+    );
+    return _tempSnackBar;
   }
 }
 
