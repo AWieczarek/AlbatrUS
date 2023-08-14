@@ -240,6 +240,12 @@ class _MapScreenState extends State<MapScreen> {
 
     getTrips();
 
+    //_showDialog(context);
+
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _showInitialDialog(context);
+    });
+
     super.initState();
   }
 
@@ -255,6 +261,27 @@ class _MapScreenState extends State<MapScreen> {
   String printingName() {
     print("i'm printing name YOLO2137");
     return "name";
+  }
+
+  Future<void> _showInitialDialog(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Witaj!'),
+          content: Text('To jest okienko, które wyskakuje na początku aplikacji.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                refreshMap();
+                Navigator.of(context,rootNavigator: true).pop();
+              },
+              child: Text('Zamknij'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -369,23 +396,9 @@ class _MapScreenState extends State<MapScreen> {
                 ],
               )
             ),
-            Center(
-              child: Container()
-              /*child: AlertDialog(
-                title: Text('Hejka'),
-                content: Text('Witaj'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      refreshMap();
-                      print("Pokaz mape");
-                    },
-                    child: Text('Pokaz Mape'),
-                  ),
-                ],
-              ),*/
-            )
+            /*Container(
+              height: entranceSnackbar(),
+            )*/
           ],
         ),
       //),
@@ -479,8 +492,6 @@ class _MapScreenState extends State<MapScreen> {
     print("you clicked on country: $ret");
     return ret;
   }
-
-  //int entranceSnackbar
 
   SnackBar createSnackBar() {
     SnackBar _tempSnackBar = SnackBar(
