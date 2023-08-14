@@ -1,3 +1,4 @@
+import 'package:albatrus/dashboard/date-format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -22,109 +23,144 @@ class Details extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            Flex(
-              direction: Axis.horizontal,
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(25)),
-                      border: Border.all(
-                        color: Colors.black,
-                      ),
-                    ),
-                    child: Text(
-                      'country ${trip.country}',
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Flex(
-              direction: Axis.horizontal,
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(25)),
-                      border: Border.all(
-                        color: Colors.black,
-                      ),
-                    ),
-                    child: Text(
-                      'city ${trip.city}',
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Flex(
-              direction: Axis.horizontal,
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(25)),
-                      border: Border.all(
-                        color: Colors.black,
-                      ),
-                    ),
-                    child: const Text(
-                      'description',
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Flexible(
-                  child: Expanded(
+            Padding(
+              padding:const EdgeInsets.symmetric(vertical: 20, horizontal: 0.0),
+              child: Flex(
+                direction: Axis.horizontal,
+                children: [
+                  Expanded(
                     child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(25)),
-                          border: Border.all(
-                            color: Colors.black,
-                          ),
-                        ),
-                        child: const Text('from')),
-                  ),
-                ),
-                Flexible(
-                  child: Expanded(
-                    child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(25)),
-                          border: Border.all(
-                            color: Colors.black,
-                          ),
-                        ),
-                        child: const Text('to')),
-                  ),
-                ),
-              ],
-            ),
-            Flex(
-              direction: Axis.horizontal,
-              children: [
-                Expanded(
-                  child: Container(
+                      height: 50,
                       decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(25)),
+                        borderRadius: const BorderRadius.all(Radius.circular(25)),
                         border: Border.all(
-                          color: Colors.black,
+                          color: Colors.lightBlueAccent,
                         ),
                       ),
-                      child: const Text('rating')),
-                ),
-              ],
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                          trip.country,
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding:const EdgeInsets.symmetric(vertical: 20, horizontal: 0.0),
+              child: Flex(
+                direction: Axis.horizontal,
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(Radius.circular(25)),
+                        border: Border.all(
+                          color: Colors.lightBlueAccent,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                          trip.city,
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding:const EdgeInsets.symmetric(vertical: 20, horizontal: 0.0),
+              child: Flex(
+                direction: Axis.horizontal,
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(Radius.circular(25)),
+                        border: Border.all(
+                          color: Colors.lightBlueAccent,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                          trip.description,
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding:const EdgeInsets.symmetric(vertical: 20, horizontal: 0.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Padding(
+                    padding:const EdgeInsets.fromLTRB(0,0,5,0),
+                    child: Flexible(
+                      child: Expanded(
+                        child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(25)),
+                              border: Border.all(
+                                color: Colors.lightBlueAccent,
+                              ),
+                            ),
+                            child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: DateWidget(date: trip.dateFrom))),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding:const EdgeInsets.fromLTRB(5,0,0,0),
+                    child: Flexible(
+                      child: Expanded(
+                        child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(25)),
+                              border: Border.all(
+                                color: Colors.lightBlueAccent,
+                              ),
+                            ),
+                            child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: DateWidget(date: trip.dateTo))),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding:const EdgeInsets.symmetric(vertical: 20, horizontal: 0.0),
+              child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius:
+                        const BorderRadius.all(Radius.circular(35)),
+                    border: Border.all(
+                      color: Colors.lightBlueAccent,
+                    ),
+                  ),
+                  child: Padding(
+                      padding:const EdgeInsets.symmetric(vertical: 10, horizontal: 15.0),
+                      child: Text(
+                          style: const TextStyle(fontSize: 24),
+                          '${trip.rate}'))),
             ),
           ],
         ),
