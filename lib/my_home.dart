@@ -4,6 +4,7 @@ import 'package:albatrus/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 import 'api_routes.dart';
 import 'models/trip.dart';
@@ -20,58 +21,79 @@ class _MyHomeState extends State<MyHome> {
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
     String? username = user?.displayName;
-    print(user!.uid);
     return SafeArea(
       top: false,
       child: Scaffold(
         appBar: AppBar(),
-        drawer: Drawer(
-          child: Column(
-            children: [
-              Expanded(
-                child: ListView(
-                  children: [
-                    SizedBox(
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            CircleAvatar(
-                              child: Icon(Icons.person),
-                              minRadius: 20,
-                              maxRadius: 30,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(18.0),
-                              child: Text(
-                                username!,
-                                style: TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.w500),
+        drawer: Container(
+          width: MediaQuery.of(context).size.width / 5 * 4,
+          child: Drawer(
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView(
+                    children: [
+                      SizedBox(
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              CircleAvatar(
+                                minRadius: 20,
+                                maxRadius: 30,
+                                child: Icon(
+                                  Icons.person,
+                                  size: MediaQuery.of(context).size.width/10,
+                                ),
                               ),
-                            ),
-                          ],
+                              Padding(
+                                padding: const EdgeInsets.all(18.0),
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width / 5 *2,
+                                  child: SizedBox(
+                                    width: 200,
+                                    child: AutoSizeText(
+                                      username!,
+                                      style: const TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    Divider(),
-                  ],
-                ),
-              ),
-              Align(
-                alignment: FractionalOffset.centerRight,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: IconButton(
-                    onPressed: () async {
-                      logOut(context);
-                    },
-                    icon: const Icon(Icons.logout),
-                    iconSize: 30,
+                      const Divider(),
+                      ListTile(
+                        title: const Text('Settings'),
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(AppRoutes.settingsScreen);
+                        },
+                      ),
+                    ],
                   ),
                 ),
-              )
-            ],
+                Align(
+                  alignment: FractionalOffset.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: IconButton(
+                      onPressed: () async {
+                        logOut(context);
+                      },
+                      icon: const Icon(Icons.logout),
+                      iconSize: 30,
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
         body: Center(
@@ -79,21 +101,33 @@ class _MyHomeState extends State<MyHome> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text("Witaj, ${username}"),
-              Text("Kręcący sie ziemniak!"),
-            ]
+              const Text("Kręcący sie ziemniak!"),
+            ],
           ),
         ),
-        floatingActionButton: ElevatedButton(onPressed: (){
-          Navigator.of(context).pushNamed(AppRoutes.postList);
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            ElevatedButton(onPressed: (){
+              Navigator.of(context).pushNamed(AppRoutes.postList);
 
-        },child: Text('cokolwiek')),
+            },child: Text('cokolwiek')),
+            FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppRoutes.newTripForm);
+              }, // Ikona wewnątrz przycisku
+              tooltip: 'Add trip',
+              child: const Icon(Icons.add),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Future<void> logOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
-    if(context.mounted){
+    if (context.mounted) {
       Navigator.of(context).pushNamed(AppRoutes.login);
     }
   }
