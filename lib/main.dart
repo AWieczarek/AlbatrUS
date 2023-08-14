@@ -60,8 +60,7 @@ class _MyAppState extends State<MyApp> {
       ),
       routes: customRoutes,
       navigatorKey: navigatorKey,
-      initialRoute: AppRoutes.home,
-      // FirebaseAuth.instance.currentUser == null ? AppRoutes.login : AppRoutes.home,
+      initialRoute: FirebaseAuth.instance.currentUser == null ? AppRoutes.login : AppRoutes.home,
       home: MyHome(),
     );
   }

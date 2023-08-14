@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 import 'api_routes.dart';
+import 'map_screen.dart';
 import 'models/trip.dart';
 
 class MyHome extends StatefulWidget {
@@ -24,7 +25,15 @@ class _MyHomeState extends State<MyHome> {
     return SafeArea(
       top: false,
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+         "Dupa",
+          style: TextStyle(color: Colors.black),
+        ),
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,),
+        extendBodyBehindAppBar: true,
         drawer: Container(
           width: MediaQuery.of(context).size.width / 5 * 4,
           child: Drawer(
@@ -96,24 +105,18 @@ class _MyHomeState extends State<MyHome> {
             ),
           ),
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Witaj, ${username}"),
-              const Text("Kręcący sie ziemniak!"),
-            ],
-          ),
-        ),
+        body: MapScreen(),
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             ElevatedButton(onPressed: (){
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
               Navigator.of(context).pushNamed(AppRoutes.postList);
 
             },child: Text('cokolwiek')),
             FloatingActionButton(
               onPressed: () {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 Navigator.of(context).pushNamed(AppRoutes.newTripForm);
               }, // Ikona wewnątrz przycisku
               tooltip: 'Add trip',
