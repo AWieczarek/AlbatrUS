@@ -30,17 +30,17 @@ class _MapScreenState extends State<MapScreen> {
   late int temp = 0;
   late Color _temporaryColor;
 
-  final Color _backgroundCountryColor = Color.fromRGBO(0, 0, 0, 1.0);
-  final Color _selectedCountryColor = Color.fromRGBO(54, 93, 163, 1.0);
+  final Color _backgroundCountryColor = const Color.fromRGBO(0, 0, 0, 1.0);
+  final Color _selectedCountryColor = const Color.fromRGBO(54, 93, 163, 1.0);
 
   //final Color _friendsVisitedCountryColor = Color.fromRGBO(84, 184, 133, 0.2);
-  final Color _friendsVisitedCountryColor = Color.fromRGBO(28, 59, 41, 1.0);
-  final Color _myVisitedCountryColor = Color.fromRGBO(184, 67, 75, 1.0);
-  final Color _defaultCountryColor = Color.fromRGBO(40, 40, 40, 1.0);
+  final Color _friendsVisitedCountryColor = const Color.fromRGBO(28, 59, 41, 1.0);
+  final Color _myVisitedCountryColor = const Color.fromRGBO(184, 67, 75, 1.0);
+  final Color _defaultCountryColor = const Color.fromRGBO(40, 40, 40, 1.0);
 
   //final Color _selectedStrokeColor = Color.fromRGBO(54, 93, 163, 1.0);
-  final Color _selectedStrokeColor = Color.fromRGBO(40, 50, 70, 1.0);
-  final Color _defaultStrokeColor = Color.fromRGBO(40, 50, 70, 1.0);
+  final Color _selectedStrokeColor = const Color.fromRGBO(40, 50, 70, 1.0);
+  final Color _defaultStrokeColor = const Color.fromRGBO(40, 50, 70, 1.0);
 
   /*
   final Color _backgroundCountryColor = Color.fromRGBO(0, 0, 0, 1.0);
@@ -465,15 +465,15 @@ class _MapScreenState extends State<MapScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Witaj!'),
-          content: Text('To jest okienko, które wyskakuje na początku aplikacji.'),
+          title: const Text('Witaj!'),
+          content: const Text('To jest okienko, które wyskakuje na początku aplikacji.'),
           actions: [
             TextButton(
               onPressed: () {
                 refreshMap();
                 Navigator.of(context,rootNavigator: true).pop();
               },
-              child: Text('Zamknij'),
+              child: const Text('Zamknij'),
             ),
           ],
         );
@@ -525,7 +525,7 @@ class _MapScreenState extends State<MapScreen> {
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(top: 100, right: 10),
+                    padding: const EdgeInsets.only(top: 100, right: 10),
                     child: Container(
                       width: 50,
                       height: 100,
@@ -566,17 +566,17 @@ class _MapScreenState extends State<MapScreen> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 20, right: 10),
+                    padding: const EdgeInsets.only(top: 20, right: 10),
                     child: IconButton(
                         color: Colors.black,
-                        icon: Icon(Icons.pedal_bike), // to jest pedalarz
+                        icon: const Icon(Icons.pedal_bike), // to jest pedalarz
                         onPressed: () {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: Text('tu będą filtry'),
-                                content: Text('To jest treść okienka.'),
+                                title: const Text('tu będą filtry'),
+                                content: const Text('To jest treść okienka.'),
                                 actions: [
                                   TextButton(
                                     onPressed: () {
@@ -584,7 +584,7 @@ class _MapScreenState extends State<MapScreen> {
                                       Navigator.of(context).pop();
                                       print("ALE ODSWIERZYLEM MAPE!");
                                     },
-                                    child: Text('WYPIERDALAJ'),
+                                    child: const Text('WYPIERDALAJ'),
                                   ),
                                 ],
                               );
@@ -617,8 +617,8 @@ class _MapScreenState extends State<MapScreen> {
     _zoomPanBehavior = MapZoomPanBehavior(
         enableDoubleTapZooming: false, minZoomLevel: 1, maxZoomLevel: 50)
       ..zoomLevel = 4
-      ..focalLatLng = MapLatLng(19.0759837, 72.8776559)
-      ..toolbarSettings = MapToolbarSettings();
+      ..focalLatLng = const MapLatLng(19.0759837, 72.8776559)
+      ..toolbarSettings = const MapToolbarSettings();
   }
 
   void refreshMap() {
@@ -702,13 +702,14 @@ class _MapScreenState extends State<MapScreen> {
                     onPressed: () {
                       print("open site of country ${_newCountryClickedIndex}");
                     },
-                    child: Text(
-                      "open",
-                      style: const TextStyle(
+                    child: const Text(
+                      "Add trip",
+                      style: TextStyle(
                         color: Colors.green,
                       ),
                     )),
               ),
+              SizedBox(width: 10,),
               Expanded(
                 child: ElevatedButton(
                     onPressed: () {
@@ -730,34 +731,15 @@ class _MapScreenState extends State<MapScreen> {
                         );
                       });
                     },
-                    child: Text(
-                      "blue",
-                      style: const TextStyle(
-                        color: Colors.blue,
-                      ),
-                    )),
-              ),
-              Expanded(
-                child: ElevatedButton(
-                    onPressed: () {
-                      print("yellow ${_newCountryClickedIndex}");
-                      if (_data[_newCountryClickedIndex].color ==
-                          Colors.black) {
-                        print("tak");
-                      }
-                    },
-                    child: Text(
-                      "yellow",
-                      style: const TextStyle(
-                        color: Colors.yellow,
-                      ),
+                    child: const Text(
+                      "Visitors",
                     )),
               ),
             ],
           )
         ],
       ),
-      duration: Duration(days: 1),
+      duration: const Duration(days: 1),
       dismissDirection: DismissDirection.none,
     );
     return _tempSnackBar;

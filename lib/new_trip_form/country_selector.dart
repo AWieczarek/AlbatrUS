@@ -8,29 +8,42 @@ class CountrySelector extends StatefulWidget {
 
   final List<countries.Country> countriesList;
   final ValueChanged<countries.Country> onCountrySelected;
-  final countries.Country? selectedCountry;
+  String selectedCountry;
 
   @override
   State<CountrySelector> createState() => _CountrySelectorState();
 }
 
 class _CountrySelectorState extends State<CountrySelector> {
+
+  countries.Country? _selectedCountry;
+
   @override
   Widget build(BuildContext context) {
-    countries.Country? _selectedCountry;
-    if (widget.onCountrySelected != null) {
-      _selectedCountry = widget.selectedCountry;
-    }
+      _selectedCountry = countries.Country(
+          name: widget.selectedCountry,
+          isoCode: "",
+          phoneCode: "",
+          flag: "",
+          currency: "",
+          latitude: "",
+          longitude: "");
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: DropdownSearch<countries.Country>(
         enabled: true,
+        selectedItem: countries.Country(
+            name: widget.selectedCountry,
+            isoCode: "",
+            phoneCode: "",
+            flag: "",
+            currency: "",
+            latitude: "",
+            longitude: ""),
         onChanged: (value) {
-          _selectedCountry = value;
+          widget.selectedCountry = value!.name;
           widget.onCountrySelected(value!);
-          print("dupa");
         },
-        selectedItem: _selectedCountry,
         items: widget.countriesList,
         itemAsString: (countries.Country x) {
           return x.name;
@@ -51,7 +64,7 @@ class _CountrySelectorState extends State<CountrySelector> {
           showSearchBox: true,
         ),
         // dropdownBuilder: ,
-        dropdownDecoratorProps: DropDownDecoratorProps(
+        dropdownDecoratorProps: const DropDownDecoratorProps(
           dropdownSearchDecoration: InputDecoration(
             labelText: "Country",
             hintText: "Select country",

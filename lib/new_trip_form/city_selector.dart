@@ -7,7 +7,7 @@ class CitySelector extends StatefulWidget {
       {super.key, required this.countryISO, required this.onCitySelected, required this.cityList, required this.selectedCity});
 
   final ValueChanged<city.City> onCitySelected;
-  final String selectedCity;
+  String selectedCity;
   final List<city.City> cityList;
   final String countryISO;
 
@@ -16,22 +16,23 @@ class CitySelector extends StatefulWidget {
 }
 
 class _CitySelectorState extends State<CitySelector> {
-  city.City? _selectedCity;
+  // city.City? _selectedCity;
 
   @override
   Widget build(BuildContext context) {
-    _selectedCity = city.City(
-        name: widget.selectedCity, countryCode: "", stateCode: "");
+    // _selectedCity = city.City(
+    //     name: widget.selectedCity, countryCode: "", stateCode: "");
     return Padding(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
         child: Flex(direction: Axis.horizontal, children: [
           Expanded(
             child: DropdownSearch<city.City>(
               enabled: true,
-              selectedItem: _selectedCity,
+              selectedItem: city.City(
+                     name: widget.selectedCity, countryCode: "", stateCode: ""),
               compareFn: (i, s) => i == s,
               onChanged: (value) {
-                _selectedCity = value;
+                widget.selectedCity = value!.name;
                 widget.onCitySelected(value!);
               },
               popupProps: PopupPropsMultiSelection.dialog(

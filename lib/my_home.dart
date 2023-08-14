@@ -27,7 +27,7 @@ class _MyHomeState extends State<MyHome> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text(
+          title: const Text(
          "Dupa",
           style: TextStyle(color: Colors.black),
         ),
@@ -61,11 +61,11 @@ class _MyHomeState extends State<MyHome> {
                                 child: SizedBox(
                                   width:
                                       MediaQuery.of(context).size.width / 5 * 2,
-                                  child: SizedBox(
+                                  child: const SizedBox(
                                     width: 200,
                                     child: AutoSizeText(
                                       "username!",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 24,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -112,7 +112,7 @@ class _MyHomeState extends State<MyHome> {
             ),
           ),
         ),
-        body: MapScreen(),
+        body: const MapScreen(),
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -123,10 +123,10 @@ class _MyHomeState extends State<MyHome> {
                     arguments: Trip(
                         country: "",
                         city: "",
-                        dateFrom: DateTime.now(),
-                        dateTo: DateTime.now(),
-                        description: "",
-                        rate: 3,
+                        dateFrom: DateTime(1969),
+                        dateTo: DateTime(1999),
+                        description: "w dupe",
+                        rate: 2,
                         user: UserShort(userId: "id", username: "user")));
               }, // Ikona wewnątrz przycisku
               tooltip: 'Add trip',
