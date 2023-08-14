@@ -1,6 +1,11 @@
+import 'package:albatrus/api_routes.dart';
 import 'package:flutter/material.dart';
 
+import '../models/trip.dart';
+
 class RightColumn extends StatefulWidget {
+   RightColumn({super.key, required this.trip});
+final Trip trip;
   @override
   State<RightColumn> createState() => _RightColumnState();
 }
@@ -25,7 +30,9 @@ class _RightColumnState extends State<RightColumn> {
             });
           },
         ),
-        const Icon(Icons.keyboard_arrow_down),
+         IconButton(icon: Icon(Icons.keyboard_arrow_down), onPressed: () {
+           Navigator.of(context).pushNamed(AppRoutes.postDetails, arguments: widget.trip);
+         },),
       ],
     );
   }

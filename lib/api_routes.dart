@@ -4,4 +4,5 @@ class AppRoutes {
   static const loginUsername = '/login/username';
   static const home = '/home';
   static const postList = '/post/list';
+  static const postDetails = '/post/details';
 }

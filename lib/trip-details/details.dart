@@ -1,21 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class Details extends StatelessWidget {
-  final String country;
-  final String city;
-  final String description;
-  final DateTime dateFrom;
-  final DateTime dateTo;
-  final int rate;
+import '../models/trip.dart';
 
-  const Details({
-    required this.country,
-    required this.city,
-    required this.description,
-    required this.dateFrom,
-    required this.dateTo,
-    required this.rate,
+class Details extends StatelessWidget {
+  final Trip trip;
+
+  Details({super.key,
+    required this.trip,
   });
 
   @override
@@ -24,7 +16,7 @@ class Details extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Trip Details'),
+        title: const Text('Trip Details' ),
       ),
       body: Container(
         padding: const EdgeInsets.all(20.0),
@@ -41,8 +33,8 @@ class Details extends StatelessWidget {
                         color: Colors.black,
                       ),
                     ),
-                    child: const Text(
-                      'country',
+                    child: Text(
+                      'country ${trip.country}',
                       textAlign: TextAlign.left,
                     ),
                   ),
@@ -60,8 +52,8 @@ class Details extends StatelessWidget {
                         color: Colors.black,
                       ),
                     ),
-                    child: const Text(
-                      'city',
+                    child: Text(
+                      'city ${trip.city}',
                       textAlign: TextAlign.left,
                     ),
                   ),

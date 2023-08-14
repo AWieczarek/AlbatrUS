@@ -30,7 +30,7 @@ class DashboardTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             LeftColumn(name: trip.user.username, dateFrom: trip.dateFrom, city: trip.city, country: trip.country),
-            RightColumn(),
+            RightColumn(trip:trip),
           ],
         ),
       ),
