@@ -87,6 +87,12 @@ class _MyHomeState extends State<MyHome> {
                         },
                       ),
                       ListTile(
+                        title: const Text('Dashboard'),
+                        onTap: () {
+                          Navigator.of(context).pushNamed(AppRoutes.postList);
+                        },
+                      ),
+                      ListTile(
                         title: const Text('Friends'),
                         onTap: () {
                           Navigator.of(context)

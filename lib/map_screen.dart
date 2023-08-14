@@ -28,13 +28,16 @@ class _MapScreenState extends State<MapScreen> {
   late List<String> _countriesFromMap;
   late List<Trip> _trips;
   late int temp = 0;
+  late Color _temporaryColor;
 
   final Color _backgroundCountryColor = Color.fromRGBO(0, 0, 0, 1.0);
-  final Color _selectedCountryColor = Color.fromRGBO(54, 93, 163, 0.5);
+  final Color _selectedCountryColor = Color.fromRGBO(54, 93, 163, 1.0);
+
   //final Color _friendsVisitedCountryColor = Color.fromRGBO(84, 184, 133, 0.2);
   final Color _friendsVisitedCountryColor = Color.fromRGBO(28, 59, 41, 1.0);
-  final Color _myVisitedCountryColor = Color.fromRGBO(184, 67, 75, 0.5);
+  final Color _myVisitedCountryColor = Color.fromRGBO(184, 67, 75, 1.0);
   final Color _defaultCountryColor = Color.fromRGBO(40, 40, 40, 1.0);
+
   //final Color _selectedStrokeColor = Color.fromRGBO(54, 93, 163, 1.0);
   final Color _selectedStrokeColor = Color.fromRGBO(40, 50, 70, 1.0);
   final Color _defaultStrokeColor = Color.fromRGBO(40, 50, 70, 1.0);
@@ -49,8 +52,12 @@ class _MapScreenState extends State<MapScreen> {
   final Color _defaultStrokeColor = Color.fromRGBO(40, 50, 70, 1.0);
    */
 
+  String _dropdownSearchSelectedItem = "";
+
   @override
   void initState() {
+
+    //{ "type": "Feature", "properties": { "admin": "AlbatrUS", "name": "AlbatrUS", "continent": "AlbatrUS" }, "geometry": { "type": "Polygon", "coordinates": [[[-90, 90], [90, 90], [90, -90], [-90, -90]]] }},
 
     _data = <MyModel>[
       MyModel("AlbatrUS", _backgroundCountryColor, "AlbatrUS", "AlbatrUS" ),
@@ -298,41 +305,43 @@ class _MapScreenState extends State<MapScreen> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(top: 100, right: 10),
-                    child: IconButton(
-                      color: Colors.black,
-                      icon: Icon(Icons.search), //to jest wyszukiwarka
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('tu będą filtry'),
-                              content: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                                    children: [
-                                      TextField(
-                                        decoration: InputDecoration(
-                                          hintText: 'Enter Country Name...',
-                                        ),
-                                      ),
-                                      SizedBox(height: 16),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                          // Tutaj możesz dodać akcję wyszukiwania
-                                        },
-                                        child: Text('Szukaj'),
-                                      ),
-                                    ]
-                                )
+                    child: Container(
+                      width: 50,
+                      height: 100,
+                      child: DropdownSearch(
+                        enabled: true,
+                        items: _countriesFromMap,
+                        selectedItem: _dropdownSearchSelectedItem,
+                        onChanged: (value) {
+                          print(
+                              "tu coś rób paweł z tym value");
+                        },
+                        compareFn: (i, s) => i == s,
+                        popupProps:
+                        PopupPropsMultiSelection.dialog(
+                          //TODO dodać wyszarzenie tła
+                          searchDelay: const Duration(
+                              milliseconds: 300),
+                          searchFieldProps: TextFieldProps(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.circular(
+                                    16.0),
                               ),
-                            );
-                          },
-                        );
-                      },
+                            ),
+                          ),
+                          showSelectedItems: true,
+                          // onItemAdded:
+                          showSearchBox: true,
+                        ),
+                        dropdownButtonProps:
+                        const DropdownButtonProps(
+                          icon:
+                          Icon(Icons.search, size: 24),
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                   Padding(
@@ -383,7 +392,8 @@ class _MapScreenState extends State<MapScreen> {
       //shapeColorValueMapper: (int index) => myYellow,
     );
 
-    _zoomPanBehavior = MapZoomPanBehavior(enableDoubleTapZooming: false, minZoomLevel: 1, maxZoomLevel: 50)
+    _zoomPanBehavior = MapZoomPanBehavior(
+        enableDoubleTapZooming: false, minZoomLevel: 1, maxZoomLevel: 50)
       ..zoomLevel = 4
       ..focalLatLng = MapLatLng(19.0759837, 72.8776559)
       ..toolbarSettings = MapToolbarSettings();
@@ -505,7 +515,10 @@ class _MapScreenState extends State<MapScreen> {
                 child: ElevatedButton(
                     onPressed: (){
                       print("yellow ${_newCountryClickedIndex}");
-                      if(_data[_newCountryClickedIndex].color == Colors.black) {print("tak");}
+                      if (_data[_newCountryClickedIndex].color ==
+                          Colors.black) {
+                        print("tak");
+                      }
                     },
                     child: Text("yellow",style: const TextStyle(
                       color: Colors.yellow,
