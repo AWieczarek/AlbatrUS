@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_maps/maps.dart';
 import 'package:country_state_city/country_state_city.dart' as city;
+import 'package:dropdown_search/dropdown_search.dart';
 
 /// This widget is the home page of the application.
 class MapScreen extends StatefulWidget {
@@ -20,6 +21,7 @@ class _MapScreenState extends State<MapScreen> {
   late MapZoomPanBehavior _zoomPanBehavior;
   late bool _snackTime = false;
   late SnackBar _snackBar;
+  late List<String> _countriesFromMap;
 
   final Color myBlue = Color.fromRGBO(60, 90, 200, 1.0);
   final Color myGreen = Color.fromRGBO(60, 200, 30, 1.0);
@@ -27,7 +29,6 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   void initState() {
-    print("kupa");
 
     _data = <MyModel>[
       MyModel("Afghanistan", Color.fromRGBO(120, 200, 120, 1.0), "Afghanistan", "Asia" ),
@@ -207,6 +208,8 @@ class _MapScreenState extends State<MapScreen> {
       MyModel("Zimbabwe", Color.fromRGBO(120, 200, 120, 1.0), "Zimbabwe", "Africa" ),
     ];
 
+    _countriesFromMap = ["Afghanistan", "Angola", "Albania", "United Arab Emirates", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Burundi", "Belgium", "Benin", "Burkina Faso", "Bangladesh", "Bulgaria", "Bahamas", "Bosnia and Herz.", "Belarus", "Belize", "Bolivia", "Brazil", "Brunei", "Bhutan", "Botswana", "Central African Rep.", "Canada", "Switzerland", "Chile", "China", "Côte d'Ivoire", "Cameroon", "Dem. Rep. Congo", "Congo", "Colombia", "Costa Rica", "Cuba", "N. Cyprus", "Cyprus", "Czech Rep.", "Germany", "Djibouti", "Denmark", "Dominican Rep.", "Algeria", "Ecuador", "Egypt", "Eritrea", "Spain", "Estonia", "Ethiopia", "Finland", "Fiji", "Falkland Is.", "France", "Gabon", "United Kingdom", "Georgia", "Ghana", "Guinea", "Gambia", "Guinea-Bissau", "Eq. Guinea", "Greece", "Greenland", "Guatemala", "Guyana", "Honduras", "Croatia", "Haiti", "Hungary", "Indonesia", "India", "Ireland", "Iran", "Iraq", "Iceland", "Israel", "Italy", "Jamaica", "Jordan", "Japan", "Kazakhstan", "Kenya", "Kyrgyzstan", "Cambodia", "Korea", "Kosovo", "Kuwait", "Lao PDR", "Lebanon", "Liberia", "Libya", "Sri Lanka", "Lesotho", "Lithuania", "Luxembourg", "Latvia", "Morocco", "Moldova", "Madagascar", "Mexico", "Macedonia", "Mali", "Myanmar", "Montenegro", "Mongolia", "Mozambique", "Mauritania", "Malawi", "Malaysia", "Namibia", "New Caledonia", "Niger", "Nigeria", "Nicaragua", "Netherlands", "Norway", "Nepal", "New Zealand", "Oman", "Pakistan", "Panama", "Peru", "Philippines", "Papua New Guinea", "Poland", "Puerto Rico", "Dem. Rep. Korea", "Portugal", "Paraguay", "Palestine", "Qatar", "Romania", "Russia", "Rwanda", "W. Sahara", "Saudi Arabia", "Sudan", "S. Sudan", "Senegal", "Solomon Is.", "Sierra Leone", "El Salvador", "Somaliland", "Somalia", "Serbia", "Suriname", "Slovakia", "Slovenia", "Sweden", "Swaziland", "Syria", "Chad", "Togo", "Thailand", "Tajikistan", "Turkmenistan", "Timor-Leste", "Trinidad and Tobago", "Tunisia", "Turkey", "Taiwan", "Tanzania", "Uganda", "Ukraine", "Uruguay", "United States of America", "Uzbekistan", "Venezuela", "Vietnam", "Vanuatu", "Yemen", "South Africa", "Zambia", "Zimbabwe"];
+
     _mapSource = MapShapeSource.asset(
       'assets/world_map.json',
       shapeDataField: 'name',
@@ -225,159 +228,255 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
   }
 
+  late int fidget=0;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Center(
-            child: SfMaps(
-              layers: <MapShapeLayer>[
-                MapShapeLayer(
-                  source: _mapSource,
-                  zoomPanBehavior: _zoomPanBehavior,
-                  showDataLabels: true,
-                  //legend: const MapLegend(MapElement.shape),
-                  tooltipSettings: MapTooltipSettings(
-                      color: Colors.grey[400],
-                      strokeColor: Colors.grey[700],
-                      strokeWidth: 2),
-                  strokeColor: Colors.white,
-                  strokeWidth: 0.5,
-                  onSelectionChanged: (int index) {
-                    if (_snackTime == false) {
-                      _snackTime = true;
-                      _snackBar = SnackBar(
-                        content: Column(
-                          children: [
-                            Text(_data[index].name),
-                            Row(
+    return SafeArea(
+      top: false,
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Container(
+              color: Colors.lightBlue[300],
+            ),
+            Center(
+              child: Container(
+                child: SfMaps(
+                  layers: <MapShapeLayer>[
+                    MapShapeLayer(
+                      source: _mapSource,
+                      zoomPanBehavior: _zoomPanBehavior,
+                      strokeColor: Colors.white,
+                      strokeWidth: 1,
+                      showDataLabels: true,
+                      selectedIndex: countryClickedIndex,
+                      selectionSettings: MapSelectionSettings(
+                        color: Color.fromRGBO(200, 200, 50, 1),
+                        strokeColor: Colors.black,
+                      ),
+                      //legend: const MapLegend(MapElement.shape),
+                      tooltipSettings: MapTooltipSettings(
+                          color: Colors.grey[400],
+                          strokeColor: Colors.grey[700],
+                          strokeWidth: 2),
+                      onSelectionChanged: (int index) {
+                        if (_snackTime == false) {
+                          _snackTime = true;
+                          _snackBar = SnackBar(
+                            content: Column(
                               children: [
-                                ElevatedButton(
-                                  onPressed: (){
-                                    print("open site of country ${index}");
+                                Text(_data[index].name),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: ElevatedButton(
+                                        onPressed: (){
+                                          print("open site of country ${index}");
+                                        },
+                                        child: Text("open",style: const TextStyle(
+                                          color: Colors.green,
+                                        ),)
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: ElevatedButton(
+                                          onPressed: (){
+                                            print("blue ${index}");
+                                            _data[index].color = Colors.black;
+                                            setState(() {
+                                              _mapSource = MapShapeSource.asset(
+                                                'assets/world_map.json',
+                                                shapeDataField: 'name',
+                                                dataCount: _data.length,
+                                                primaryValueMapper: (int index) => _data[index].name, //this is needed to connect models to places on map - DONT CHANGE!
+                                                dataLabelMapper: (int index) => _data[index].blank, //this is shown as a name of country
+                                                shapeColorValueMapper: (int index) => _data[index].color,
+                                                //shapeColorValueMapper: (int index) => myBlue,
+                                              );
+                                            });
+                                          },
+                                          child: Text("blue",style: const TextStyle(
+                                            color: Colors.blue,
+                                          ),)
+                                      ),
+                                    ),
+                                    Expanded(
+
+                                      
+                                      child: ElevatedButton(
+                                          onPressed: (){
+                                            print("yellow ${index}");
+                                            if(_data[index].color == Colors.black) {print("tak");}
+                                          },
+                                          child: Text("yellow",style: const TextStyle(
+                                            color: Colors.yellow,
+                                          ),)
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                            duration: Duration(days: 1),
+                            dismissDirection: DismissDirection.none,
+                          );
+
+                          ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+                        }
+                        else{
+                          if(index != countryClickedIndex){
+                            _snackBar = SnackBar(
+                              content: Column(
+                                children: [
+                                  Text(_data[index].name),
+                                  Row(
+                                    children: [
+                                      ElevatedButton(
+                                          onPressed: (){
+                                            print("open site of country ${index}");
+                                          },
+                                          child: Text("open",style: const TextStyle(
+                                            color: Colors.green,
+                                          ),)
+                                      ),
+                                      ElevatedButton(
+                                          onPressed: (){
+                                            print("blue ${index}");
+                                            _data[index].color = Colors.black;
+                                            setState(() {
+                                              _mapSource = MapShapeSource.asset(
+                                                'assets/world_map.json',
+                                                shapeDataField: 'name',
+                                                dataCount: _data.length,
+                                                primaryValueMapper: (int index) => _data[index].name, //this is needed to connect models to places on map - DONT CHANGE!
+                                                dataLabelMapper: (int index) => _data[index].blank, //this is shown as a name of country
+                                                shapeColorValueMapper: (int index) => _data[index].color,
+                                                //shapeColorValueMapper: (int index) => myBlue,
+                                              );
+                                            });
+                                          },
+                                          child: Text("blue",style: const TextStyle(
+                                            color: Colors.blue,
+                                          ),)
+                                      ),ElevatedButton(
+                                          onPressed: (){
+                                            print("yellow ${index}");
+                                            if(_data[index].color == Colors.black) {print("tak");}
+                                          },
+                                          child: Text("yellow",style: const TextStyle(
+                                            color: Colors.yellow,
+                                          ),)
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                              duration: Duration(days: 1),
+                              dismissDirection: DismissDirection.none,
+                            );
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+                          }
+                          else{
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            _snackTime = false;
+                          }
+                        }
+
+                        setState(() {
+                          countryClickedIndex = index;
+                        });
+
+                        print("clicked country ${countryClickedIndex}");
+                      },
+                      /*dataLabelSettings: MapDataLabelSettings(
+                        textStyle: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                            fontSize:
+                            Theme.of(context).textTheme.bodySmall!.fontSize),
+                      ),*/
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 100, right: 10),
+                    child: IconButton(
+                      color: Colors.black,
+                      icon: Icon(Icons.search), //to jest wyszukiwarka
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('tu będą filtry'),
+                              content: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  children: [
+                                    TextField(
+                                      decoration: InputDecoration(
+                                        hintText: 'Enter Country Name...',
+                                      ),
+                                    ),
+                                    SizedBox(height: 16),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        // Tutaj możesz dodać akcję wyszukiwania
+                                      },
+                                      child: Text('Szukaj'),
+                                    ),
+                                  ]
+                                )
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 20, right: 10),
+                    child: IconButton(
+                      color: Colors.black,
+                      icon: Icon(Icons.pedal_bike), // to jest pedalarz
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('tu będą filtry'),
+                              content: Text('To jest treść okienka.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
                                   },
-                                  child: Text("open",style: const TextStyle(
-                                    color: Colors.green,
-                                  ),)
-                                ),
-                                ElevatedButton(
-                                    onPressed: (){
-                                      print("blue ${index}");
-                                      _data[index].color = Colors.black;
-                                      setState(() {
-                                        _mapSource = MapShapeSource.asset(
-                                          'assets/world_map.json',
-                                          shapeDataField: 'name',
-                                          dataCount: _data.length,
-                                          primaryValueMapper: (int index) => _data[index].name, //this is needed to connect models to places on map - DONT CHANGE!
-                                          dataLabelMapper: (int index) => _data[index].blank, //this is shown as a name of country
-                                          shapeColorValueMapper: (int index) => _data[index].color,
-                                          //shapeColorValueMapper: (int index) => myBlue,
-                                        );
-                                      });
-                                    },
-                                    child: Text("blue",style: const TextStyle(
-                                      color: Colors.blue,
-                                    ),)
-                                ),ElevatedButton(
-                                    onPressed: (){
-                                      print("yellow ${index}");
-                                      if(_data[index].color == Colors.black) {print("tak");}
-                                    },
-                                    child: Text("yellow",style: const TextStyle(
-                                      color: Colors.yellow,
-                                    ),)
+                                  child: Text('Zamknij'),
                                 ),
                               ],
-                            )
-                          ],
-                        ),
-                        duration: Duration(days: 1),
-                        dismissDirection: DismissDirection.none,
-                      );
-
-                      ScaffoldMessenger.of(context).showSnackBar(_snackBar);
-                    }
-                    else{
-                      if(index != countryClickedIndex){
-                        _snackBar = SnackBar(
-                          content: Column(
-                            children: [
-                              Text(_data[index].name),
-                              Row(
-                                children: [
-                                  ElevatedButton(
-                                      onPressed: (){
-                                        print("open site of country ${index}");
-                                      },
-                                      child: Text("open",style: const TextStyle(
-                                        color: Colors.green,
-                                      ),)
-                                  ),
-                                  ElevatedButton(
-                                      onPressed: (){
-                                        print("blue ${index}");
-                                        _data[index].color = Colors.black;
-                                        setState(() {
-                                          _mapSource = MapShapeSource.asset(
-                                            'assets/world_map.json',
-                                            shapeDataField: 'name',
-                                            dataCount: _data.length,
-                                            primaryValueMapper: (int index) => _data[index].name, //this is needed to connect models to places on map - DONT CHANGE!
-                                            dataLabelMapper: (int index) => _data[index].blank, //this is shown as a name of country
-                                            shapeColorValueMapper: (int index) => _data[index].color,
-                                            //shapeColorValueMapper: (int index) => myBlue,
-                                          );
-                                        });
-                                      },
-                                      child: Text("blue",style: const TextStyle(
-                                        color: Colors.blue,
-                                      ),)
-                                  ),ElevatedButton(
-                                      onPressed: (){
-                                        print("yellow ${index}");
-                                        if(_data[index].color == Colors.black) {print("tak");}
-                                      },
-                                      child: Text("yellow",style: const TextStyle(
-                                        color: Colors.yellow,
-                                      ),)
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                          duration: Duration(days: 1),
-                          dismissDirection: DismissDirection.none,
+                            );
+                          },
                         );
-                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                        ScaffoldMessenger.of(context).showSnackBar(_snackBar);
                       }
-                      else{
-                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                        _snackTime = false;
-                      }
-                    }
-
-                    setState(() {
-                      countryClickedIndex = index;
-                    });
-
-                    print("clicked country ${countryClickedIndex}");
-                  },
-                  /*dataLabelSettings: MapDataLabelSettings(
-                    textStyle: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                        fontSize:
-                        Theme.of(context).textTheme.bodySmall!.fontSize),
-                  ),*/
-                ),
-              ],
-            ),
-          ),
-
-        ],
+                    ),
+                  )
+                ],
+              )
+            )
+          ],
+        ),
       ),
     );
   }
