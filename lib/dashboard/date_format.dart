@@ -14,7 +14,7 @@ class DateWidget extends StatelessWidget {
 
     return Text(
         formattedDate,
-        style: const TextStyle(fontSize: 14.0),
+        style: const TextStyle(fontSize: 14.0, color: Colors.white),
     );
   }
 }
