@@ -12,7 +12,7 @@ import 'package:flutter/services.dart';
 
 import 'api_routes.dart';
 
-final navigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,6 +59,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
       ),
       routes: customRoutes,
+      navigatorKey: navigatorKey,
       initialRoute: AppRoutes.home,
       // FirebaseAuth.instance.currentUser == null ? AppRoutes.login : AppRoutes.home,
       home: MyHome(),
