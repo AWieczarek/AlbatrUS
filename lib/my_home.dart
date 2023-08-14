@@ -106,6 +106,7 @@ class _MyHomeState extends State<MyHome> {
           ),
         ),
         floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             ElevatedButton(onPressed: (){
               Navigator.of(context).pushNamed(AppRoutes.postList);

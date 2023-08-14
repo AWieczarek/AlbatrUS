@@ -1,9 +1,11 @@
 import 'package:albatrus/api_routes.dart';
 import 'package:albatrus/database_service.dart';
+import 'package:albatrus/models/trip_user.dart';
 import 'package:albatrus/new_trip_form/city_selector.dart';
 import 'package:albatrus/new_trip_form/country_selector.dart';
 import 'package:albatrus/new_trip_form/date_range_picker.dart';
 import 'package:albatrus/new_trip_form/rating_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:country_state_city/country_state_city.dart' as countries;
 import 'package:flutter/services.dart';
@@ -30,6 +32,7 @@ class _NewTripFormState extends State<NewTripForm> {
   int _rating = 3;
   bool _showBanner = false;
   String _errorMessage = "";
+  User? user = FirebaseAuth.instance.currentUser;
 
   void _countrySelected(countries.Country selectedItem) {
     setState(() {
@@ -59,13 +62,13 @@ class _NewTripFormState extends State<NewTripForm> {
     if (_errorMessage == "") {
       setState(() {
         _showBanner = false;
-        DatabaseService.createTrip(Trip(
+        DatabaseService.insertTripWithUserReference(Trip(
           country: _country!.name,
           city: _city!.name,
           dateFrom: _startDate,
           dateTo: _endDate,
           description: _description,
-          rate: _rating,
+          rate: _rating, user: TripUser(userId: user!.uid, username: user!.displayName!),
         ));
         Navigator.of(context).pushNamed(AppRoutes.home);
       });
