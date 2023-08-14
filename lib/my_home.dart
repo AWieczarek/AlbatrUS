@@ -86,6 +86,12 @@ class _MyHomeState extends State<MyHome> {
                               .pushNamed(AppRoutes.settingsScreen);
                         },
                       ),
+                      ListTile(
+                        title: const Text('Dashboard'),
+                        onTap: () {
+                          Navigator.of(context).pushNamed(AppRoutes.postList);
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -110,11 +116,6 @@ class _MyHomeState extends State<MyHome> {
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            ElevatedButton(onPressed: (){
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              Navigator.of(context).pushNamed(AppRoutes.postList);
-
-            },child: Text('cokolwiek')),
             FloatingActionButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
