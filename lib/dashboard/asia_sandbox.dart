@@ -1,5 +1,5 @@
 import 'package:albatrus/dashboard/dashboard-tile.dart';
-import 'package:albatrus/models/trip_user.dart';
+import 'package:albatrus/models/user_short.dart';
 import 'package:flutter/material.dart';
 
 import '../models/trip.dart';

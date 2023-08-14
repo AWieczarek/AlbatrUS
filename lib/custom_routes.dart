@@ -23,6 +23,14 @@ var customRoutes = <String, WidgetBuilder>{
   AppRoutes.loginCode: (_) => const LoginCodePage(),
   AppRoutes.loginUsername: (_) => const LoginUsernamePage(),
   AppRoutes.home: (_) => MyHome(),
+  AppRoutes.newTripForm: (context) {
+    var args = ModalRoute.of(context)?.settings.arguments;
+    if (args is Trip) {
+      return NewTripForm(tripData: args,);
+    }else{
+      return ErrorRoute();
+    }
+  },
   AppRoutes.maps: (_) => MapScreen(),
   AppRoutes.newTripForm: (_) => NewTripForm(),
   AppRoutes.settingsScreen: (_) => const SettingsScreen(),
