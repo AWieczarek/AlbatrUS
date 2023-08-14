@@ -20,6 +20,7 @@ class _MyHomeState extends State<MyHome> {
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
     String? username = user?.displayName;
+    print(user!.uid);
     return SafeArea(
       top: false,
       child: Scaffold(
@@ -82,6 +83,10 @@ class _MyHomeState extends State<MyHome> {
             ]
           ),
         ),
+        floatingActionButton: ElevatedButton(onPressed: (){
+          Navigator.of(context).pushNamed(AppRoutes.postList);
+
+        },child: Text('cokolwiek')),
       ),
     );
   }

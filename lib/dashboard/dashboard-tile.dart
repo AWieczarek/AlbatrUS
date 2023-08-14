@@ -17,23 +17,21 @@ class DashboardTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.topLeft,
-      child: Flexible(
-        child: Container(
-          decoration: const BoxDecoration(
-            color: Colors.lightBlueAccent,
-            borderRadius: BorderRadius.all(Radius.circular(25)),
-          ),
-          margin: const EdgeInsets.all(10.0),
-          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-          //width: 400.0,
-          height: 120.0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              LeftColumn(name: 'Krzyś', dateFrom: trip.dateFrom, city: trip.city, country: trip.country),
-              RightColumn(),
-            ],
-          ),
+      child: Container(
+        decoration: const BoxDecoration(
+          color: Colors.lightBlueAccent,
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        margin: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+        //width: 400.0,
+        height: 120.0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            LeftColumn(name: trip.user.username, dateFrom: trip.dateFrom, city: trip.city, country: trip.country),
+            RightColumn(),
+          ],
         ),
       ),
     );
