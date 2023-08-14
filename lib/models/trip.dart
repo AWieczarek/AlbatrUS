@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:albatrus/models/trip_user.dart';
+import 'package:albatrus/models/user_short.dart';
 import 'package:albatrus/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,7 +16,7 @@ class Trip {
   DateTime dateTo;
   String description;
   int rate;
-  TripUser user;
+  UserShort user;
 
   Trip({
     required this.country,
@@ -36,7 +36,7 @@ class Trip {
         dateTo: (json["date_to"] as Timestamp).toDate(),
         description: json["description"],
         rate: json["rate"],
-        user: TripUser.fromJson(json['user']),
+        user: UserShort.fromJson(json['user']),
       );
 
   Map<String, dynamic> toJson() => {

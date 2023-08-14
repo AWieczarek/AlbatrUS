@@ -1,5 +1,5 @@
 import 'package:albatrus/database_service.dart';
-import 'package:albatrus/models/trip_user.dart';
+import 'package:albatrus/models/user_short.dart';
 import 'package:albatrus/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -53,17 +53,18 @@ class _MyHomeState extends State<MyHome> {
                                 maxRadius: 30,
                                 child: Icon(
                                   Icons.person,
-                                  size: MediaQuery.of(context).size.width/10,
+                                  size: MediaQuery.of(context).size.width / 10,
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(18.0),
                                 child: SizedBox(
-                                  width: MediaQuery.of(context).size.width / 5 *2,
+                                  width:
+                                      MediaQuery.of(context).size.width / 5 * 2,
                                   child: SizedBox(
                                     width: 200,
                                     child: AutoSizeText(
-                                      username!,
+                                      "username!",
                                       style: const TextStyle(
                                         fontSize: 24,
                                         fontWeight: FontWeight.w500,
