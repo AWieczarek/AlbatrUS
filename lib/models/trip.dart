@@ -42,8 +42,8 @@ class Trip {
   Map<String, dynamic> toJson() => {
         "country": country,
         "city": city,
-        "date_from": dateFrom.toIso8601String(),
-        "date_to": dateTo.toIso8601String(),
+        "date_from": Timestamp.fromDate(dateFrom),
+        "date_to": Timestamp.fromDate(dateTo),
         "description": description,
         "rate": rate,
         "user": user.toJson(),
