@@ -18,7 +18,7 @@ var customRoutes = <String, WidgetBuilder>{
   AppRoutes.loginCode: (_) => const LoginCodePage(),
   AppRoutes.loginUsername: (_) => const LoginUsernamePage(),
   AppRoutes.home: (_) => MyHome(),
-  AppRoutes.newTripForm: (_) => const NewTripForm(),
+  AppRoutes.newTripForm: (_) => NewTripForm(),
   AppRoutes.settingsScreen: (_) => const SettingsScreen(),
   AppRoutes.postList: (_) => PostList(),
   AppRoutes.postDetails: (context) {

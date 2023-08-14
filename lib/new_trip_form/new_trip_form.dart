@@ -13,8 +13,9 @@ import 'package:flutter/services.dart';
 import '../models/trip.dart';
 
 class NewTripForm extends StatefulWidget {
-  const NewTripForm({super.key});
+  NewTripForm({super.key});
 
+  static String dupa = "";
   @override
   _NewTripFormState createState() => _NewTripFormState();
 }
@@ -136,9 +137,7 @@ class _NewTripFormState extends State<NewTripForm> {
             child: TextField(
               controller: _descriptionController,
               onChanged: (value) {
-                setState(() {
                   _description = value;
-                });
               },
               minLines: 3,
               maxLines: null,

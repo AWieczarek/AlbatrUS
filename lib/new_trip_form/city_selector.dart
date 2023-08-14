@@ -41,6 +41,7 @@ class _CitySelectorState extends State<CitySelector> {
                       },
                       popupProps: PopupPropsMultiSelection.bottomSheet (
                         //TODO dodać wyszarzenie tła
+                        //TODO nie odklikuje się xd
                         searchDelay: const Duration(milliseconds: 300),
                         searchFieldProps: TextFieldProps(
                           decoration: InputDecoration(
