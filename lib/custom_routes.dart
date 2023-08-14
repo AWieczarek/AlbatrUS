@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 
 import 'api_routes.dart';
 import 'login/login_page.dart';
+import 'map_screen.dart';
 import 'models/trip.dart';
 
 var customRoutes = <String, WidgetBuilder>{
@@ -18,6 +19,7 @@ var customRoutes = <String, WidgetBuilder>{
   AppRoutes.loginCode: (_) => const LoginCodePage(),
   AppRoutes.loginUsername: (_) => const LoginUsernamePage(),
   AppRoutes.home: (_) => MyHome(),
+  AppRoutes.maps: (_) => MapScreen(),
   AppRoutes.newTripForm: (_) => NewTripForm(),
   AppRoutes.settingsScreen: (_) => const SettingsScreen(),
   AppRoutes.postList: (_) => PostList(),
