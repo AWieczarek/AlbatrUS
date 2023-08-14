@@ -118,7 +118,15 @@ class _MyHomeState extends State<MyHome> {
             FloatingActionButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                Navigator.of(context).pushNamed(AppRoutes.newTripForm);
+                Navigator.of(context).pushNamed(AppRoutes.newTripForm,
+                    arguments: Trip(
+                        country: "",
+                        city: "",
+                        dateFrom: DateTime.now(),
+                        dateTo: DateTime.now(),
+                        description: "",
+                        rate: 3,
+                        user: UserShort(userId: "id", username: "user")));
               }, // Ikona wewnątrz przycisku
               tooltip: 'Add trip',
               child: const Icon(Icons.add),
