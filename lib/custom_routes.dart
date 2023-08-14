@@ -32,7 +32,6 @@ var customRoutes = <String, WidgetBuilder>{
     }
   },
   AppRoutes.maps: (_) => MapScreen(),
-  AppRoutes.newTripForm: (_) => NewTripForm(),
   AppRoutes.settingsScreen: (_) => const SettingsScreen(),
   AppRoutes.postList: (_) => PostList(),
   AppRoutes.postDetails: (context) {
