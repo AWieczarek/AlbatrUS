@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
+import '../api_routes.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -77,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         codeSent: (String verificationId, int? resendToken) {
                           LoginPage.verify = verificationId;
-                          Navigator.of(context).pushNamed('/login/code');
+                          Navigator.of(context).pushNamed(AppRoutes.loginCode);
                         },
                         codeAutoRetrievalTimeout: (String verificationId) {},
                       );
