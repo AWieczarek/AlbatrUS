@@ -4,6 +4,7 @@ import 'package:albatrus/dashboard/asia_sandbox.dart';
 import 'package:albatrus/database_service.dart';
 import 'package:albatrus/models/trip.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class PostList extends StatelessWidget {
   const PostList({super.key});
@@ -11,8 +12,11 @@ class PostList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CustomColors().background,
-      appBar: AppBar(),
+      backgroundColor: CustomColors().backgroundColor,
+      appBar: AppBar(
+        backgroundColor: CustomColors().backgroundColor,
+      ),
+
       body: FutureBuilder<List<Trip>>(
         future: DatabaseService.fetchTrips(),
         builder: (context, snapshot) {

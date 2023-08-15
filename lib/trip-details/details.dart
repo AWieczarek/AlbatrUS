@@ -1,3 +1,4 @@
+import 'package:albatrus/custom_colors.dart';
 import 'package:albatrus/dashboard/date_format.dart';
 import 'package:albatrus/trip-details/details_date_field.dart';
 import 'package:albatrus/trip-details/details_text_field.dart';
@@ -46,9 +47,9 @@ class Details extends StatelessWidget {
               child: Container(
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(35)),
-                    color: Color.fromRGBO(40, 40, 40, 1.0),
+                    color: CustomColors().myGrayColor,
                     border: Border.all(
-                      color: Color.fromRGBO(40, 50, 70, 1.0),
+                      //color: CustomColors().strokeColor,
                     ),
                   ),
                   child: Padding(

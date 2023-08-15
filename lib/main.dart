@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:albatrus/custom_colors.dart';
 import 'package:albatrus/custom_routes.dart';
 import 'package:albatrus/login/login_page.dart';
 import 'package:albatrus/my_home.dart';
@@ -53,6 +54,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        appBarTheme: AppBarTheme(foregroundColor: CustomColors().textColor),
         primaryColor: Colors.black,
         colorScheme: ColorScheme.fromSeed(
             seedColor: Colors.black),

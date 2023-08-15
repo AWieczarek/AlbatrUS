@@ -1,3 +1,4 @@
+import 'package:albatrus/custom_colors.dart';
 import 'package:flutter/material.dart';
 
 import '../dashboard/date_format.dart';
@@ -27,21 +28,21 @@ class DetailsDateField extends StatelessWidget {
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: 12,
-                    color: Color.fromRGBO(40, 50, 70, 1.0),
+                    color: CustomColors().strokeColor,
                   ),
                 ),
               ),
               Container(
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(25)),
-                    color: Color.fromRGBO(40, 40, 40, 1.0),
+                    color: CustomColors().myGrayColor,
                     border: Border.all(
-                      color: Color.fromRGBO(40, 50, 70, 1.0),
+                      //color: CustomColors().strokeColor,
                     ),
                   ),
                   child: Padding(
                       padding: const EdgeInsets.all(15.0),
-                      child: DateWidget(date: date))),
+                      child: DateWidget(date: date, textColor: CustomColors().textColor, fontSize: 14,))),
             ],
           ),
         ),
