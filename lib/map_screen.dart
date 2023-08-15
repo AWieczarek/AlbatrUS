@@ -4,7 +4,11 @@ import 'package:syncfusion_flutter_maps/maps.dart';
 import 'package:country_state_city/country_state_city.dart' as city;
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:albatrus/database_service.dart';
+import 'package:albatrus/custom_routes.dart';
+import 'package:albatrus/api_routes.dart';
+import 'package:albatrus/dowolnie.dart';
 
+import 'dowolnie.dart';
 import 'models/trip.dart';
 
 /// This widget is the home page of the application.
@@ -51,6 +55,10 @@ class _MapScreenState extends State<MapScreen> {
   late List<Country> _countriesFromDifferentSource;
   late List<Set<String>> _countryFriendsListSet;
   late List<CountryPlusFriend> _countryPlusFriend;
+  late Set<String> _countrySet;
+  late List<String> _countryList;
+  Map<String, List<Trip>> map = {};
+
 
   String _dropdownSearchSelectedItem = "";
 
@@ -760,25 +768,8 @@ class _MapScreenState extends State<MapScreen> {
                       color: Colors.black,
                       icon: Icon(Icons.pedal_bike), // to jest pedalarz
                       onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('tu będą filtry'),
-                              content: Text('To jest treść okienka.'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    refreshMap();
-                                    Navigator.of(context).pop();
-                                    print("ALE ODSWIERZYLEM MAPE!");
-                                  },
-                                  child: Text('WYPIERDALAJ'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
+                        getTrips();
+                        refreshMap();
                       }
                     ),
                   )
@@ -841,22 +832,38 @@ class _MapScreenState extends State<MapScreen> {
   Future<void> getTrips() async {
     _trips = await DatabaseService.fetchTrips();
 
+    print("jestem 0");
+
     _countryPlusFriend = _trips.map((trip) => CountryPlusFriend(trip.country, trip.user.username)).toList();
-    List<String> _countrylist = _trips.map((trip) => trip.country).toList();
+    _countryList = _trips.map((trip) => trip.country).toList();
+    Set<String> pom = _countryList.toSet();
+    print(_countryList);
 
-    _countryFriendsListSet = List<Set<String>>.filled(_countrylist.length, {});
+    print("jestem 1");
 
-    for(int i = 0; i < _countrylist.length; i++) {
+    pom.forEach((element) {
+      map[element] = [];
+    });
+
+    _trips.forEach((element) {
+      map[element.country]!.add(element);
+    });
+
+    print("jestem 2");
+
+    _countryFriendsListSet = List<Set<String>>.filled(_countryList.length, {});
+
+    for(int i = 0; i < _countryList.length; i++) {
       for(int j = 0; j < _countryPlusFriend.length; j++) {
-        if(_countrylist[i] == _countryPlusFriend[j].country) {
+        if(_countryList[i] == _countryPlusFriend[j].country) {
           _countryFriendsListSet[i].add(_countryPlusFriend[j].friend);
         }
       }
-      print(_countryFriendsListSet[i]);
     }
 
-    Set<String> _countrySet = _countrylist.toSet();
-    print(_countrySet);
+    print("jestem 3");
+
+    _countrySet = _countryList.toSet();
 
     for (int i = 0; i < _countriesFromMap.length; i++) {
       if (_countrySet.contains(_countriesFromMap[i])) {
@@ -867,9 +874,7 @@ class _MapScreenState extends State<MapScreen> {
 
     _countriesFromDifferentSource = await city.getAllCountries();
 
-    setState(() {
-      temp = temp + 1;
-    });
+    refreshMap();
   }
 
   int funWithSelectedCountries() {
@@ -948,11 +953,16 @@ class _MapScreenState extends State<MapScreen> {
               Expanded(
                 child: ElevatedButton(
                     onPressed: () {
-                      print("yellow ${_newCountryClickedIndex}");
-                      if (_data[_newCountryClickedIndex].color ==
-                          Colors.black) {
-                        print("tak");
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      if(_countryList.contains(_countriesFromMap[_newCountryClickedIndex])) {
+                        print(_countryFriendsListSet[_countryList.indexOf(_countriesFromMap[_newCountryClickedIndex])]);
+                        Navigator.of(context).pushNamed(AppRoutes.countrySiteScreen, arguments: DowolnyPakiet(friends: map[_countriesFromMap[_newCountryClickedIndex]]!, country: _countriesFromMap[_newCountryClickedIndex]));
                       }
+                      else {
+                        Navigator.of(context).pushNamed(AppRoutes.countrySiteScreen, arguments: DowolnyPakiet(friends: [], country: _countriesFromMap[_newCountryClickedIndex]));
+                      }
+                      //Navigator.of(context).pushNamed(AppRoutes.countrySiteScreen, arguments: DowolnyPakiet(friends: ["a", "b"], country: "kraj"));
+                      print("jestem");
                     },
                     child: Text("yellow",style: const TextStyle(
                       color: Colors.yellow,

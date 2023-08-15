@@ -1,6 +1,8 @@
+import 'package:albatrus/country_site_screen.dart';
 import 'package:albatrus/dashboard/asia_sandbox.dart';
 import 'package:albatrus/dashboard/dashboard-tile.dart';
 import 'package:albatrus/dashboard/post_list.dart';
+import 'package:albatrus/dowolnie.dart';
 import 'package:albatrus/friends/contacts_add.dart';
 import 'package:albatrus/login/login_code_page.dart';
 import 'package:albatrus/login/login_username_page.dart';
@@ -28,6 +30,16 @@ var customRoutes = <String, WidgetBuilder>{
     if (args is Trip) {
       return NewTripForm(tripData: args,);
     }else{
+      return ErrorRoute();
+    }
+  },
+  AppRoutes.countrySiteScreen: (context) {
+    var args = ModalRoute.of(context)?.settings.arguments;
+    if (args is DowolnyPakiet) {
+      DowolnyPakiet dowolny = args as DowolnyPakiet;
+      return CountrySiteScreen(countryName: dowolny.country, trips: dowolny.friends);
+    }else{
+      print("object");
       return ErrorRoute();
     }
   },
