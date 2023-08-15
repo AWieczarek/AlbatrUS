@@ -1,3 +1,4 @@
+import 'package:albatrus/custom_colors.dart';
 import 'package:albatrus/database_service.dart';
 import 'package:albatrus/models/user_short.dart';
 import 'package:albatrus/models/user.dart';
@@ -27,9 +28,9 @@ class _MyHomeState extends State<MyHome> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text(
-         "Dupa",
-          style: TextStyle(color: Colors.black),
+          title: Text(
+         "AlbatrUs",
+          style: TextStyle(color: CustomColors().textColor),
         ),
           backgroundColor: Colors.transparent,
           elevation: 0.0,),
@@ -116,21 +117,31 @@ class _MyHomeState extends State<MyHome> {
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            FloatingActionButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                Navigator.of(context).pushNamed(AppRoutes.newTripForm,
-                    arguments: Trip(
-                        country: "",
-                        city: "",
-                        dateFrom: DateTime(1969),
-                        dateTo: DateTime(1999),
-                        description: "w dupe",
-                        rate: 2,
-                        user: UserShort(userId: "id", username: "user")));
-              }, // Ikona wewnątrz przycisku
-              tooltip: 'Add trip',
-              child: const Icon(Icons.add),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+                border: Border.all(
+                  color: CustomColors().secondaryTextColor,
+                ),
+              ),
+              child: FloatingActionButton(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  Navigator.of(context).pushNamed(AppRoutes.newTripForm,
+                      arguments: Trip(
+                          country: "",
+                          city: "",
+                          dateFrom: DateTime(1969),
+                          dateTo: DateTime(1999),
+                          description: "w dupe",
+                          rate: 2,
+                          user: UserShort(userId: "id", username: "user")));
+                }, // Ikona wewnątrz przycisku
+                tooltip: 'Add trip',
+                child: Icon(Icons.add, color: CustomColors().secondaryTextColor, size: 30.0),
+              ),
             ),
           ],
         ),

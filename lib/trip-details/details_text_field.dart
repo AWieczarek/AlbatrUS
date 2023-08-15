@@ -1,3 +1,4 @@
+import 'package:albatrus/custom_colors.dart';
 import 'package:flutter/material.dart';
 
 class DetailsTextField extends StatelessWidget {
@@ -24,7 +25,7 @@ class DetailsTextField extends StatelessWidget {
               child: Text(
                 coto,
                 textAlign: TextAlign.left,
-                style: const TextStyle(fontSize: 12, color: Color.fromRGBO(40, 50, 70, 1.0),),
+                style: TextStyle(fontSize: 12, color: CustomColors().strokeColor,),
               ),
             ),
           ),
@@ -35,14 +36,14 @@ class DetailsTextField extends StatelessWidget {
                 child: Container(
                   height: 50,
                   decoration: BoxDecoration(
-                    color: Color.fromRGBO(40, 40, 40, 1.0),
+                    color: CustomColors().myGrayColor,
                     borderRadius: const BorderRadius.all(Radius.circular(25)),
                     border: Border.all(
-                        color: Color.fromRGBO(40, 50, 70, 1.0),
+                        //color: CustomColors().strokeColor,
                         ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.all(13.0),
                     child: Text(
                       detail,
                       textAlign: TextAlign.left,
