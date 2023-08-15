@@ -31,16 +31,14 @@ class _MapScreenState extends State<MapScreen> {
   late Color _temporaryColor;
 
   final Color _backgroundCountryColor = const Color.fromRGBO(0, 0, 0, 1.0);
-  final Color _selectedCountryColor = const Color.fromRGBO(54, 93, 163, 1.0);
+  final Color _selectedCountryColor = const Color.fromRGBO(20, 50, 80, 1.0);
 
-  //final Color _friendsVisitedCountryColor = Color.fromRGBO(84, 184, 133, 0.2);
-  final Color _friendsVisitedCountryColor = const Color.fromRGBO(28, 59, 41, 1.0);
-  final Color _myVisitedCountryColor = const Color.fromRGBO(184, 67, 75, 1.0);
-  final Color _defaultCountryColor = const Color.fromRGBO(40, 40, 40, 1.0);
+  final Color _friendsVisitedCountryColor = const Color.fromRGBO(10, 60, 60, 1.0);
+  final Color _myVisitedCountryColor = const Color.fromRGBO(80, 20, 50, 1.0);
+  final Color _defaultCountryColor = const Color.fromRGBO(15, 25, 45, 1.0);
 
-  //final Color _selectedStrokeColor = Color.fromRGBO(54, 93, 163, 1.0);
-  final Color _selectedStrokeColor = const Color.fromRGBO(40, 50, 70, 1.0);
-  final Color _defaultStrokeColor = const Color.fromRGBO(40, 50, 70, 1.0);
+  final Color _selectedStrokeColor = const Color.fromRGBO(30, 50, 70, 1.0);
+  final Color _defaultStrokeColor = const Color.fromRGBO(50, 90, 130, 1.0);
 
   /*
   final Color _backgroundCountryColor = Color.fromRGBO(0, 0, 0, 1.0);
@@ -498,7 +496,7 @@ class _MapScreenState extends State<MapScreen> {
                   source: _mapSource,
                   zoomPanBehavior: _zoomPanBehavior,
                   strokeColor: _defaultStrokeColor,
-                  strokeWidth: 1,
+                  strokeWidth: 0.6,
                   //TO DO
                   showDataLabels: true,
                   onSelectionChanged: (int index) {
