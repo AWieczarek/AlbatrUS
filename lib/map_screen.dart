@@ -1,4 +1,5 @@
-import 'package:albatrus/custom_colors.dart';
+import 'package:albatrus/api_routes.dart';
+import 'package:albatrus/models/user_short.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_maps/maps.dart';
 import 'package:country_state_city/country_state_city.dart' as city;
@@ -697,7 +698,16 @@ class _MapScreenState extends State<MapScreen> {
               Expanded(
                 child: ElevatedButton(
                     onPressed: () {
-                      print("open site of country ${_newCountryClickedIndex}");
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      Navigator.of(context).pushNamed(AppRoutes.newTripForm,
+                          arguments: Trip(
+                              country: _data[_newCountryClickedIndex].name,
+                              city: "",
+                              dateFrom: DateTime.now(),
+                              dateTo: DateTime.now(),
+                              description: "",
+                              rate: 3,
+                              user: UserShort(userId: "id", username: "user")));
                     },
                     child: const Text(
                       "Add trip",

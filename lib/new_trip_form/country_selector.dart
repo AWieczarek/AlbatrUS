@@ -6,6 +6,16 @@ class CountrySelector extends StatefulWidget {
   CountrySelector(
       {super.key, required this.onCountrySelected, required this.countriesList, required this.selectedCountry});
 
+  // final bgColor=Colors.black;
+  final textColor = Colors.white;
+  final hintColor = Colors.grey[100];
+  final formBgColor = Colors.grey[800];
+  final formFocusColor = Colors.grey[600];
+  final buttonBgColor = Colors.grey[600];
+  final buttonTextColor = Colors.grey[600];
+  final warningColor = Colors.red[400];
+  final warningTextColor = Colors.grey[850];
+
   final List<countries.Country> countriesList;
   final ValueChanged<countries.Country> onCountrySelected;
   String selectedCountry;
