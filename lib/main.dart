@@ -13,7 +13,7 @@ import 'api_routes.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await NotificationService().initNotification();
@@ -29,6 +29,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   late StreamSubscription<User?> user;
+
   void initState() {
     super.initState();
     user = FirebaseAuth.instance.authStateChanges().listen((user) {
@@ -54,18 +55,13 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         appBarTheme: AppBarTheme(foregroundColor: CustomColors().secondaryTextColor),
         primaryColor: Colors.black,
-        appBarTheme: AppBarTheme(
-          color: Colors.black,
-          foregroundColor: Colors.white,
-        ),
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.orange,
-            brightness: Brightness.dark),
-        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: CustomColors().myGrayColor),
       ),
       routes: customRoutes,
       navigatorKey: navigatorKey,
-      initialRoute: FirebaseAuth.instance.currentUser == null ? AppRoutes.login : AppRoutes.home,
+      initialRoute: FirebaseAuth.instance.currentUser == null
+          ? AppRoutes.login
+          : AppRoutes.home,
       home: MyHome(),
     );
   }

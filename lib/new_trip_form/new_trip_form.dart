@@ -1,4 +1,5 @@
 import 'package:albatrus/api_routes.dart';
+import 'package:albatrus/custom_colors.dart';
 import 'package:albatrus/database_service.dart';
 import 'package:albatrus/models/user_short.dart';
 import 'package:albatrus/new_trip_form/city_selector.dart';
@@ -24,15 +25,16 @@ class NewTripForm extends StatefulWidget {
 class _NewTripFormState extends State<NewTripForm> {
   final _formKey = GlobalKey<FormState>();
 
-  final bgColor=Colors.black;
-  final textColor = Colors.white;
-  final hintColor = Colors.grey[100];
-  final formBgColor = Colors.grey[800];
-  final formFocusColor = Colors.grey[600];
-  final buttonBgColor = Colors.grey[600];
-  final buttonTextColor = Colors.grey[600];
-  final warningColor = Colors.red[400];
-  final warningTextColor = Colors.grey[850];
+  final bgColor = CustomColors().backgroundColor;
+  final textColor = CustomColors().textColor;
+  final formBgColor = CustomColors().myGrayColor;
+  final formTextColor = CustomColors().secondaryTextColor;
+  final formBorderColor = CustomColors().strokeColor;
+  final formFocusColor = CustomColors().strokeColor;
+  final buttonBgColor = CustomColors().myGrayColor;
+  final buttonTextColor = CustomColors().textColor;
+  final warningColor = CustomColors().myRedColor;
+  final warningTextColor = CustomColors().textColor;
 
   String _countryISO = "";
 
@@ -55,15 +57,15 @@ class _NewTripFormState extends State<NewTripForm> {
   }
 
   void _ratingSelected(int selectedItem) {
-      widget.tripData.rate = selectedItem;
+    widget.tripData.rate = selectedItem;
   }
 
   void _dateFromSelected(DateTime selectedItem) {
-      widget.tripData.dateFrom = selectedItem;
+    widget.tripData.dateFrom = selectedItem;
   }
 
   void _dateToSelected(DateTime selectedItem) {
-      widget.tripData.dateTo = selectedItem;
+    widget.tripData.dateTo = selectedItem;
   }
 
   void _saveTrip() {
@@ -107,16 +109,17 @@ class _NewTripFormState extends State<NewTripForm> {
 
   @override
   Widget build(BuildContext context) {
-
-    _descriptionController = TextEditingController(text: widget.tripData.description);
+    _descriptionController =
+        TextEditingController(text: widget.tripData.description);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    print(
-        "selectedCountry: ${widget.tripData.country} duuuuuuuuuuuupa");
+    print("selectedCountry: ${widget.tripData.country} duuuuuuuuuuuupa");
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: bgColor,
       appBar: AppBar(
         title: const Text('New Trip'),
+        backgroundColor: Colors.black,
+        titleTextStyle: TextStyle(color: Colors.white, fontSize: 21),
       ),
       body: FutureBuilder(
           future: Future.wait([
@@ -165,8 +168,9 @@ class _NewTripFormState extends State<NewTripForm> {
                     cityList: citiesList,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(20.0),
                     child: TextField(
+                      style: TextStyle(color: CustomColors().textColor, fontSize: 18),
                       controller: _descriptionController,
                       onChanged: (value) {
                         widget.tripData.description = value;
@@ -174,12 +178,21 @@ class _NewTripFormState extends State<NewTripForm> {
                       minLines: 3,
                       maxLines: null,
                       keyboardType: TextInputType.multiline,
+                      cursorColor: formTextColor,
                       decoration: InputDecoration(
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: formBorderColor),
+                          borderRadius: BorderRadius.circular(16.0),
+                        ),
                         filled: true,
                         fillColor: formBgColor,
                         focusColor: formFocusColor,
                         labelText: "Description",
-                        hintText: 'Enter Description...',
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: formBorderColor),
+                        ),
+                        labelStyle: TextStyle(color: formTextColor),
                       ),
                     ),
                   ),
@@ -198,25 +211,34 @@ class _NewTripFormState extends State<NewTripForm> {
                   RatingWidget(
                     onSelect: _ratingSelected,
                     initialValue: widget.tripData.rate,
+                    changable: true,
+                    size: 40,
+                  ),
+                  const SizedBox(
+                    height: 40,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
-                        onPressed: _saveTrip,
-                        child: const Row(
-                          children: [
-                            Text("Save "),
-                            Icon(
-                              Icons.save,
-                              size: 30,
+                        style: ButtonStyle(
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25.0), // Zaokrąglenie narożników
+                              ),
                             ),
-                          ],
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(CustomColors().myGrayColor)),
+                        onPressed: _saveTrip,
+                        child: const Padding(
+                          padding: EdgeInsets.all(12.0),
+                          child: Row(
+                            children: [
+                              Text("Save ", style: TextStyle(fontSize: 18),),
+                            ],
+                          ),
                         ),
                       ),
-                      const SizedBox(
-                        width: 16,
-                      )
                     ],
                   ),
                 ],
