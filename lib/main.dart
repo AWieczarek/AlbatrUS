@@ -54,8 +54,13 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       theme: ThemeData(
         primaryColor: Colors.black,
+        appBarTheme: AppBarTheme(
+          color: Colors.black,
+          foregroundColor: Colors.white,
+        ),
         colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.black),
+            seedColor: Colors.orange,
+            brightness: Brightness.dark),
         useMaterial3: true,
       ),
       routes: customRoutes,

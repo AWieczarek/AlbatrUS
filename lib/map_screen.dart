@@ -1,3 +1,5 @@
+import 'package:albatrus/api_routes.dart';
+import 'package:albatrus/models/user_short.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_maps/maps.dart';
 import 'package:country_state_city/country_state_city.dart' as city;
@@ -34,7 +36,8 @@ class _MapScreenState extends State<MapScreen> {
   final Color _selectedCountryColor = const Color.fromRGBO(54, 93, 163, 1.0);
 
   //final Color _friendsVisitedCountryColor = Color.fromRGBO(84, 184, 133, 0.2);
-  final Color _friendsVisitedCountryColor = const Color.fromRGBO(28, 59, 41, 1.0);
+  final Color _friendsVisitedCountryColor =
+      const Color.fromRGBO(28, 59, 41, 1.0);
   final Color _myVisitedCountryColor = const Color.fromRGBO(184, 67, 75, 1.0);
   final Color _defaultCountryColor = const Color.fromRGBO(40, 40, 40, 1.0);
 
@@ -466,12 +469,13 @@ class _MapScreenState extends State<MapScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Witaj!'),
-          content: const Text('To jest okienko, które wyskakuje na początku aplikacji.'),
+          content: const Text(
+              'To jest okienko, które wyskakuje na początku aplikacji.'),
           actions: [
             TextButton(
               onPressed: () {
                 refreshMap();
-                Navigator.of(context,rootNavigator: true).pop();
+                Navigator.of(context, rootNavigator: true).pop();
               },
               child: const Text('Zamknij'),
             ),
@@ -534,21 +538,16 @@ class _MapScreenState extends State<MapScreen> {
                         items: _countriesFromMap,
                         selectedItem: _dropdownSearchSelectedItem,
                         onChanged: (value) {
-                          print(
-                              "tu coś rób paweł z tym value");
+                          print("tu coś rób paweł z tym value");
                         },
                         compareFn: (i, s) => i == s,
-                        popupProps:
-                        PopupPropsMultiSelection.dialog(
+                        popupProps: PopupPropsMultiSelection.dialog(
                           //TODO dodać wyszarzenie tła
-                          searchDelay: const Duration(
-                              milliseconds: 300),
+                          searchDelay: const Duration(milliseconds: 300),
                           searchFieldProps: TextFieldProps(
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
-                                borderRadius:
-                                BorderRadius.circular(
-                                    16.0),
+                                borderRadius: BorderRadius.circular(16.0),
                               ),
                             ),
                           ),
@@ -556,10 +555,8 @@ class _MapScreenState extends State<MapScreen> {
                           // onItemAdded:
                           showSearchBox: true,
                         ),
-                        dropdownButtonProps:
-                        const DropdownButtonProps(
-                          icon:
-                          Icon(Icons.search, size: 24),
+                        dropdownButtonProps: const DropdownButtonProps(
+                          icon: Icon(Icons.search, size: 24),
                           color: Colors.white,
                         ),
                       ),
@@ -593,10 +590,9 @@ class _MapScreenState extends State<MapScreen> {
                         }),
                   )
                 ],
-              )
-            ),
-          ],
-        ),
+              )),
+        ],
+      ),
       //),
     );
   }
@@ -700,7 +696,16 @@ class _MapScreenState extends State<MapScreen> {
               Expanded(
                 child: ElevatedButton(
                     onPressed: () {
-                      print("open site of country ${_newCountryClickedIndex}");
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      Navigator.of(context).pushNamed(AppRoutes.newTripForm,
+                          arguments: Trip(
+                              country: _data[_newCountryClickedIndex].name,
+                              city: "",
+                              dateFrom: DateTime.now(),
+                              dateTo: DateTime.now(),
+                              description: "",
+                              rate: 3,
+                              user: UserShort(userId: "id", username: "user")));
                     },
                     child: const Text(
                       "Add trip",
@@ -709,7 +714,9 @@ class _MapScreenState extends State<MapScreen> {
                       ),
                     )),
               ),
-              SizedBox(width: 10,),
+              const SizedBox(
+                width: 10,
+              ),
               Expanded(
                 child: ElevatedButton(
                     onPressed: () {

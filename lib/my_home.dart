@@ -80,16 +80,16 @@ class _MyHomeState extends State<MyHome> {
                       ),
                       const Divider(),
                       ListTile(
+                        title: const Text('Dashboard'),
+                        onTap: () {
+                          Navigator.of(context).pushNamed(AppRoutes.postList);
+                        },
+                      ),
+                      ListTile(
                         title: const Text('Settings'),
                         onTap: () {
                           Navigator.of(context)
                               .pushNamed(AppRoutes.settingsScreen);
-                        },
-                      ),
-                      ListTile(
-                        title: const Text('Dashboard'),
-                        onTap: () {
-                          Navigator.of(context).pushNamed(AppRoutes.postList);
                         },
                       ),
                     ],
@@ -123,10 +123,10 @@ class _MyHomeState extends State<MyHome> {
                     arguments: Trip(
                         country: "",
                         city: "",
-                        dateFrom: DateTime(1969),
-                        dateTo: DateTime(1999),
-                        description: "w dupe",
-                        rate: 2,
+                        dateFrom: DateTime.now(),
+                        dateTo: DateTime.now(),
+                        description: "",
+                        rate: 3,
                         user: UserShort(userId: "id", username: "user")));
               }, // Ikona wewnątrz przycisku
               tooltip: 'Add trip',

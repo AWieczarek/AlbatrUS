@@ -24,6 +24,16 @@ class NewTripForm extends StatefulWidget {
 class _NewTripFormState extends State<NewTripForm> {
   final _formKey = GlobalKey<FormState>();
 
+  final bgColor=Colors.black;
+  final textColor = Colors.white;
+  final hintColor = Colors.grey[100];
+  final formBgColor = Colors.grey[800];
+  final formFocusColor = Colors.grey[600];
+  final buttonBgColor = Colors.grey[600];
+  final buttonTextColor = Colors.grey[600];
+  final warningColor = Colors.red[400];
+  final warningTextColor = Colors.grey[850];
+
   String _countryISO = "";
 
   bool _showBanner = false;
@@ -104,6 +114,7 @@ class _NewTripFormState extends State<NewTripForm> {
         "selectedCountry: ${widget.tripData.country} duuuuuuuuuuuupa");
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: bgColor,
       appBar: AppBar(
         title: const Text('New Trip'),
       ),
@@ -126,18 +137,18 @@ class _NewTripFormState extends State<NewTripForm> {
                 children: [
                   if (_showBanner)
                     Container(
-                      color: Colors.red[300],
+                      color: warningColor,
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.warning, color: Colors.white),
+                          Icon(Icons.warning, color: warningTextColor),
                           const SizedBox(width: 8.0),
                           Text(
                             _errorMessage,
                             softWrap: true,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(color: Colors.white),
+                            style: TextStyle(color: warningTextColor),
                           ),
                         ],
                       ),
@@ -163,7 +174,10 @@ class _NewTripFormState extends State<NewTripForm> {
                       minLines: 3,
                       maxLines: null,
                       keyboardType: TextInputType.multiline,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: formBgColor,
+                        focusColor: formFocusColor,
                         labelText: "Description",
                         hintText: 'Enter Description...',
                       ),
