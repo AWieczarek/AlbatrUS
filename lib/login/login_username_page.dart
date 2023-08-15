@@ -70,10 +70,15 @@ class _LoginUsernamePageState extends State<LoginUsernamePage> {
                           try {
                             await auth.currentUser!.updateDisplayName(name);
                             var uid2 = auth.currentUser!.uid;
+                            var phoneNumber = auth.currentUser!.phoneNumber!;
                             UserData user = UserData(
-                                id: uid2,
-                                username: name,
-                                creationDate: DateTime.now());
+                              id: uid2,
+                              username: name,
+                              phoneNumber: phoneNumber,
+                              creationDate: DateTime.now(),
+                              friends: List.empty(),
+                              friendsRequest: List.empty(),
+                            );
                             DatabaseService.createUsername(uid2, user);
 
                             if (context.mounted) {
