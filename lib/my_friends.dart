@@ -38,7 +38,7 @@ class _MyFriendsState extends State<MyFriends> {
                     } else if (snapshot2.hasData) {
                       return Column(
                         children: [
-                          const Text("Friends to accept: "),
+                          const Text("Friends: "),
                           Expanded(
                             child: ListView.builder(
                                 itemCount: snapshot.data!.friends.length,

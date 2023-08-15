@@ -37,7 +37,7 @@ class UserData {
     "phone_number": phoneNumber,
     "creation_date": Timestamp.fromDate(creationDate),
     "friends": friends,
-    "friends_request": friendsRequest
+    "friends_requests": friendsRequest
   };
 
   @override

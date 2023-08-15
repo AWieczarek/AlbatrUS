@@ -183,4 +183,21 @@ class DatabaseService{
     }
   }
 
+  static Future<List<Trip>> fetchTripsByUserIdList(List<String> userIds) async {
+    List<Trip> trips = [];
+
+    try {
+      QuerySnapshot querySnapshot =
+      await FirebaseFirestore.instance.collection('trips').where('user.userId', whereIn: userIds).get();
+
+      for (QueryDocumentSnapshot document in querySnapshot.docs) {
+        trips.add(Trip.fromJson(document.data() as Map<String, dynamic>));
+      }
+    } catch (e) {
+      print('Error fetching trips: $e');
+    }
+
+    return trips;
+  }
+
 }

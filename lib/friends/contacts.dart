@@ -13,47 +13,44 @@ class Contacts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: FutureBuilder(
-          future: Future.wait([getUsersToAccept(user!.uid), getUserLists()]),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasError) {
-              return const Text('Country Selector Error');
-            } else if (snapshot.hasData) {
-              List<UserData> userToAccept = snapshot.data![0];
-              List<UserData> userTo = snapshot.data![1];
-              return Column(
-                children: [
-                  const Text("Friends to accept: "),
-                  Expanded(
-                    child: ListView.builder(
-                        itemCount: userToAccept.length,
-                        itemBuilder: (BuildContext ctxt, int index) {
-                          return AcceptFriendsTile(
-                              ownerId: user!.uid, user: userToAccept[index]);
-                        }),
-                  ),
-                  const Text("Friends to accept: "),
-                  Expanded(
-                    child: ListView.builder(
-                        itemCount: userTo.length,
-                        itemBuilder: (BuildContext ctxt, int index) {
-                          return AddFriendsTile(
-                              ownerId: user!.uid, user: userTo[index]);
-                        }),
-                  ),
-                ],
-              );
-            } else {
-              return const Text("Inconsistant");
-            }
-          }),
-    );
+    return FutureBuilder(
+        future: Future.wait([getUsersToAccept(user!.uid), getUserLists()]),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return const Text('Country Selector Error');
+          } else if (snapshot.hasData) {
+            List<UserData> userToAccept = snapshot.data![0];
+            List<UserData> userTo = snapshot.data![1];
+            return Column(
+              children: [
+                const Text("Friends to accept: "),
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: userToAccept.length,
+                      itemBuilder: (BuildContext ctxt, int index) {
+                        return AcceptFriendsTile(
+                            ownerId: user!.uid, user: userToAccept[index]);
+                      }),
+                ),
+                const Text("Friends to add: "),
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: userTo.length,
+                      itemBuilder: (BuildContext ctxt, int index) {
+                        return AddFriendsTile(
+                            ownerId: user!.uid, user: userTo[index]);
+                      }),
+                ),
+              ],
+            );
+          } else {
+            return const Text("Inconsistant");
+          }
+        });
   }
 
   Future<List<UserData>> getUserLists() async {

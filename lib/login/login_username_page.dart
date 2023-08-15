@@ -1,3 +1,4 @@
+import 'package:albatrus/api_routes.dart';
 import 'package:albatrus/database_service.dart';
 import 'package:albatrus/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -83,7 +84,7 @@ class _LoginUsernamePageState extends State<LoginUsernamePage> {
 
                             if (context.mounted) {
                               Navigator.of(context).pushNamedAndRemoveUntil(
-                                  "/home", (route) => false);
+                                  AppRoutes.contactsRegister, (route) => false);
                             }
                           } catch (e) {
                             _showErrorSnackBar(

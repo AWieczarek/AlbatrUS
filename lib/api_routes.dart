@@ -9,5 +9,6 @@ class AppRoutes {
   static const postList = '/post/list';
   static const postDetails = '/post/details';
   static const contacts = '/contacts';
+  static const contactsRegister = '/contacts/register';
   static const myFriends = '/friends';
 }

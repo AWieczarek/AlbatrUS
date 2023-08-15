@@ -87,12 +87,19 @@ class _MyHomeState extends State<MyHome> {
                         },
                       ),
                       ListTile(
-                        title: const Text('MyFriends'),
+                        title: const Text('Friends'),
                         onTap: () {
                           Navigator.of(context)
                               .pushNamed(AppRoutes.myFriends);
                         },
+                      ), ListTile(
+                        title: const Text('NewFriends'),
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(AppRoutes.contacts);
+                        },
                       ),
+
                     ],
                   ),
                 ),
@@ -117,11 +124,6 @@ class _MyHomeState extends State<MyHome> {
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed(AppRoutes.contacts);
-                },
-                child: Text('cokolwiek innego')),
             ElevatedButton(
                 onPressed: () {
                   ScaffoldMessenger.of(context).hideCurrentSnackBar();
