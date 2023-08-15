@@ -9,27 +9,39 @@ String userToJson(UserData data) => json.encode(data.toJson());
 class UserData {
   String id;
   String username;
+  String phoneNumber;
   DateTime creationDate;
+  List<String> friends;
+  List<String> friendsRequest;
 
   UserData({
     required this.id,
     required this.username,
+    required this.phoneNumber,
     required this.creationDate,
+    required this.friends,
+    required this.friendsRequest,
   });
 
   factory UserData.fromJson(String id, Map<String, dynamic> json) => UserData(
     id: id,
     username: json["username"],
+    phoneNumber: json["phone_number"],
     creationDate: (json["creation_date"] as Timestamp).toDate(),
+    friends: List<String>.from(json["friends"]),
+    friendsRequest: List<String>.from(json["friends_requests"]),
   );
 
   Map<String, dynamic> toJson() => {
     "username": username,
-    "creation_date": creationDate.toIso8601String(),
+    "phone_number": phoneNumber,
+    "creation_date": Timestamp.fromDate(creationDate),
+    "friends": friends,
+    "friends_requests": friendsRequest
   };
 
   @override
   String toString() {
-    return 'UserData{id: $id, username: $username, creationDate: $creationDate}';
+    return 'UserData{id: $id, username: $username, phoneNumber: $phoneNumber, creationDate: $creationDate, friends: $friends, friendsRequest: $friendsRequest}';
   }
 }

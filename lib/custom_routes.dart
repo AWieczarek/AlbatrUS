@@ -1,8 +1,10 @@
 import 'package:albatrus/dashboard/asia_sandbox.dart';
 import 'package:albatrus/dashboard/dashboard-tile.dart';
 import 'package:albatrus/dashboard/post_list.dart';
+import 'package:albatrus/friends/contacts_add.dart';
 import 'package:albatrus/login/login_code_page.dart';
 import 'package:albatrus/login/login_username_page.dart';
+import 'package:albatrus/my_friends.dart';
 import 'package:albatrus/my_home.dart';
 import 'package:albatrus/new_trip_form/new_trip_form.dart';
 import 'package:albatrus/settings/settings_screen.dart';
@@ -10,6 +12,8 @@ import 'package:albatrus/trip-details/details.dart';
 import 'package:flutter/material.dart';
 
 import 'api_routes.dart';
+import 'friends/contacts.dart';
+import 'friends/contacts_register.dart';
 import 'login/login_page.dart';
 import 'map_screen.dart';
 import 'models/trip.dart';
@@ -31,6 +35,10 @@ var customRoutes = <String, WidgetBuilder>{
       return ErrorRoute();
     }
   },
+  AppRoutes.contacts: (_) => ContactsAdd(),
+  AppRoutes.contactsRegister: (_) => ContactsRegister(),
+  AppRoutes.myFriends: (_) => MyFriends(),
+
 };
 
 class ErrorRoute extends StatelessWidget {

@@ -1,14 +1,12 @@
 import 'package:albatrus/database_service.dart';
-import 'package:albatrus/models/trip_user.dart';
 import 'package:albatrus/models/user.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:contacts_service/contacts_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
 import 'api_routes.dart';
 import 'map_screen.dart';
-import 'models/trip.dart';
 
 class MyHome extends StatefulWidget {
   MyHome({Key? key}) : super(key: key);
@@ -28,11 +26,13 @@ class _MyHomeState extends State<MyHome> {
         appBar: AppBar(
           centerTitle: true,
           title: Text(
-         "Dupa",
-          style: TextStyle(color: Colors.black),
-        ),
+            "Dupa",
+            style: TextStyle(color: Colors.black),
+          ),
           backgroundColor: Colors.transparent,
-          elevation: 0.0,),
+          elevation: 0.0,
+        ),
+        backgroundColor: Colors.black,
         extendBodyBehindAppBar: true,
         drawer: Container(
           width: MediaQuery.of(context).size.width / 5 * 4,
@@ -53,17 +53,18 @@ class _MyHomeState extends State<MyHome> {
                                 maxRadius: 30,
                                 child: Icon(
                                   Icons.person,
-                                  size: MediaQuery.of(context).size.width/10,
+                                  size: MediaQuery.of(context).size.width / 10,
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(18.0),
                                 child: SizedBox(
-                                  width: MediaQuery.of(context).size.width / 5 *2,
+                                  width:
+                                      MediaQuery.of(context).size.width / 5 * 2,
                                   child: SizedBox(
                                     width: 200,
                                     child: AutoSizeText(
-                                      username!,
+                                      username ?? "Undefined",
                                       style: const TextStyle(
                                         fontSize: 24,
                                         fontWeight: FontWeight.w500,
@@ -85,6 +86,20 @@ class _MyHomeState extends State<MyHome> {
                               .pushNamed(AppRoutes.settingsScreen);
                         },
                       ),
+                      ListTile(
+                        title: const Text('Friends'),
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(AppRoutes.myFriends);
+                        },
+                      ), ListTile(
+                        title: const Text('NewFriends'),
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(AppRoutes.contacts);
+                        },
+                      ),
+
                     ],
                   ),
                 ),
@@ -109,11 +124,12 @@ class _MyHomeState extends State<MyHome> {
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            ElevatedButton(onPressed: (){
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              Navigator.of(context).pushNamed(AppRoutes.postList);
-
-            },child: Text('cokolwiek')),
+            ElevatedButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  Navigator.of(context).pushNamed(AppRoutes.postList);
+                },
+                child: Text('cokolwiek')),
             FloatingActionButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();

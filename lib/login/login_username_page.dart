@@ -1,3 +1,4 @@
+import 'package:albatrus/api_routes.dart';
 import 'package:albatrus/database_service.dart';
 import 'package:albatrus/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -70,15 +71,20 @@ class _LoginUsernamePageState extends State<LoginUsernamePage> {
                           try {
                             await auth.currentUser!.updateDisplayName(name);
                             var uid2 = auth.currentUser!.uid;
+                            var phoneNumber = auth.currentUser!.phoneNumber!;
                             UserData user = UserData(
-                                id: uid2,
-                                username: name,
-                                creationDate: DateTime.now());
+                              id: uid2,
+                              username: name,
+                              phoneNumber: phoneNumber,
+                              creationDate: DateTime.now(),
+                              friends: List.empty(),
+                              friendsRequest: List.empty(),
+                            );
                             DatabaseService.createUsername(uid2, user);
 
                             if (context.mounted) {
                               Navigator.of(context).pushNamedAndRemoveUntil(
-                                  "/home", (route) => false);
+                                  AppRoutes.contactsRegister, (route) => false);
                             }
                           } catch (e) {
                             _showErrorSnackBar(
