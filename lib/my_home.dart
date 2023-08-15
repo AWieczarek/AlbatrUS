@@ -148,10 +148,10 @@ class _MyHomeState extends State<MyHome> {
                       arguments: Trip(
                           country: "",
                           city: "",
-                          dateFrom: DateTime(1969),
-                          dateTo: DateTime(1999),
-                          description: "w dupe",
-                          rate: 2,
+                          dateFrom: DateTime.now(),
+                          dateTo: DateTime.now(),
+                          description: "",
+                          rate: 3,
                           user: UserShort(userId: "id", username: "user")));
                 },
                 // Ikona wewnątrz przycisku

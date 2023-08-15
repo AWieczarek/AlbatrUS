@@ -1,4 +1,5 @@
 import 'package:albatrus/api_routes.dart';
+import 'package:albatrus/custom_colors.dart';
 import 'package:albatrus/models/user_short.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_maps/maps.dart';
@@ -562,7 +563,7 @@ class _MapScreenState extends State<MapScreen> {
                           color: Colors.white,
                         ),
                       ),
-                    ),blu
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 20, right: 10),
@@ -720,7 +721,7 @@ class _MapScreenState extends State<MapScreen> {
                 width: 10,
               ),
               Expanded(
-                child: ElevatedButton(,
+                child: ElevatedButton(
                     onPressed: () {
                       print("blue ${_newCountryClickedIndex}");
                       _data[_newCountryClickedIndex].color =
