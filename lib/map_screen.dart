@@ -760,7 +760,7 @@ class _MapScreenState extends State<MapScreen> {
                           color: Colors.white,
                         ),
                       ),
-                    ),
+                    ),blu
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 20, right: 10),
@@ -929,7 +929,7 @@ class _MapScreenState extends State<MapScreen> {
                     )),
               ),
               Expanded(
-                child: ElevatedButton(
+                child: ElevatedButton(,
                     onPressed: () {
                       print("blue ${_newCountryClickedIndex}");
                       _data[_newCountryClickedIndex].color = _myVisitedCountryColor;
