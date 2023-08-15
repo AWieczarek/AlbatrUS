@@ -1,3 +1,4 @@
+import 'package:albatrus/custom_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_maps/maps.dart';
 import 'package:country_state_city/country_state_city.dart' as city;
@@ -33,7 +34,8 @@ class _MapScreenState extends State<MapScreen> {
   final Color _backgroundCountryColor = const Color.fromRGBO(0, 0, 0, 1.0);
   final Color _selectedCountryColor = const Color.fromRGBO(20, 50, 80, 1.0);
 
-  final Color _friendsVisitedCountryColor = const Color.fromRGBO(10, 60, 60, 1.0);
+  final Color _friendsVisitedCountryColor =
+      const Color.fromRGBO(10, 60, 60, 1.0);
   final Color _myVisitedCountryColor = const Color.fromRGBO(80, 20, 50, 1.0);
   final Color _defaultCountryColor = const Color.fromRGBO(15, 25, 45, 1.0);
 
@@ -464,12 +466,13 @@ class _MapScreenState extends State<MapScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Witaj!'),
-          content: const Text('To jest okienko, które wyskakuje na początku aplikacji.'),
+          content: const Text(
+              'To jest okienko, które wyskakuje na początku aplikacji.'),
           actions: [
             TextButton(
               onPressed: () {
                 refreshMap();
-                Navigator.of(context,rootNavigator: true).pop();
+                Navigator.of(context, rootNavigator: true).pop();
               },
               child: const Text('Zamknij'),
             ),
@@ -532,21 +535,20 @@ class _MapScreenState extends State<MapScreen> {
                         items: _countriesFromMap,
                         selectedItem: _dropdownSearchSelectedItem,
                         onChanged: (value) {
-                          print(
-                              "tu coś rób paweł z tym value");
+                          print("tu coś rób paweł z tym value");
                         },
                         compareFn: (i, s) => i == s,
-                        popupProps:
-                        PopupPropsMultiSelection.dialog(
+                        popupProps: PopupPropsMultiSelection.dialog(
                           //TODO dodać wyszarzenie tła
-                          searchDelay: const Duration(
-                              milliseconds: 300),
+                          searchDelay: const Duration(milliseconds: 300),
                           searchFieldProps: TextFieldProps(
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
-                                borderRadius:
-                                BorderRadius.circular(
-                                    16.0),
+                                borderSide: BorderSide(
+                                  width: 12,
+                                    color: CustomColors().myRedColor,
+                                    style: BorderStyle.solid),
+                                borderRadius: BorderRadius.circular(30.0),
                               ),
                             ),
                           ),
@@ -554,10 +556,8 @@ class _MapScreenState extends State<MapScreen> {
                           // onItemAdded:
                           showSearchBox: true,
                         ),
-                        dropdownButtonProps:
-                        const DropdownButtonProps(
-                          icon:
-                          Icon(Icons.search, size: 24),
+                        dropdownButtonProps: const DropdownButtonProps(
+                          icon: Icon(Icons.search, size: 24),
                           color: Colors.white,
                         ),
                       ),
@@ -566,7 +566,7 @@ class _MapScreenState extends State<MapScreen> {
                   Padding(
                     padding: const EdgeInsets.only(top: 20, right: 10),
                     child: IconButton(
-                        color: Colors.black,
+                        color: CustomColors().secondaryTextColor,
                         icon: const Icon(Icons.pedal_bike), // to jest pedalarz
                         onPressed: () {
                           showDialog(
@@ -591,10 +591,9 @@ class _MapScreenState extends State<MapScreen> {
                         }),
                   )
                 ],
-              )
-            ),
-          ],
-        ),
+              )),
+        ],
+      ),
       //),
     );
   }
@@ -707,7 +706,9 @@ class _MapScreenState extends State<MapScreen> {
                       ),
                     )),
               ),
-              SizedBox(width: 10,),
+              SizedBox(
+                width: 10,
+              ),
               Expanded(
                 child: ElevatedButton(
                     onPressed: () {

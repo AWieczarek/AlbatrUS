@@ -20,10 +20,11 @@ class DashboardTile extends StatelessWidget {
       alignment: Alignment.topLeft,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+          borderRadius: BorderRadius.all(Radius.circular(15)),
           //color: CustomColors().myGrayColor,
           border: Border.all(
             color: CustomColors().myGrayColor,
+            width: 2.0,
           ),
         ),
         margin: const EdgeInsets.all(10.0),

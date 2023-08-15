@@ -29,15 +29,17 @@ class _MyHomeState extends State<MyHome> {
         appBar: AppBar(
           centerTitle: true,
           title: Text(
-         "AlbatrUs",
-          style: TextStyle(color: CustomColors().textColor),
-        ),
+            "AlbatrUs",
+            style: TextStyle(color: CustomColors().textColor),
+          ),
           backgroundColor: Colors.transparent,
-          elevation: 0.0,),
+          elevation: 0.0,
+        ),
         extendBodyBehindAppBar: true,
         drawer: Container(
           width: MediaQuery.of(context).size.width / 5 * 4,
           child: Drawer(
+            backgroundColor: CustomColors().backgroundColor,
             child: Column(
               children: [
                 Expanded(
@@ -52,9 +54,11 @@ class _MyHomeState extends State<MyHome> {
                               CircleAvatar(
                                 minRadius: 20,
                                 maxRadius: 30,
+                                backgroundColor: Colors.transparent,
                                 child: Icon(
                                   Icons.person,
                                   size: MediaQuery.of(context).size.width / 10,
+                                  color: CustomColors().secondaryTextColor,
                                 ),
                               ),
                               Padding(
@@ -62,14 +66,14 @@ class _MyHomeState extends State<MyHome> {
                                 child: SizedBox(
                                   width:
                                       MediaQuery.of(context).size.width / 5 * 2,
-                                  child: const SizedBox(
+                                  child: SizedBox(
                                     width: 200,
                                     child: AutoSizeText(
                                       "username!",
                                       style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w500,
+                                          color: CustomColors().textColor),
                                       maxLines: 1,
                                     ),
                                   ),
@@ -79,16 +83,26 @@ class _MyHomeState extends State<MyHome> {
                           ),
                         ),
                       ),
-                      const Divider(),
+                      Divider(color: CustomColors().myGrayColor),
+                      const SizedBox(
+                        width: 10.0,
+                        height: 20.0,
+                      ),
                       ListTile(
-                        title: const Text('Settings'),
+                        title: Text(
+                          'Settings',
+                          style: TextStyle(color: CustomColors().textColor),
+                        ),
                         onTap: () {
                           Navigator.of(context)
                               .pushNamed(AppRoutes.settingsScreen);
                         },
                       ),
                       ListTile(
-                        title: const Text('Dashboard'),
+                        title: Text(
+                          'Dashboard',
+                          style: TextStyle(color: CustomColors().textColor),
+                        ),
                         onTap: () {
                           Navigator.of(context).pushNamed(AppRoutes.postList);
                         },
@@ -106,6 +120,7 @@ class _MyHomeState extends State<MyHome> {
                       },
                       icon: const Icon(Icons.logout),
                       iconSize: 30,
+                      color: CustomColors().secondaryTextColor,
                     ),
                   ),
                 )
@@ -119,7 +134,7 @@ class _MyHomeState extends State<MyHome> {
           children: [
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(30)),
+                borderRadius: const BorderRadius.all(Radius.circular(30)),
                 border: Border.all(
                   color: CustomColors().secondaryTextColor,
                 ),
@@ -138,9 +153,11 @@ class _MyHomeState extends State<MyHome> {
                           description: "w dupe",
                           rate: 2,
                           user: UserShort(userId: "id", username: "user")));
-                }, // Ikona wewnątrz przycisku
+                },
+                // Ikona wewnątrz przycisku
                 tooltip: 'Add trip',
-                child: Icon(Icons.add, color: CustomColors().secondaryTextColor, size: 30.0),
+                child: Icon(Icons.add,
+                    color: CustomColors().textColor, size: 30.0),
               ),
             ),
           ],

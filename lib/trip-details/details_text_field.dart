@@ -25,7 +25,7 @@ class DetailsTextField extends StatelessWidget {
               child: Text(
                 coto,
                 textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 12, color: CustomColors().strokeColor,),
+                style: TextStyle(fontSize: 12, color: CustomColors().secondaryTextColor,),
               ),
             ),
           ),
