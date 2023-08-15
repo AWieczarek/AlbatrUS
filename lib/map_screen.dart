@@ -51,8 +51,6 @@ class _MapScreenState extends State<MapScreen> {
 
   final Color _selectedStrokeColor = const Color.fromRGBO(30, 50, 70, 1.0);
   late List<String> _countriesFromMapReal;
-  late List<Trip> _trips;
-  late int temp = 0;
   late String _searchedCountry;
   late MapLatLng focal = MapLatLng(0, 0);
 
