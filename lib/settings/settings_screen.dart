@@ -11,12 +11,10 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool _notificationsEnabled = true;
   DistanceUnit _selectedDistanceUnit = DistanceUnit.meter;
 
   @override
   Widget build(BuildContext context) {
-    final message = ModalRoute.of(context)!.settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
@@ -26,7 +24,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(message.toString()),
             const Text(
               'Distance Unit:',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -52,20 +49,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
               },
             ),
             const SizedBox(height: 20),
-            Row(
+            const Row(
               children: [
-                const Text(
+                Text(
                   'Notifications:',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: 10),
                 Switch(
-                  value: _notificationsEnabled,
-                  onChanged: (value) {
-                    setState(() {
-                      _notificationsEnabled = value;
-                    });
-                  },
+                  value: false,
+                  onChanged: null,
                 ),
               ],
             ),
