@@ -1,4 +1,4 @@
-import 'package:albatrus/dashboard/dashboard-tile.dart';
+import 'package:albatrus/dashboard/dashboard_tile.dart';
 import 'package:albatrus/models/user_short.dart';
 import 'package:flutter/material.dart';
 
