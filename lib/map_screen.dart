@@ -49,7 +49,7 @@ class _MapScreenState extends State<MapScreen> {
   final List<int> _countriesKiviSynchIndex = [0, 2, 3, 6, 10, 11, 13, 14, 15, 16, 18, 20, 21, 22, 23, 25, 26, 27, 28, 30, 32, 33, 34, 35, 36, 37, 38, 41, 42, 43, 44, 47, 49, 52, 54, 55, 56, 57, 114, 58, 59, 61, 63, 64, 65, 66, 67, 68, 69, 70, 72, 73, 74, 78, 79, 80, 81, 82, 84, 85, 89, 91, 92, 93, 94, 96, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 110, 111, 112, 115, 247, 116, 117, 118, 119, 120, 121, 122, 123, 125, 126, 128, 129, 130, 131, 133, 138, 141, 143, 145, 146, 148, 149, 150, 151, 153, 155, 156, 157, 158, 159, 160, 164, 165, 166, 168, 169, 170, 171, 172, 173, 175, 176, 177, 178, 180, 181, 182, 205, 193, 194, 195, 197, 199, 200, 201, 202, 203, 206, 207, 208, 209, 211, 212, 213, 214, 215, 216, 217, 218, 219, 222, 223, 224, 225, 228, 229, 230, 231, 232, 234, 235, 236, 238, 239, 243, 244, 245, 246];
 
   late List<Country> _countriesFromDifferentSource;
-  late List<Set<String>> _countryFriendsListList;
+  late List<Set<String>> _countryFriendsListSet;
   late List<CountryPlusFriend> _countryPlusFriend;
 
   String _dropdownSearchSelectedItem = "";
@@ -844,12 +844,15 @@ class _MapScreenState extends State<MapScreen> {
     _countryPlusFriend = _trips.map((trip) => CountryPlusFriend(trip.country, trip.user.username)).toList();
     List<String> _countrylist = _trips.map((trip) => trip.country).toList();
 
+    _countryFriendsListSet = List<Set<String>>.filled(_countrylist.length, {});
+
     for(int i = 0; i < _countrylist.length; i++) {
       for(int j = 0; j < _countryPlusFriend.length; j++) {
         if(_countrylist[i] == _countryPlusFriend[j].country) {
-          _countryFriendsListList[i].add(_countryPlusFriend[j].friend);
+          _countryFriendsListSet[i].add(_countryPlusFriend[j].friend);
         }
       }
+      print(_countryFriendsListSet[i]);
     }
 
     Set<String> _countrySet = _countrylist.toSet();
