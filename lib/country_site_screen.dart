@@ -1,27 +1,29 @@
+import 'package:albatrus/dashboard/asia_sandbox.dart';
+import 'package:albatrus/dowolnie.dart';
 import 'package:flutter/material.dart';
 //import 'package:country_state_city/country_state_city.dart' as city;
 import 'package:albatrus/database_service.dart';
 
+import 'models/trip.dart';
+
 /// This widget is the home page of the application.
-class CountrySiteScreen extends StatefulWidget {
-  /// Initialize the instance of the [CountrySiteScreen] class.
-  const CountrySiteScreen({Key? key}) : super(key: key);
+class CountrySiteScreenDelete extends StatefulWidget {
+  /// Initialize the instance of the [CountrySiteScreenDelete] class.
+  const CountrySiteScreenDelete({Key? key}) : super(key: key);
 
   @override
-  State<CountrySiteScreen> createState() => _CountrySiteScreenState();
+  State<CountrySiteScreenDelete> createState() => _CountrySiteScreenDeleteState();
 }
 
-class _CountrySiteScreenState extends State<CountrySiteScreen> {
-  _CountrySiteScreenState();
+class _CountrySiteScreenDeleteState extends State<CountrySiteScreenDelete> {
+  //final Set<String> friends;
+
+  //_CountrySiteScreenState({required this.friends});
 
   late bool _snackTime = false;
 
   late SnackBar _snackBar;
   late String _haveYouBeenToThisCountry;
-
-  final Color myBlue = Color.fromRGBO(60, 90, 200, 1.0);
-  final Color myGreen = Color.fromRGBO(60, 200, 30, 1.0);
-  final Color myYellow = Color.fromRGBO(200, 200, 30, 1.0);
 
   @override
   void initState() {
@@ -71,6 +73,42 @@ class _CountrySiteScreenState extends State<CountrySiteScreen> {
               )
             ], //TO DO AWATARY
           ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class CountrySiteScreen extends StatelessWidget {
+
+  final String countryName;
+  final List<Trip> trips;
+
+  CountrySiteScreen({required this.countryName, required this.trips});
+
+  void initState() {
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Column(
+        children: [
+          Center(child: Text(countryName)),
+          Expanded(
+            // child: ListView.builder(
+            //   itemCount: friends.length, // Liczba elementów
+            //   itemBuilder: (context, index) {
+            //     return ListTile(
+            //       title: Text(friends[index]),
+            //     );
+            //   },
+            // ),
+            child: AsiaSandbox(trips: trips,),
+          )
         ],
       ),
     );

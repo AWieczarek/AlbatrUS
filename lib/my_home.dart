@@ -2,14 +2,15 @@ import 'package:albatrus/custom_colors.dart';
 import 'package:albatrus/database_service.dart';
 import 'package:albatrus/models/user_short.dart';
 import 'package:albatrus/models/user.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:contacts_service/contacts_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
 import 'api_routes.dart';
 import 'map_screen.dart';
 import 'models/trip.dart';
+import 'models/user_short.dart';
 
 class MyHome extends StatefulWidget {
   MyHome({Key? key}) : super(key: key);
@@ -69,7 +70,7 @@ class _MyHomeState extends State<MyHome> {
                                   child: SizedBox(
                                     width: 200,
                                     child: AutoSizeText(
-                                      "username!",
+                                      username ?? "Undefined",
                                       style: TextStyle(
                                           fontSize: 24,
                                           fontWeight: FontWeight.w500,
@@ -99,14 +100,25 @@ class _MyHomeState extends State<MyHome> {
                         },
                       ),
                       ListTile(
-                        title: Text(
-                          'Dashboard',
-                          style: TextStyle(color: CustomColors().textColor),
-                        ),
+                        title: Text('Dashboard',style: TextStyle(color: CustomColors().textColor),),
                         onTap: () {
                           Navigator.of(context).pushNamed(AppRoutes.postList);
                         },
                       ),
+                      ListTile(
+                        title: Text('Friends',style: TextStyle(color: CustomColors().textColor)),
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(AppRoutes.myFriends);
+                        },
+                      ), ListTile(
+                        title: Text('NewFriends',style: TextStyle(color: CustomColors().textColor)),
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(AppRoutes.contacts);
+                        },
+                      ),
+
                     ],
                   ),
                 ),

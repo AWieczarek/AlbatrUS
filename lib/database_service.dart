@@ -71,4 +71,133 @@ class DatabaseService{
     }
   }
 
+  static Future<List<UserData>> fetchUsers() async {
+    List<UserData> users = [];
+
+    try {
+      QuerySnapshot querySnapshot =
+      await FirebaseFirestore.instance.collection('users').get();
+
+      for (QueryDocumentSnapshot document in querySnapshot.docs) {
+        users.add(UserData.fromJson(document.id, document.data() as Map<String, dynamic>));
+      }
+    } catch (e) {
+      print('Error fetching trips: $e');
+    }
+
+    return users;
+  }
+
+  static Future<List<UserData>> fetchUsersWithIdAndPhoneNumber(String id, String phoneNumber) async {
+    List<UserData> usersList = [];
+
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where('id', isEqualTo: id)
+          .where('phoneNumber', isEqualTo: phoneNumber)
+          .get();
+
+      querySnapshot.docs.forEach((doc) {
+        usersList.add(UserData.fromJson(doc.id, doc.data() as Map<String, dynamic>));
+      });
+    } catch (e) {
+      print("Error fetching users: $e");
+    }
+
+    return usersList;
+  }
+
+  static Future<List<UserData>> fetchUsersFromList(List<String> userIds) async {
+    List<UserData> usersList = [];
+    print("dddduppa");
+    print(userIds);
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where(FieldPath.documentId, whereIn: userIds)
+          .get();
+
+      querySnapshot.docs.forEach((doc) {
+        usersList.add(UserData.fromJson(doc.id, doc.data() as Map<String, dynamic>));
+      });
+    } catch (e) {
+      print("Error fetching users: $e");
+    }
+
+    return usersList;
+  }
+
+  static addFriedRequest() {
+
+  }
+  static Future<void> addFriendRequestToUser(String documentId, String elementToAdd) async {
+    try {
+      CollectionReference collection = FirebaseFirestore.instance.collection("users");
+
+      await collection.doc(documentId).update({
+        "friends_requests": FieldValue.arrayUnion([elementToAdd]),
+      });
+    } catch (e) {
+      print("Error adding element to list: $e");
+    }
+  }
+
+  static Future<void> removeFriendRequestToUser(String documentId, String elementToAdd) async {
+    try {
+      CollectionReference collection = FirebaseFirestore.instance.collection("users");
+
+      await collection.doc(documentId).update({
+        "friends_requests": FieldValue.arrayRemove([elementToAdd]),
+      });
+    } catch (e) {
+      print("Error adding element to list: $e");
+    }
+  }
+
+  static Future<void> addFriendToAccepted(String documentId, String elementToAdd) async {
+    try {
+      CollectionReference collection = FirebaseFirestore.instance.collection("users");
+
+      await collection.doc(documentId).update({
+        "friends": FieldValue.arrayUnion([elementToAdd]),
+      });
+    } catch (e) {
+      print("Error adding element to list: $e");
+    }
+  }
+
+  static Future<void> removeFriend(String documentId, String elementToAdd) async {
+    try {
+      CollectionReference collection = FirebaseFirestore.instance.collection("users");
+
+      await collection.doc(documentId).update({
+        "friends": FieldValue.arrayRemove([elementToAdd]),
+      });
+
+      await collection.doc(elementToAdd).update({
+        "friends": FieldValue.arrayRemove([documentId]),
+      });
+    } catch (e) {
+      print("Error adding element to list: $e");
+    }
+  }
+
+  static Future<List<Trip>> fetchTripsByUserIdList(List<String> userIds) async {
+    List<Trip> trips = [];
+
+    try {
+      QuerySnapshot querySnapshot =
+      await FirebaseFirestore.instance.collection('trips').where('user.userId', whereIn: userIds).get();
+
+      for (QueryDocumentSnapshot document in querySnapshot.docs) {
+        trips.add(Trip.fromJson(document.data() as Map<String, dynamic>));
+      }
+    } catch (e) {
+      print('Error fetching trips: $e');
+    }
+
+    return trips;
+  }
+
 }
