@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 
 class RatingWidget extends StatefulWidget {
-  const RatingWidget({super.key, required this.onSelect});
+  const RatingWidget({super.key, required this.onSelect, required this.initialValue});
 
   final ValueChanged<int> onSelect;
+  final int initialValue;
 
   @override
   _RatingWidgetState createState() => _RatingWidgetState();
 }
 
 class _RatingWidgetState extends State<RatingWidget> {
-  int _rating = 3;
 
   @override
   Widget build(BuildContext context) {
+    int rating = widget.initialValue;
     return Column(
       children: [
         const Text("Rating"),
@@ -24,12 +25,12 @@ class _RatingWidgetState extends State<RatingWidget> {
             return IconButton(
               onPressed: () {
                 setState(() {
-                  _rating = ratingValue;
-                  widget.onSelect(_rating);
+                  rating = ratingValue;
+                  widget.onSelect(rating);
                 });
               },
               icon: Icon(
-                _rating >= ratingValue ? Icons.star : Icons.star_border,
+                rating >= ratingValue ? Icons.star : Icons.star_border,
                 color: Colors.amber,
               ),
             );

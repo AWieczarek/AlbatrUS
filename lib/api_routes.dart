@@ -11,4 +11,5 @@ class AppRoutes {
   static const contacts = '/contacts';
   static const contactsRegister = '/contacts/register';
   static const myFriends = '/friends';
+  static const countrySiteScreen = '/siteScreen';
 }

@@ -2,20 +2,20 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-TripUser userFromJson(String str) => TripUser.fromJson(json.decode(str));
+UserShort userFromJson(String str) => UserShort.fromJson(json.decode(str));
 
-String userToJson(TripUser data) => json.encode(data.toJson());
+String userToJson(UserShort data) => json.encode(data.toJson());
 
-class TripUser {
+class UserShort {
   String userId;
   String username;
 
-  TripUser({
+  UserShort({
     required this.userId,
     required this.username,
   });
 
-  factory TripUser.fromJson(Map<String, dynamic> json) => TripUser(
+  factory UserShort.fromJson(Map<String, dynamic> json) => UserShort(
     userId: json["userId"],
     username: json["username"],
   );

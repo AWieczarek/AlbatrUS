@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 
 import 'api_routes.dart';
 import 'map_screen.dart';
+import 'models/trip.dart';
+import 'models/user_short.dart';
 
 class MyHome extends StatefulWidget {
   MyHome({Key? key}) : super(key: key);
@@ -87,6 +89,12 @@ class _MyHomeState extends State<MyHome> {
                         },
                       ),
                       ListTile(
+                        title: const Text('Dashboard'),
+                        onTap: () {
+                          Navigator.of(context).pushNamed(AppRoutes.postList);
+                        },
+                      ),
+                      ListTile(
                         title: const Text('Friends'),
                         onTap: () {
                           Navigator.of(context)
@@ -133,7 +141,15 @@ class _MyHomeState extends State<MyHome> {
             FloatingActionButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                Navigator.of(context).pushNamed(AppRoutes.newTripForm);
+                Navigator.of(context).pushNamed(AppRoutes.newTripForm,
+                    arguments: Trip(
+                        country: "",
+                        city: "",
+                        dateFrom: DateTime.now(),
+                        dateTo: DateTime.now(),
+                        description: "",
+                        rate: 3,
+                        user: UserShort(userId: "id", username: "user")));
               }, // Ikona wewnątrz przycisku
               tooltip: 'Add trip',
               child: const Icon(Icons.add),
