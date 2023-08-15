@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 
 import 'api_routes.dart';
 import 'map_screen.dart';
+import 'models/trip.dart';
+import 'models/user_short.dart';
 
 class MyHome extends StatefulWidget {
   MyHome({Key? key}) : super(key: key);
