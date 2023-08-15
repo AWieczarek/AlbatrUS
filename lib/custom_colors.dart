@@ -11,6 +11,6 @@ class CustomColors{
   final Color strokeColor = const Color.fromRGBO(50, 90, 130, 1.0);
 
   final Color textColor = const Color.fromRGBO(255, 255, 255, 1.0);
-  final Color secondaryTextColor = const Color.fromRGBO(180, 180, 180, 1.0);
+  final Color secondaryTextColor = const Color.fromRGBO(100, 100, 100, 1.0);
 
 }

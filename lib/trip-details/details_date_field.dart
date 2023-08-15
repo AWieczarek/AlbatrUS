@@ -28,7 +28,7 @@ class DetailsDateField extends StatelessWidget {
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: 12,
-                    color: CustomColors().strokeColor,
+                    color: CustomColors().secondaryTextColor,
                   ),
                 ),
               ),

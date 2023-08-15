@@ -25,7 +25,7 @@ class LeftColumn extends StatelessWidget {
       children: [
         Row(
           children: [
-            Icon(Icons.person, size: 34.0, color: CustomColors().myRedColor,),
+            Icon(Icons.person, size: 34.0, color: CustomColors().secondaryTextColor,),
             const SizedBox(
               height: 5.0,
               width: 10.0,

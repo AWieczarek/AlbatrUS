@@ -23,7 +23,7 @@ class _RightColumnState extends State<RightColumn> {
       children: [
         //Icon(Icons.accessible),
         IconButton(
-          iconSize: 34.0,
+          iconSize: 25.0,
           icon: Icon(isBird ? Icons.accessible : Icons.accessible_forward),
           color: CustomColors().secondaryTextColor,
           onPressed: () {
