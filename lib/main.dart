@@ -1,20 +1,20 @@
 import 'dart:async';
-import 'dart:math';
 
+import 'package:albatrus/custom_colors.dart';
 import 'package:albatrus/custom_routes.dart';
-import 'package:albatrus/login/login_page.dart';
 import 'package:albatrus/my_home.dart';
 import 'package:albatrus/notification_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'api_routes.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await NotificationService().initNotification();
@@ -30,8 +30,10 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   late StreamSubscription<User?> user;
+
   void initState() {
     super.initState();
+    _getPermission();
     user = FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user == null) {
         print('User is currently signed out!');
@@ -39,6 +41,18 @@ class _MyAppState extends State<MyApp> {
         print('User is signed in!');
       }
     });
+  }
+
+  void _getPermission() async {
+    final grant = await Permission.contacts.request().isGranted;
+    if(grant){
+      print('Permission granted!');
+
+    }else{
+      print('Permission issue!');
+
+    }
+
   }
 
   @override
@@ -53,15 +67,16 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        appBarTheme: AppBarTheme(foregroundColor: CustomColors().secondaryTextColor),
         primaryColor: Colors.black,
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.black),
-        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: CustomColors().myGrayColor),
       ),
+      debugShowCheckedModeBanner: false,
       routes: customRoutes,
       navigatorKey: navigatorKey,
-      initialRoute: FirebaseAuth.instance.currentUser == null ? AppRoutes.login : AppRoutes.home,
-      home: MyHome(),
+      initialRoute: FirebaseAuth.instance.currentUser == null
+          ? AppRoutes.login
+          : AppRoutes.home,
     );
   }
 }

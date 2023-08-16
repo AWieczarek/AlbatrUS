@@ -1,6 +1,7 @@
+import 'package:albatrus/custom_colors.dart';
 import 'package:flutter/material.dart';
 
-import 'date-format.dart';
+import 'date_format.dart';
 
 class LeftColumn extends StatelessWidget {
   final String name;
@@ -24,7 +25,7 @@ class LeftColumn extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Icon(Icons.person, size: 34.0),
+            Icon(Icons.person, size: 34.0, color: CustomColors().secondaryTextColor,),
             const SizedBox(
               height: 5.0,
               width: 10.0,
@@ -34,10 +35,10 @@ class LeftColumn extends StatelessWidget {
               children: [
                 Text(
                   name,
-                  style: const TextStyle(fontSize: 21),
+                  style: TextStyle(fontSize: 16, color: CustomColors().textColor),
                   textAlign: TextAlign.left,
                 ),
-                DateWidget(date: dateFrom),
+                DateWidget(date: dateFrom, textColor: CustomColors().secondaryTextColor, fontSize: 12.0),
               ],
             ),
           ],
@@ -48,7 +49,7 @@ class LeftColumn extends StatelessWidget {
               width: MediaQuery.of(context).size.width / 1.5,
               child: Text(
                 'visited ${city}, ${country}',
-                style: const TextStyle(fontSize: 18),
+                style: TextStyle(fontSize: 16, color: CustomColors().textColor),
                 softWrap: true,
                 overflow: TextOverflow.ellipsis,
               ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../custom_colors.dart';
+
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -11,28 +13,29 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool _notificationsEnabled = true;
   DistanceUnit _selectedDistanceUnit = DistanceUnit.meter;
 
   @override
   Widget build(BuildContext context) {
-    final message = ModalRoute.of(context)!.settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
+        backgroundColor: CustomColors().backgroundColor,
       ),
+      backgroundColor: CustomColors().backgroundColor,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(message.toString()),
             const Text(
               'Distance Unit:',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
             ),
             RadioListTile<DistanceUnit>(
-              title: const Text('Feet'),
+              title: const Text('Feet',
+                style: TextStyle(color: Colors.white),
+              ),
               value: DistanceUnit.feet,
               groupValue: _selectedDistanceUnit,
               onChanged: (value) {
@@ -40,9 +43,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _selectedDistanceUnit = value!;
                 });
               },
+              fillColor: MaterialStateColor.resolveWith((states) => CustomColors().textColor),
             ),
             RadioListTile<DistanceUnit>(
-              title: const Text('Meter'),
+              title: const Text('Meter',
+                style: TextStyle(color: Colors.white),
+              ),
               value: DistanceUnit.meter,
               groupValue: _selectedDistanceUnit,
               onChanged: (value) {
@@ -50,22 +56,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _selectedDistanceUnit = value!;
                 });
               },
+              fillColor: MaterialStateColor.resolveWith((states) => CustomColors().textColor),
             ),
             const SizedBox(height: 20),
-            Row(
+            const Row(
               children: [
-                const Text(
+                Text(
                   'Notifications:',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: 10),
                 Switch(
-                  value: _notificationsEnabled,
-                  onChanged: (value) {
-                    setState(() {
-                      _notificationsEnabled = value;
-                    });
-                  },
+                  value: false,
+                  onChanged: null,
+                  inactiveThumbColor: Colors.grey,
+                  inactiveTrackColor: Colors.grey,
                 ),
               ],
             ),

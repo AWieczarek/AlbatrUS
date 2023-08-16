@@ -1,5 +1,6 @@
 import 'package:albatrus/database_service.dart';
 import 'package:albatrus/models/user.dart';
+import 'package:albatrus/rounded_elevated_button.dart';
 import 'package:flutter/material.dart';
 
 class AddFriendsTile extends StatefulWidget {
@@ -22,26 +23,20 @@ class _AddFriendsTileState extends State<AddFriendsTile> {
         title: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(widget.user.username),
+        Text(widget.user.username, style: TextStyle(color: Colors.white)),
         Visibility(
           visible: _isSent,
-          replacement: ElevatedButton(
-              onPressed: () async {
-                setState(() {
-                  _isLoading = true;
-                });
-                await DatabaseService.addFriendRequestToUser(
-                    widget.user.id, widget.ownerId);
-                setState(() {
-                  _isSent = true;
-                });
-              },
-              child: Visibility(
-                visible: _isLoading,
-                replacement: const Text("Add"),
-                child: const CircularProgressIndicator(),
-              )),
-          child: const Text("request sent"),
+          replacement: RoundedElevatedButton(onPress: () async {
+            setState(() {
+              _isLoading = true;
+            });
+            await DatabaseService.addFriendRequestToUser(
+                widget.user.id, widget.ownerId);
+            setState(() {
+              _isSent = true;
+            });
+          },title: "Add"),
+          child: const Text("request sent", style: TextStyle(color: Colors.white)),
         )
       ],
     ));

@@ -1,4 +1,6 @@
+import 'package:albatrus/custom_colors.dart';
 import 'package:albatrus/database_service.dart';
+import 'package:albatrus/models/user_short.dart';
 import 'package:albatrus/models/user.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:contacts_service/contacts_service.dart';
@@ -28,17 +30,17 @@ class _MyHomeState extends State<MyHome> {
         appBar: AppBar(
           centerTitle: true,
           title: Text(
-            "Dupa",
-            style: TextStyle(color: Colors.black),
+            "AlbatrUs",
+            style: TextStyle(color: CustomColors().textColor),
           ),
           backgroundColor: Colors.transparent,
           elevation: 0.0,
         ),
-        backgroundColor: Colors.black,
         extendBodyBehindAppBar: true,
         drawer: Container(
           width: MediaQuery.of(context).size.width / 5 * 4,
           child: Drawer(
+            backgroundColor: CustomColors().backgroundColor,
             child: Column(
               children: [
                 Expanded(
@@ -53,9 +55,11 @@ class _MyHomeState extends State<MyHome> {
                               CircleAvatar(
                                 minRadius: 20,
                                 maxRadius: 30,
+                                backgroundColor: Colors.transparent,
                                 child: Icon(
                                   Icons.person,
                                   size: MediaQuery.of(context).size.width / 10,
+                                  color: CustomColors().secondaryTextColor,
                                 ),
                               ),
                               Padding(
@@ -67,10 +71,10 @@ class _MyHomeState extends State<MyHome> {
                                     width: 200,
                                     child: AutoSizeText(
                                       username ?? "Undefined",
-                                      style: const TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w500,
+                                          color: CustomColors().textColor),
                                       maxLines: 1,
                                     ),
                                   ),
@@ -80,28 +84,35 @@ class _MyHomeState extends State<MyHome> {
                           ),
                         ),
                       ),
-                      const Divider(),
+                      Divider(color: CustomColors().myGrayColor),
+                      const SizedBox(
+                        width: 10.0,
+                        height: 20.0,
+                      ),
                       ListTile(
-                        title: const Text('Settings'),
+                        title: Text(
+                          'Settings',
+                          style: TextStyle(color: CustomColors().textColor),
+                        ),
                         onTap: () {
                           Navigator.of(context)
                               .pushNamed(AppRoutes.settingsScreen);
                         },
                       ),
                       ListTile(
-                        title: const Text('Dashboard'),
+                        title: Text('Dashboard',style: TextStyle(color: CustomColors().textColor),),
                         onTap: () {
                           Navigator.of(context).pushNamed(AppRoutes.postList);
                         },
                       ),
                       ListTile(
-                        title: const Text('Friends'),
+                        title: Text('Friends',style: TextStyle(color: CustomColors().textColor)),
                         onTap: () {
                           Navigator.of(context)
                               .pushNamed(AppRoutes.myFriends);
                         },
                       ), ListTile(
-                        title: const Text('NewFriends'),
+                        title: Text('NewFriends',style: TextStyle(color: CustomColors().textColor)),
                         onTap: () {
                           Navigator.of(context)
                               .pushNamed(AppRoutes.contacts);
@@ -121,6 +132,7 @@ class _MyHomeState extends State<MyHome> {
                       },
                       icon: const Icon(Icons.logout),
                       iconSize: 30,
+                      color: CustomColors().secondaryTextColor,
                     ),
                   ),
                 )
@@ -128,31 +140,37 @@ class _MyHomeState extends State<MyHome> {
             ),
           ),
         ),
-        body: MapScreen(),
+        body: const MapScreen(),
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            ElevatedButton(
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(30)),
+                border: Border.all(
+                  color: CustomColors().secondaryTextColor,
+                ),
+              ),
+              child: FloatingActionButton(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
                 onPressed: () {
                   ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                  Navigator.of(context).pushNamed(AppRoutes.postList);
+                  Navigator.of(context).pushNamed(AppRoutes.newTripForm,
+                      arguments: Trip(
+                          country: "",
+                          city: "",
+                          dateFrom: DateTime.now(),
+                          dateTo: DateTime.now(),
+                          description: "",
+                          rate: 3,
+                          user: UserShort(userId: "id", username: "user")));
                 },
-                child: Text('cokolwiek')),
-            FloatingActionButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                Navigator.of(context).pushNamed(AppRoutes.newTripForm,
-                    arguments: Trip(
-                        country: "",
-                        city: "",
-                        dateFrom: DateTime.now(),
-                        dateTo: DateTime.now(),
-                        description: "",
-                        rate: 3,
-                        user: UserShort(userId: "id", username: "user")));
-              }, // Ikona wewnątrz przycisku
-              tooltip: 'Add trip',
-              child: const Icon(Icons.add),
+                // Ikona wewnątrz przycisku
+                tooltip: 'Add trip',
+                child: Icon(Icons.add,
+                    color: CustomColors().textColor, size: 30.0),
+              ),
             ),
           ],
         ),

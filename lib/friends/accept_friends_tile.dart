@@ -22,7 +22,7 @@ class _AcceptFriendsTileState extends State<AcceptFriendsTile> {
         title: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(widget.user.username),
+        Text(widget.user.username, style: TextStyle(color: Colors.white)),
         Visibility(
           visible: _isSent,
           replacement: ElevatedButton(
@@ -45,10 +45,10 @@ class _AcceptFriendsTileState extends State<AcceptFriendsTile> {
               },
               child: Visibility(
                 visible: _isLoading,
-                replacement: const Text("Accept"),
+                replacement: const Text("Accept", style: TextStyle(color: Colors.white)),
                 child: const CircularProgressIndicator(),
               )),
-          child: const Text("friend accepted"),
+          child: const Text("friend accepted", style: TextStyle(color: Colors.white)),
         )
       ],
     ));

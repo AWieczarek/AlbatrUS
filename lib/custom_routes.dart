@@ -1,6 +1,6 @@
 import 'package:albatrus/country_site_screen.dart';
 import 'package:albatrus/dashboard/asia_sandbox.dart';
-import 'package:albatrus/dashboard/dashboard-tile.dart';
+import 'package:albatrus/dashboard/dashboard_tile.dart';
 import 'package:albatrus/dashboard/post_list.dart';
 import 'package:albatrus/dowolnie.dart';
 import 'package:albatrus/friends/contacts_add.dart';

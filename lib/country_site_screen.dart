@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 //import 'package:country_state_city/country_state_city.dart' as city;
 import 'package:albatrus/database_service.dart';
 
+import 'custom_colors.dart';
 import 'models/trip.dart';
 
 /// This widget is the home page of the application.
@@ -94,23 +95,13 @@ class CountrySiteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Column(
-        children: [
-          Center(child: Text(countryName)),
-          Expanded(
-            // child: ListView.builder(
-            //   itemCount: friends.length, // Liczba elementów
-            //   itemBuilder: (context, index) {
-            //     return ListTile(
-            //       title: Text(friends[index]),
-            //     );
-            //   },
-            // ),
-            child: AsiaSandbox(trips: trips,),
-          )
-        ],
+      backgroundColor: CustomColors().backgroundColor,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+title: Text(countryName, style: TextStyle(color: Colors.white)),
+        centerTitle: true,
       ),
+      body: AsiaSandbox(trips: trips,),
     );
   }
 }

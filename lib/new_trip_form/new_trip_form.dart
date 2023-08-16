@@ -1,4 +1,5 @@
 import 'package:albatrus/api_routes.dart';
+import 'package:albatrus/custom_colors.dart';
 import 'package:albatrus/database_service.dart';
 import 'package:albatrus/models/user_short.dart';
 import 'package:albatrus/new_trip_form/city_selector.dart';
@@ -11,18 +12,12 @@ import 'package:country_state_city/country_state_city.dart' as countries;
 import 'package:flutter/services.dart';
 
 import '../models/trip.dart';
+import '../rounded_elevated_button.dart';
 
 class NewTripForm extends StatefulWidget {
   NewTripForm({super.key, required this.tripData});
 
-  Trip tripData = Trip(
-      country: "",
-      city: "",
-      dateFrom: DateTime.now(),
-      dateTo: DateTime.now(),
-      description: "",
-      rate: 0,
-      user: UserShort(userId: "", username: ""));
+  Trip tripData;
 
   @override
   _NewTripFormState createState() => _NewTripFormState();
@@ -31,13 +26,18 @@ class NewTripForm extends StatefulWidget {
 class _NewTripFormState extends State<NewTripForm> {
   final _formKey = GlobalKey<FormState>();
 
-  String _country = "";
-  String _countryISO = "PL";
-  String _city = "";
-  String _description = "";
-  DateTime _startDate = DateTime.now();
-  DateTime _endDate = DateTime.now();
-  int _rating = 3;
+  final bgColor = CustomColors().backgroundColor;
+  final textColor = CustomColors().textColor;
+  final formBgColor = CustomColors().myGrayColor;
+  final formTextColor = CustomColors().secondaryTextColor;
+  final formBorderColor = CustomColors().strokeColor;
+  final formFocusColor = CustomColors().strokeColor;
+  final buttonBgColor = CustomColors().myGrayColor;
+  final buttonTextColor = CustomColors().textColor;
+  final warningColor = CustomColors().myRedColor;
+  final warningTextColor = CustomColors().textColor;
+
+  String _countryISO = "";
 
   bool _showBanner = false;
   String _errorMessage = "";
@@ -48,25 +48,25 @@ class _NewTripFormState extends State<NewTripForm> {
 
   void _countrySelected(countries.Country selectedItem) {
     setState(() {
-      _country = selectedItem.name;
+      widget.tripData.country = selectedItem.name;
       _countryISO = selectedItem.isoCode;
     });
   }
 
   void _citySelected(countries.City selectedItem) {
-    _city = selectedItem.name;
+    widget.tripData.city = selectedItem.name;
   }
 
   void _ratingSelected(int selectedItem) {
-    _rating = selectedItem;
+    widget.tripData.rate = selectedItem;
   }
 
   void _dateFromSelected(DateTime selectedItem) {
-    _startDate = selectedItem;
+    widget.tripData.dateFrom = selectedItem;
   }
 
   void _dateToSelected(DateTime selectedItem) {
-    _endDate = selectedItem;
+    widget.tripData.dateTo = selectedItem;
   }
 
   void _saveTrip() {
@@ -74,15 +74,15 @@ class _NewTripFormState extends State<NewTripForm> {
     if (_errorMessage == "") {
       _showBanner = false;
       DatabaseService.insertTripWithUserReference(Trip(
-        country: _country!,
-        city: _city!,
-        dateFrom: _startDate,
-        dateTo: _endDate,
-        description: _description,
-        rate: _rating,
-        user: UserShort(userId: "user!.uid", username: "user!.displayName!"),
+        country: widget.tripData.country,
+        city: widget.tripData.city,
+        dateFrom: widget.tripData.dateFrom,
+        dateTo: widget.tripData.dateTo,
+        description: widget.tripData.description,
+        rate: widget.tripData.rate,
+        user: UserShort(userId: user!.uid, username: user!.displayName!),
       ));
-      Navigator.of(context).pushNamed(AppRoutes.home);
+      Navigator.of(context).pop();
     } else {
       setState(() {
         _showBanner = true;
@@ -92,9 +92,9 @@ class _NewTripFormState extends State<NewTripForm> {
 
   String _validateForm() {
     String x = "";
-    if (_country == null) x += "Please select country\n";
-    if (_city == null) x += "Please select city\n";
-    if (_description.length < 5)
+    if (widget.tripData.country == null) x += "Please select country\n";
+    if (widget.tripData.city == null) x += "Please select city\n";
+    if (widget.tripData.description.length < 5)
       x += "Description should be at least 5 characters\n";
 
     return x;
@@ -110,18 +110,17 @@ class _NewTripFormState extends State<NewTripForm> {
 
   @override
   Widget build(BuildContext context) {
-    _country = widget.tripData.country;
-    _city = widget.tripData.city;
-    _description = widget.tripData.description;
-    _startDate = widget.tripData.dateFrom;
-    _endDate = widget.tripData.dateTo;
-    _rating = widget.tripData.rate;
-    _descriptionController = TextEditingController(text: _description);
+    _descriptionController =
+        TextEditingController(text: widget.tripData.description);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    print("selectedCountry: ${widget.tripData.country} duuuuuuuuuuuupa");
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: bgColor,
       appBar: AppBar(
         title: const Text('New Trip'),
+        backgroundColor: Colors.black,
+        titleTextStyle: TextStyle(color: Colors.white, fontSize: 21),
       ),
       body: FutureBuilder(
           future: Future.wait([
@@ -142,53 +141,59 @@ class _NewTripFormState extends State<NewTripForm> {
                 children: [
                   if (_showBanner)
                     Container(
-                      color: Colors.red[300],
+                      color: warningColor,
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.warning, color: Colors.white),
+                          Icon(Icons.warning, color: warningTextColor),
                           const SizedBox(width: 8.0),
                           Text(
                             _errorMessage,
                             softWrap: true,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(color: Colors.white),
+                            style: TextStyle(color: warningTextColor),
                           ),
                         ],
                       ),
                     ),
                   CountrySelector(
+                    selectedCountry: widget.tripData.country,
                     onCountrySelected: _countrySelected,
                     countriesList: countriesList,
-                    selectedCountry: countries.Country(
-                        name: _country,
-                        isoCode: _countryISO,
-                        phoneCode: "",
-                        flag: "",
-                        currency: "",
-                        latitude: "",
-                        longitude: ""),
                   ),
                   CitySelector(
-                    selectedCity: _city,
+                    selectedCity: widget.tripData.city,
                     countryISO: _countryISO,
                     onCitySelected: _citySelected,
                     cityList: citiesList,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(20.0),
                     child: TextField(
+                      style: TextStyle(color: CustomColors().textColor, fontSize: 18),
                       controller: _descriptionController,
                       onChanged: (value) {
-                        _description = value;
+                        widget.tripData.description = value;
                       },
                       minLines: 3,
                       maxLines: null,
                       keyboardType: TextInputType.multiline,
-                      decoration: const InputDecoration(
+                      cursorColor: formTextColor,
+                      decoration: InputDecoration(
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: formBorderColor),
+                          borderRadius: BorderRadius.circular(16.0),
+                        ),
+                        filled: true,
+                        fillColor: formBgColor,
+                        focusColor: formFocusColor,
                         labelText: "Description",
-                        hintText: 'Enter Description...',
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: formBorderColor),
+                        ),
+                        labelStyle: TextStyle(color: formTextColor),
                       ),
                     ),
                   ),
@@ -198,34 +203,25 @@ class _NewTripFormState extends State<NewTripForm> {
                   DateRangePickerWidget(
                     dateFromChanged: _dateFromSelected,
                     dateToChanged: _dateToSelected,
-                    dateFrom: _startDate,
-                    dateTo: _endDate,
+                    dateFrom: widget.tripData.dateFrom,
+                    dateTo: widget.tripData.dateTo,
                   ),
                   const SizedBox(
                     height: 32,
                   ),
                   RatingWidget(
                     onSelect: _ratingSelected,
-                    initialValue: _rating,
+                    initialValue: widget.tripData.rate,
+                    changable: true,
+                    size: 40,
+                  ),
+                  const SizedBox(
+                    height: 40,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ElevatedButton(
-                        onPressed: _saveTrip,
-                        child: const Row(
-                          children: [
-                            Text("Save "),
-                            Icon(
-                              Icons.save,
-                              size: 30,
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 16,
-                      )
+                      RoundedElevatedButton(onPress: _saveTrip, title:  "save",)
                     ],
                   ),
                 ],

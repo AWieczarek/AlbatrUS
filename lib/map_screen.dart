@@ -1,4 +1,7 @@
 import 'package:country_state_city/models/country.dart';
+import 'package:albatrus/api_routes.dart';
+import 'package:albatrus/custom_colors.dart';
+import 'package:albatrus/models/user_short.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_maps/maps.dart';
 import 'package:country_state_city/country_state_city.dart' as city;
@@ -9,6 +12,9 @@ import 'package:albatrus/api_routes.dart';
 import 'package:albatrus/dowolnie.dart';
 
 import 'dowolnie.dart';
+import 'models/trip.dart';
+import 'package:albatrus/database_service.dart';
+
 import 'models/trip.dart';
 
 /// This widget is the home page of the application.
@@ -31,26 +37,711 @@ class _MapScreenState extends State<MapScreen> {
   late bool _snackTime = false;
   late SnackBar _snackBar;
   late List<String> _countriesFromMap;
-  late List<String> _countriesFromMapReal;
   late List<Trip> _trips;
   late int temp = 0;
-  late String _searchedCountry;
-  late MapLatLng focal = MapLatLng(0,0);
 
-  final Color _backgroundCountryColor = Color.fromRGBO(0, 0, 0, 1.0);
+  final Color _backgroundCountryColor = const Color.fromRGBO(0, 0, 0, 1.0);
   final Color _selectedCountryColor = const Color.fromRGBO(20, 50, 80, 1.0);
-  final Color _friendsVisitedCountryColor = const Color.fromRGBO(10, 60, 60, 1.0);
+
+  final Color _friendsVisitedCountryColor =
+      const Color.fromRGBO(10, 60, 60, 1.0);
   final Color _myVisitedCountryColor = const Color.fromRGBO(80, 20, 50, 1.0);
   final Color _defaultCountryColor = const Color.fromRGBO(15, 25, 45, 1.0);
+
   final Color _selectedStrokeColor = const Color.fromRGBO(30, 50, 70, 1.0);
+  late List<String> _countriesFromMapReal;
+  late String _searchedCountry;
+  late MapLatLng focal = MapLatLng(0, 0);
+
+  final List<String> _countriesMineSynch = [
+    "Afghanistan",
+    "Albania",
+    "Algeria",
+    "Angola",
+    "Argentina",
+    "Armenia",
+    "Australia",
+    "Austria",
+    "Azerbaijan",
+    "Bahamas",
+    "Bangladesh",
+    "Belarus",
+    "Belgium",
+    "Belize",
+    "Benin",
+    "Bhutan",
+    "Bolivia",
+    "Bosnia and Herz.",
+    "Botswana",
+    "Brazil",
+    "Brunei",
+    "Bulgaria",
+    "Burkina Faso",
+    "Burundi",
+    "Cambodia",
+    "Cameroon",
+    "Canada",
+    "Central African Rep.",
+    "Chad",
+    "Chile",
+    "China",
+    "Colombia",
+    "Congo",
+    "Costa Rica",
+    "Croatia",
+    "Cuba",
+    "Cyprus",
+    "Czech Rep.",
+    "Dem. Rep. Korea",
+    "Denmark",
+    "Djibouti",
+    "Dominican Rep.",
+    "Ecuador",
+    "Egypt",
+    "El Salvador",
+    "Eq. Guinea",
+    "Eritrea",
+    "Estonia",
+    "Ethiopia",
+    "Falkland Is.",
+    "Fiji",
+    "Finland",
+    "France",
+    "Gabon",
+    "Gambia",
+    "Georgia",
+    "Germany",
+    "Ghana",
+    "Greece",
+    "Greenland",
+    "Guatemala",
+    "Guinea",
+    "Guinea-Bissau",
+    "Guyana",
+    "Haiti",
+    "Honduras",
+    "Hungary",
+    "Iceland",
+    "India",
+    "Indonesia",
+    "Iran",
+    "Iraq",
+    "Ireland",
+    "Israel",
+    "Italy",
+    "Jamaica",
+    "Japan",
+    "Jordan",
+    "Kazakhstan",
+    "Kenya",
+    "Korea",
+    "Kosovo",
+    "Kuwait",
+    "Kyrgyzstan",
+    "Lao PDR",
+    "Latvia",
+    "Lebanon",
+    "Lesotho",
+    "Liberia",
+    "Libya",
+    "Lithuania",
+    "Luxembourg",
+    "Macedonia",
+    "Madagascar",
+    "Malawi",
+    "Malaysia",
+    "Mali",
+    "Mauritania",
+    "Mexico",
+    "Moldova",
+    "Mongolia",
+    "Montenegro",
+    "Morocco",
+    "Mozambique",
+    "Myanmar",
+    "Namibia",
+    "Nepal",
+    "Netherlands",
+    "New Caledonia",
+    "New Zealand",
+    "Nicaragua",
+    "Niger",
+    "Nigeria",
+    "Norway",
+    "Oman",
+    "Pakistan",
+    "Palestine",
+    "Panama",
+    "Papua New Guinea",
+    "Paraguay",
+    "Peru",
+    "Philippines",
+    "Poland",
+    "Portugal",
+    "Puerto Rico",
+    "Qatar",
+    "Romania",
+    "Russia",
+    "Rwanda",
+    "S. Sudan",
+    "Saudi Arabia",
+    "Senegal",
+    "Serbia",
+    "Sierra Leone",
+    "Slovakia",
+    "Slovenia",
+    "Solomon Is.",
+    "Somalia",
+    "South Africa",
+    "Spain",
+    "Sri Lanka",
+    "Sudan",
+    "Suriname",
+    "Swaziland",
+    "Sweden",
+    "Switzerland",
+    "Syria",
+    "Taiwan",
+    "Tajikistan",
+    "Tanzania",
+    "Thailand",
+    "Togo",
+    "Trinidad and Tobago",
+    "Tunisia",
+    "Turkey",
+    "Turkmenistan",
+    "Uganda",
+    "Ukraine",
+    "United Arab Emirates",
+    "United Kingdom",
+    "United States of America",
+    "Uruguay",
+    "Uzbekistan",
+    "Vanuatu",
+    "Venezuela",
+    "Vietnam",
+    "W. Sahara",
+    "Yemen",
+    "Zambia",
+    "Zimbabwe"
+  ];
+  final List<String> _countriesKiviSynch = [
+    "Afghanistan",
+    "Albania",
+    "Algeria",
+    "Angola",
+    "Argentina",
+    "Armenia",
+    "Australia",
+    "Austria",
+    "Azerbaijan",
+    "Bahamas The",
+    "Bangladesh",
+    "Belarus",
+    "Belgium",
+    "Belize",
+    "Benin",
+    "Bhutan",
+    "Bolivia",
+    "Bosnia and Herzegovina",
+    "Botswana",
+    "Brazil",
+    "Brunei",
+    "Bulgaria",
+    "Burkina Faso",
+    "Burundi",
+    "Cambodia",
+    "Cameroon",
+    "Canada",
+    "Central African Republic",
+    "Chad",
+    "Chile",
+    "China",
+    "Colombia",
+    "Congo",
+    "Costa Rica",
+    "Croatia (Hrvatska)",
+    "Cuba",
+    "Cyprus",
+    "Czech Republic",
+    "Korea North",
+    "Denmark",
+    "Djibouti",
+    "Dominican Republic",
+    "Ecuador",
+    "Egypt",
+    "El Salvador",
+    "Equatorial Guinea",
+    "Eritrea",
+    "Estonia",
+    "Ethiopia",
+    "Falkland Islands",
+    "Fiji Islands",
+    "Finland",
+    "France",
+    "Gabon",
+    "Gambia The",
+    "Georgia",
+    "Germany",
+    "Ghana",
+    "Greece",
+    "Greenland",
+    "Guatemala",
+    "Guinea",
+    "Guinea-Bissau",
+    "Guyana",
+    "Haiti",
+    "Honduras",
+    "Hungary",
+    "Iceland",
+    "India",
+    "Indonesia",
+    "Iran",
+    "Iraq",
+    "Ireland",
+    "Israel",
+    "Italy",
+    "Jamaica",
+    "Japan",
+    "Jordan",
+    "Kazakhstan",
+    "Kenya",
+    "Korea South",
+    "Kosovo",
+    "Kuwait",
+    "Kyrgyzstan",
+    "Laos",
+    "Latvia",
+    "Lebanon",
+    "Lesotho",
+    "Liberia",
+    "Libya",
+    "Lithuania",
+    "Luxembourg",
+    "Macedonia",
+    "Madagascar",
+    "Malawi",
+    "Malaysia",
+    "Mali",
+    "Mauritania",
+    "Mexico",
+    "Moldova",
+    "Mongolia",
+    "Montenegro",
+    "Morocco",
+    "Mozambique",
+    "Myanmar",
+    "Namibia",
+    "Nepal",
+    "Netherlands The",
+    "New Caledonia",
+    "New Zealand",
+    "Nicaragua",
+    "Niger",
+    "Nigeria",
+    "Norway",
+    "Oman",
+    "Pakistan",
+    "Palestinian Territory Occupied",
+    "Panama",
+    "Papua new Guinea",
+    "Paraguay",
+    "Peru",
+    "Philippines",
+    "Poland",
+    "Portugal",
+    "Puerto Rico",
+    "Qatar",
+    "Romania",
+    "Russia",
+    "Rwanda",
+    "South Sudan",
+    "Saudi Arabia",
+    "Senegal",
+    "Serbia",
+    "Sierra Leone",
+    "Slovakia",
+    "Slovenia",
+    "Solomon Islands",
+    "Somalia",
+    "South Africa",
+    "Spain",
+    "Sri Lanka",
+    "Sudan",
+    "Suriname",
+    "Swaziland",
+    "Sweden",
+    "Switzerland",
+    "Syria",
+    "Taiwan",
+    "Tajikistan",
+    "Tanzania",
+    "Thailand",
+    "Togo",
+    "Trinidad And Tobago",
+    "Tunisia",
+    "Turkey",
+    "Turkmenistan",
+    "Uganda",
+    "Ukraine",
+    "United Arab Emirates",
+    "United Kingdom",
+    "United States",
+    "Uruguay",
+    "Uzbekistan",
+    "Vanuatu",
+    "Venezuela",
+    "Vietnam",
+    "Western Sahara",
+    "Yemen",
+    "Zambia",
+    "Zimbabwe"
+  ];
+  final List<int> _countriesMineSynchIndex = [
+    0,
+    3,
+    1,
+    158,
+    4,
+    5,
+    6,
+    7,
+    8,
+    23,
+    12,
+    14,
+    22,
+    10,
+    21,
+    9,
+    17,
+    11,
+    13,
+    16,
+    19,
+    20,
+    15,
+    18,
+    27,
+    26,
+    145,
+    29,
+    30,
+    25,
+    32,
+    31,
+    33,
+    35,
+    36,
+    37,
+    56,
+    40,
+    39,
+    41,
+    2,
+    42,
+    43,
+    46,
+    139,
+    47,
+    48,
+    51,
+    50,
+    49,
+    52,
+    53,
+    159,
+    55,
+    57,
+    61,
+    54,
+    62,
+    45,
+    58,
+    59,
+    60,
+    63,
+    65,
+    34,
+    64,
+    66,
+    69,
+    68,
+    72,
+    70,
+    71,
+    67,
+    73,
+    74,
+    75,
+    77,
+    76,
+    78,
+    79,
+    83,
+    24,
+    80,
+    81,
+    82,
+    84,
+    86,
+    88,
+    89,
+    140,
+    87,
+    90,
+    91,
+    85,
+    102,
+    99,
+    93,
+    98,
+    92,
+    96,
+    104,
+    101,
+    100,
+    103,
+    97,
+    94,
+    95,
+    105,
+    108,
+    111,
+    112,
+    110,
+    107,
+    113,
+    106,
+    109,
+    114,
+    115,
+    117,
+    120,
+    121,
+    118,
+    122,
+    124,
+    38,
+    123,
+    119,
+    116,
+    125,
+    126,
+    127,
+    128,
+    166,
+    130,
+    141,
+    129,
+    131,
+    136,
+    133,
+    44,
+    137,
+    132,
+    142,
+    134,
+    135,
+    144,
+    143,
+    146,
+    28,
+    151,
+    150,
+    148,
+    155,
+    152,
+    153,
+    154,
+    147,
+    149,
+    156,
+    157,
+    161,
+    160,
+    162,
+    164,
+    165,
+    163,
+    167,
+    138,
+    168,
+    169
+  ];
+  final List<int> _countriesKiviSynchIndex = [
+    0,
+    2,
+    3,
+    6,
+    10,
+    11,
+    13,
+    14,
+    15,
+    16,
+    18,
+    20,
+    21,
+    22,
+    23,
+    25,
+    26,
+    27,
+    28,
+    30,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    41,
+    42,
+    43,
+    44,
+    47,
+    49,
+    52,
+    54,
+    55,
+    56,
+    57,
+    114,
+    58,
+    59,
+    61,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    72,
+    73,
+    74,
+    78,
+    79,
+    80,
+    81,
+    82,
+    84,
+    85,
+    89,
+    91,
+    92,
+    93,
+    94,
+    96,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    110,
+    111,
+    112,
+    115,
+    247,
+    116,
+    117,
+    118,
+    119,
+    120,
+    121,
+    122,
+    123,
+    125,
+    126,
+    128,
+    129,
+    130,
+    131,
+    133,
+    138,
+    141,
+    143,
+    145,
+    146,
+    148,
+    149,
+    150,
+    151,
+    153,
+    155,
+    156,
+    157,
+    158,
+    159,
+    160,
+    164,
+    165,
+    166,
+    168,
+    169,
+    170,
+    171,
+    172,
+    173,
+    175,
+    176,
+    177,
+    178,
+    180,
+    181,
+    182,
+    205,
+    193,
+    194,
+    195,
+    197,
+    199,
+    200,
+    201,
+    202,
+    203,
+    206,
+    207,
+    208,
+    209,
+    211,
+    212,
+    213,
+    214,
+    215,
+    216,
+    217,
+    218,
+    219,
+    222,
+    223,
+    224,
+    225,
+    228,
+    229,
+    230,
+    231,
+    232,
+    234,
+    235,
+    236,
+    238,
+    239,
+    243,
+    244,
+    245,
+    246
+  ];
   final Color _defaultStrokeColor = const Color.fromRGBO(50, 90, 130, 1.0);
-
-
-
-  final List<String> _countriesMineSynch = ["Afghanistan", "Albania", "Algeria", "Angola", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bangladesh", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herz.", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Central African Rep.", "Chad", "Chile", "China", "Colombia", "Congo", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Rep.", "Dem. Rep. Korea", "Denmark", "Djibouti", "Dominican Rep.", "Ecuador", "Egypt", "El Salvador", "Eq. Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Is.", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Greenland", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Korea", "Kosovo", "Kuwait", "Kyrgyzstan", "Lao PDR", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Lithuania", "Luxembourg", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Mali", "Mauritania", "Mexico", "Moldova", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nepal", "Netherlands", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Norway", "Oman", "Pakistan", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Puerto Rico", "Qatar", "Romania", "Russia", "Rwanda", "S. Sudan", "Saudi Arabia", "Senegal", "Serbia", "Sierra Leone", "Slovakia", "Slovenia", "Solomon Is.", "Somalia", "South Africa", "Spain", "Sri Lanka", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "W. Sahara", "Yemen", "Zambia", "Zimbabwe"];
-  final List<String> _countriesKiviSynch = ["Afghanistan", "Albania", "Algeria", "Angola", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas The", "Bangladesh", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Congo", "Costa Rica", "Croatia (Hrvatska)", "Cuba", "Cyprus", "Czech Republic", "Korea North", "Denmark", "Djibouti", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands", "Fiji Islands", "Finland", "France", "Gabon", "Gambia The", "Georgia", "Germany", "Ghana", "Greece", "Greenland", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Korea South", "Kosovo", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Lithuania", "Luxembourg", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Mali", "Mauritania", "Mexico", "Moldova", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nepal", "Netherlands The", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Norway", "Oman", "Pakistan", "Palestinian Territory Occupied", "Panama", "Papua new Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Puerto Rico", "Qatar", "Romania", "Russia", "Rwanda", "South Sudan", "Saudi Arabia", "Senegal", "Serbia", "Sierra Leone", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "Spain", "Sri Lanka", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Trinidad And Tobago", "Tunisia", "Turkey", "Turkmenistan", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Western Sahara", "Yemen", "Zambia", "Zimbabwe"];
-  final List<int> _countriesMineSynchIndex = [0, 3, 1, 158, 4, 5, 6, 7, 8, 23, 12, 14, 22, 10, 21, 9, 17, 11, 13, 16, 19, 20, 15, 18, 27, 26, 145, 29, 30, 25, 32, 31, 33, 35, 36, 37, 56, 40, 39, 41, 2, 42, 43, 46, 139, 47, 48, 51, 50, 49, 52, 53, 159, 55, 57, 61, 54, 62, 45, 58, 59, 60, 63, 65, 34, 64, 66, 69, 68, 72, 70, 71, 67, 73, 74, 75, 77, 76, 78, 79, 83, 24, 80, 81, 82, 84, 86, 88, 89, 140, 87, 90, 91, 85, 102, 99, 93, 98, 92, 96, 104, 101, 100, 103, 97, 94, 95, 105, 108, 111, 112, 110, 107, 113, 106, 109, 114, 115, 117, 120, 121, 118, 122, 124, 38, 123, 119, 116, 125, 126, 127, 128, 166, 130, 141, 129, 131, 136, 133, 44, 137, 132, 142, 134, 135, 144, 143, 146, 28, 151, 150, 148, 155, 152, 153, 154, 147, 149, 156, 157, 161, 160, 162, 164, 165, 163, 167, 138, 168, 169];
-  final List<int> _countriesKiviSynchIndex = [0, 2, 3, 6, 10, 11, 13, 14, 15, 16, 18, 20, 21, 22, 23, 25, 26, 27, 28, 30, 32, 33, 34, 35, 36, 37, 38, 41, 42, 43, 44, 47, 49, 52, 54, 55, 56, 57, 114, 58, 59, 61, 63, 64, 65, 66, 67, 68, 69, 70, 72, 73, 74, 78, 79, 80, 81, 82, 84, 85, 89, 91, 92, 93, 94, 96, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 110, 111, 112, 115, 247, 116, 117, 118, 119, 120, 121, 122, 123, 125, 126, 128, 129, 130, 131, 133, 138, 141, 143, 145, 146, 148, 149, 150, 151, 153, 155, 156, 157, 158, 159, 160, 164, 165, 166, 168, 169, 170, 171, 172, 173, 175, 176, 177, 178, 180, 181, 182, 205, 193, 194, 195, 197, 199, 200, 201, 202, 203, 206, 207, 208, 209, 211, 212, 213, 214, 215, 216, 217, 218, 219, 222, 223, 224, 225, 228, 229, 230, 231, 232, 234, 235, 236, 238, 239, 243, 244, 245, 246];
 
   late List<Country> _countriesFromDifferentSource;
   late List<Set<String>> _countryFriendsListSet;
@@ -59,12 +750,10 @@ class _MapScreenState extends State<MapScreen> {
   late List<String> _countryList;
   Map<String, List<Trip>> map = {};
 
-
   String _dropdownSearchSelectedItem = "";
 
   @override
   void initState() {
-
     _data = <MyModel>[
       MyModel("AlbatrUS", _backgroundCountryColor, "AlbatrUS", "AlbatrUS"),
       MyModel("Afghanistan", _defaultCountryColor, "Afghanistan", "Asia"),
@@ -651,12 +1340,13 @@ class _MapScreenState extends State<MapScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Witaj!'),
-          content: Text('To jest okienko, które wyskakuje na początku aplikacji.'),
+          content:
+              Text('To jest okienko, które wyskakuje na początku aplikacji.'),
           actions: [
             TextButton(
               onPressed: () {
                 refreshMap();
-                Navigator.of(context,rootNavigator: true).pop();
+                Navigator.of(context, rootNavigator: true).pop();
               },
               child: Text('Zamknij'),
             ),
@@ -671,45 +1361,46 @@ class _MapScreenState extends State<MapScreen> {
     return SafeArea(
       top: false,
       child: //Scaffold(
-        /*body:*/ Stack(
-          children: [
-            Container(
-              color: _backgroundCountryColor,
-            ),
-            Center(
-              child: SfMaps(
-                layers: <MapShapeLayer>[
-                  MapShapeLayer(
-                    source: _mapSource,
-                    zoomPanBehavior: _zoomPanBehavior,
-                    strokeColor: _defaultStrokeColor,
-                    strokeWidth: 0.6, //TO DO
-                    showDataLabels: true,
-                    onSelectionChanged: (int index) {
-                      _newCountryClickedIndex = index;
-                      print("you clicked on country: $_newCountryClickedIndex");
-                      tempFidget = funWithSelectedCountries();
-                      setState(() {
-                        fidget = tempFidget;
-                      });
-                      _oldCountryClickedIndex = _newCountryClickedIndex;
-                    },
-                    selectedIndex: fidget,
-                    selectionSettings: MapSelectionSettings(
-                      color: _selectedCountryColor,
-                      strokeColor: _selectedStrokeColor,
-                    ),
+          /*body:*/ Stack(
+        children: [
+          Container(
+            color: _backgroundCountryColor,
+          ),
+          Center(
+            child: SfMaps(
+              layers: <MapShapeLayer>[
+                MapShapeLayer(
+                  source: _mapSource,
+                  zoomPanBehavior: _zoomPanBehavior,
+                  strokeColor: _defaultStrokeColor,
+                  strokeWidth: 0.6,
+                  //TO DO
+                  showDataLabels: true,
+                  onSelectionChanged: (int index) {
+                    _newCountryClickedIndex = index;
+                    print("you clicked on country: $_newCountryClickedIndex");
+                    tempFidget = funWithSelectedCountries();
+                    setState(() {
+                      fidget = tempFidget;
+                    });
+                    _oldCountryClickedIndex = _newCountryClickedIndex;
+                  },
+                  selectedIndex: fidget,
+                  selectionSettings: MapSelectionSettings(
+                    color: _selectedCountryColor,
+                    strokeColor: _selectedStrokeColor,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Positioned(
+          ),
+          Positioned(
               top: 0,
               right: 0,
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(top: 100, right: 10),
+                    padding: const EdgeInsets.only(top: 100, right: 10),
                     child: Container(
                       width: 50,
                       height: 100,
@@ -718,66 +1409,88 @@ class _MapScreenState extends State<MapScreen> {
                         items: _countriesFromMapReal,
                         selectedItem: _dropdownSearchSelectedItem,
                         onChanged: (value) {
-                          int tempp = indexInKivis(value);
-                          if(tempp == -1) {
+                          int tempp = indexInKivis(value!);
+                          if (tempp == -1) {
                             print("Problem");
-                          }
-                          else {
+                          } else {
                             setState(() {
-                              fidget = _countriesFromMapReal.indexOf(value)+1;
-                              _newCountryClickedIndex = _countriesFromMapReal.indexOf(value)+1;
+                              fidget = _countriesFromMapReal.indexOf(value) + 1;
+                              _newCountryClickedIndex =
+                                  _countriesFromMapReal.indexOf(value) + 1;
                             });
-                            _zoomPanBehavior.focalLatLng = MapLatLng(double.parse(_countriesFromDifferentSource[tempp].latitude), double.parse(_countriesFromDifferentSource[tempp].longitude));
+                            _zoomPanBehavior.focalLatLng = MapLatLng(
+                                double.parse(
+                                    _countriesFromDifferentSource[tempp]
+                                        .latitude),
+                                double.parse(
+                                    _countriesFromDifferentSource[tempp]
+                                        .longitude));
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                             _snackBar = createSnackBar();
-                            ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(_snackBar);
                             _snackTime = true;
                           }
                         },
                         compareFn: (i, s) => i == s,
-                        popupProps:
-                        PopupPropsMultiSelection.dialog(
+                        popupProps: PopupPropsMultiSelection.dialog(
+                          itemBuilder:
+                              (BuildContext context, String? item, bool isSelected) {
+                            return Padding(
+                              padding: const EdgeInsets.all(14.0),
+                              child: Text(
+                                item!,
+                                style: TextStyle(
+                                  color: CustomColors().textColor, // Kolor tekstu
+                                ),
+                              ),
+                            );
+                          },
                           //TODO dodać wyszarzenie tła
-                          searchDelay: const Duration(
-                              milliseconds: 300),
+                          searchDelay: const Duration(milliseconds: 300),
                           searchFieldProps: TextFieldProps(
                             decoration: InputDecoration(
+                              labelText: "Search",
+                              labelStyle: TextStyle(
+                                  color: CustomColors().secondaryTextColor),
                               border: OutlineInputBorder(
-                                borderRadius:
-                                BorderRadius.circular(
-                                    16.0),
+                                borderRadius: BorderRadius.circular(25.0),
                               ),
                             ),
                           ),
                           showSelectedItems: true,
                           // onItemAdded:
                           showSearchBox: true,
+                          dialogProps: DialogProps(
+                            barrierColor: Colors.black,
+                            shape: ContinuousRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  25.0), // Zaokrąglenie narożników
+                            ),
+                            backgroundColor: CustomColors().myGrayColor,
+                          ),
                         ),
-                        dropdownButtonProps:
-                        const DropdownButtonProps(
-                          icon:
-                          Icon(Icons.search, size: 24),
+                        dropdownButtonProps: const DropdownButtonProps(
+                          icon: Icon(Icons.search, size: 24),
                           color: Colors.white,
                         ),
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 20, right: 10),
+                    padding: const EdgeInsets.only(top: 20, right: 10),
                     child: IconButton(
-                      color: Colors.black,
-                      icon: Icon(Icons.pedal_bike), // to jest pedalarz
-                      onPressed: () {
-                        getTrips();
-                        refreshMap();
-                      }
-                    ),
+                        color: CustomColors().textColor,
+                        icon: Icon(Icons.pedal_bike), // to jest pedalarz
+                        onPressed: () {
+                          getTrips();
+                          refreshMap();
+                        }),
                   )
                 ],
-              )
-            ),
-          ],
-        ),
+              )),
+        ],
+      ),
       //),
     );
   }
@@ -787,8 +1500,10 @@ class _MapScreenState extends State<MapScreen> {
       'assets/world_map.json',
       shapeDataField: printingName(),
       dataCount: _data.length,
-      primaryValueMapper: (int index) => _data[index].name, //this is needed to connect models to places on map - DONT CHANGE!
-      dataLabelMapper: (int index) => _data[index].blank, //this is shown as a name of country
+      primaryValueMapper: (int index) => _data[index].name,
+      //this is needed to connect models to places on map - DONT CHANGE!
+      dataLabelMapper: (int index) => _data[index].blank,
+      //this is shown as a name of country
       shapeColorValueMapper: (int index) => _data[index].color,
       //shapeColorValueMapper: (int index) => myYellow,
     );
@@ -806,8 +1521,10 @@ class _MapScreenState extends State<MapScreen> {
         'assets/world_map.json',
         shapeDataField: 'name',
         dataCount: _data.length,
-        primaryValueMapper: (int index) => _data[index].name, //this is needed to connect models to places on map - DONT CHANGE!
-        dataLabelMapper: (int index) => _data[index].blank, //this is shown as a name of country
+        primaryValueMapper: (int index) => _data[index].name,
+        //this is needed to connect models to places on map - DONT CHANGE!
+        dataLabelMapper: (int index) => _data[index].blank,
+        //this is shown as a name of country
         shapeColorValueMapper: (int index) => _data[index].color,
         //shapeColorValueMapper: (int index) => myBlue,
       );
@@ -816,7 +1533,7 @@ class _MapScreenState extends State<MapScreen> {
 
   int indexInKivis(String value) {
     int temp = _countriesMineSynch.indexOf(value);
-    if(temp == -1) {
+    if (temp == -1) {
       return -1;
     }
     int ret = _countriesKiviSynchIndex[temp];
@@ -828,13 +1545,14 @@ class _MapScreenState extends State<MapScreen> {
     return 0;
   }
 
-
   Future<void> getTrips() async {
     _trips = await DatabaseService.fetchTrips();
 
     print("jestem 0");
 
-    _countryPlusFriend = _trips.map((trip) => CountryPlusFriend(trip.country, trip.user.username)).toList();
+    _countryPlusFriend = _trips
+        .map((trip) => CountryPlusFriend(trip.country, trip.user.username))
+        .toList();
     _countryList = _trips.map((trip) => trip.country).toList();
     Set<String> pom = _countryList.toSet();
     print(_countryList);
@@ -853,9 +1571,9 @@ class _MapScreenState extends State<MapScreen> {
 
     _countryFriendsListSet = List<Set<String>>.filled(_countryList.length, {});
 
-    for(int i = 0; i < _countryList.length; i++) {
-      for(int j = 0; j < _countryPlusFriend.length; j++) {
-        if(_countryList[i] == _countryPlusFriend[j].country) {
+    for (int i = 0; i < _countryList.length; i++) {
+      for (int j = 0; j < _countryPlusFriend.length; j++) {
+        if (_countryList[i] == _countryPlusFriend[j].country) {
           _countryFriendsListSet[i].add(_countryPlusFriend[j].friend);
         }
       }
@@ -909,6 +1627,8 @@ class _MapScreenState extends State<MapScreen> {
     return ret;
   }
 
+  //==============================================================================
+
   SnackBar createSnackBar() {
     SnackBar _tempSnackBar = SnackBar(
       content: Column(
@@ -919,55 +1639,54 @@ class _MapScreenState extends State<MapScreen> {
               Expanded(
                 child: ElevatedButton(
                     onPressed: () {
-                      print("open site of country ${_newCountryClickedIndex}");
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      Navigator.of(context).pushNamed(AppRoutes.newTripForm,
+                          arguments: Trip(
+                              country: _data[_newCountryClickedIndex].name,
+                              city: "",
+                              dateFrom: DateTime.now(),
+                              dateTo: DateTime.now(),
+                              description: "",
+                              rate: 3,
+                              user: UserShort(userId: "id", username: "user")));
                     },
-                    child: Text(
-                      "open",
-                      style: const TextStyle(
+                    child: const Text(
+                      "Add trip",
+                      style: TextStyle(
                         color: Colors.green,
                       ),
                     )),
               ),
-              Expanded(
-                child: ElevatedButton(
-                    onPressed: () {
-                      print("blue ${_newCountryClickedIndex}");
-                      _data[_newCountryClickedIndex].color = _myVisitedCountryColor;
-                      setState(() {
-                        _mapSource = MapShapeSource.asset(
-                          'assets/world_map.json',
-                          shapeDataField: 'name',
-                          dataCount: _data.length,
-                          primaryValueMapper: (int index) => _data[index].name, //this is needed to connect models to places on map - DONT CHANGE!
-                          dataLabelMapper: (int index) => _data[index].blank, //this is shown as a name of country
-                          shapeColorValueMapper: (int index) => _data[index].color,
-                          //shapeColorValueMapper: (int index) => myBlue,
-                        );
-                      });
-                    },
-                    child: Text("blue",style: const TextStyle(
-                      color: Colors.blue,
-                    ),)
-                ),
+              SizedBox(
+                width: 10,
               ),
               Expanded(
                 child: ElevatedButton(
                     onPressed: () {
                       ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                      if(_countryList.contains(_countriesFromMap[_newCountryClickedIndex])) {
-                        print(_countryFriendsListSet[_countryList.indexOf(_countriesFromMap[_newCountryClickedIndex])]);
-                        Navigator.of(context).pushNamed(AppRoutes.countrySiteScreen, arguments: DowolnyPakiet(friends: map[_countriesFromMap[_newCountryClickedIndex]]!, country: _countriesFromMap[_newCountryClickedIndex]));
+                      if (_countryList.contains(
+                          _countriesFromMap[_newCountryClickedIndex])) {
+                        print(_countryFriendsListSet[_countryList.indexOf(
+                            _countriesFromMap[_newCountryClickedIndex])]);
+                        Navigator.of(context).pushNamed(
+                            AppRoutes.countrySiteScreen,
+                            arguments: DowolnyPakiet(
+                                friends: map[_countriesFromMap[
+                                    _newCountryClickedIndex]]!,
+                                country: _countriesFromMap[
+                                    _newCountryClickedIndex]));
+                      } else {
+                        Navigator.of(context).pushNamed(
+                            AppRoutes.countrySiteScreen,
+                            arguments: DowolnyPakiet(
+                                friends: [],
+                                country: _countriesFromMap[
+                                    _newCountryClickedIndex]));
                       }
-                      else {
-                        Navigator.of(context).pushNamed(AppRoutes.countrySiteScreen, arguments: DowolnyPakiet(friends: [], country: _countriesFromMap[_newCountryClickedIndex]));
-                      }
-                      //Navigator.of(context).pushNamed(AppRoutes.countrySiteScreen, arguments: DowolnyPakiet(friends: ["a", "b"], country: "kraj"));
-                      print("jestem");
                     },
-                    child: Text("yellow",style: const TextStyle(
-                      color: Colors.yellow,
-                    ),)
-                ),
+                    child: const Text(
+                      "Visitors",
+                    )),
               ),
             ],
           )
