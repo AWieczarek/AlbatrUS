@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'api_routes.dart';
 
@@ -32,6 +33,7 @@ class _MyAppState extends State<MyApp> {
 
   void initState() {
     super.initState();
+    _getPermission();
     user = FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user == null) {
         print('User is currently signed out!');
@@ -39,6 +41,18 @@ class _MyAppState extends State<MyApp> {
         print('User is signed in!');
       }
     });
+  }
+
+  void _getPermission() async {
+    final grant = await Permission.contacts.request().isGranted;
+    if(grant){
+      print('Permission granted!');
+
+    }else{
+      print('Permission issue!');
+
+    }
+
   }
 
   @override
@@ -57,12 +71,12 @@ class _MyAppState extends State<MyApp> {
         primaryColor: Colors.black,
         colorScheme: ColorScheme.fromSeed(seedColor: CustomColors().myGrayColor),
       ),
+      debugShowCheckedModeBanner: false,
       routes: customRoutes,
       navigatorKey: navigatorKey,
       initialRoute: FirebaseAuth.instance.currentUser == null
           ? AppRoutes.login
           : AppRoutes.home,
-      home: MyHome(),
     );
   }
 }

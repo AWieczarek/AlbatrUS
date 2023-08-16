@@ -1409,7 +1409,7 @@ class _MapScreenState extends State<MapScreen> {
                         items: _countriesFromMapReal,
                         selectedItem: _dropdownSearchSelectedItem,
                         onChanged: (value) {
-                          int tempp = indexInKivis(value);
+                          int tempp = indexInKivis(value!);
                           if (tempp == -1) {
                             print("Problem");
                           } else {
@@ -1434,6 +1434,18 @@ class _MapScreenState extends State<MapScreen> {
                         },
                         compareFn: (i, s) => i == s,
                         popupProps: PopupPropsMultiSelection.dialog(
+                          itemBuilder:
+                              (BuildContext context, String? item, bool isSelected) {
+                            return Padding(
+                              padding: const EdgeInsets.all(14.0),
+                              child: Text(
+                                item!,
+                                style: TextStyle(
+                                  color: CustomColors().textColor, // Kolor tekstu
+                                ),
+                              ),
+                            );
+                          },
                           //TODO dodać wyszarzenie tła
                           searchDelay: const Duration(milliseconds: 300),
                           searchFieldProps: TextFieldProps(
@@ -1455,7 +1467,7 @@ class _MapScreenState extends State<MapScreen> {
                               borderRadius: BorderRadius.circular(
                                   25.0), // Zaokrąglenie narożników
                             ),
-                            backgroundColor: Colors.grey,
+                            backgroundColor: CustomColors().myGrayColor,
                           ),
                         ),
                         dropdownButtonProps: const DropdownButtonProps(
@@ -1468,7 +1480,7 @@ class _MapScreenState extends State<MapScreen> {
                   Padding(
                     padding: const EdgeInsets.only(top: 20, right: 10),
                     child: IconButton(
-                        color: CustomColors().secondaryTextColor,
+                        color: CustomColors().textColor,
                         icon: Icon(Icons.pedal_bike), // to jest pedalarz
                         onPressed: () {
                           getTrips();

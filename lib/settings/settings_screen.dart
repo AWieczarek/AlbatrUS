@@ -22,7 +22,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         title: const Text('Settings'),
         backgroundColor: CustomColors().backgroundColor,
       ),
-      // backgroundColor: CustomColors().backgroundColor,
+      backgroundColor: CustomColors().backgroundColor,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -33,7 +33,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
             ),
             RadioListTile<DistanceUnit>(
-              title: const Text('Feet'),
+              title: const Text('Feet',
+                style: TextStyle(color: Colors.white),
+              ),
               value: DistanceUnit.feet,
               groupValue: _selectedDistanceUnit,
               onChanged: (value) {
@@ -41,9 +43,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _selectedDistanceUnit = value!;
                 });
               },
+              fillColor: MaterialStateColor.resolveWith((states) => CustomColors().textColor),
             ),
             RadioListTile<DistanceUnit>(
-              title: const Text('Meter'),
+              title: const Text('Meter',
+                style: TextStyle(color: Colors.white),
+              ),
               value: DistanceUnit.meter,
               groupValue: _selectedDistanceUnit,
               onChanged: (value) {
@@ -51,18 +56,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _selectedDistanceUnit = value!;
                 });
               },
+              fillColor: MaterialStateColor.resolveWith((states) => CustomColors().textColor),
             ),
             const SizedBox(height: 20),
             const Row(
               children: [
                 Text(
                   'Notifications:',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
                 SizedBox(width: 10),
                 Switch(
                   value: false,
                   onChanged: null,
+                  inactiveThumbColor: Colors.grey,
+                  inactiveTrackColor: Colors.grey,
                 ),
               ],
             ),
