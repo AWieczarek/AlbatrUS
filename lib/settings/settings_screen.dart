@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../custom_colors.dart';
+
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -18,7 +20,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
+        backgroundColor: CustomColors().backgroundColor,
       ),
+      // backgroundColor: CustomColors().backgroundColor,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -26,7 +30,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           children: [
             const Text(
               'Distance Unit:',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
             ),
             RadioListTile<DistanceUnit>(
               title: const Text('Feet'),

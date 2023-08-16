@@ -40,12 +40,11 @@ class _MapScreenState extends State<MapScreen> {
   late List<Trip> _trips;
   late int temp = 0;
 
-
   final Color _backgroundCountryColor = const Color.fromRGBO(0, 0, 0, 1.0);
   final Color _selectedCountryColor = const Color.fromRGBO(20, 50, 80, 1.0);
 
-  final Color _friendsVisitedCountryColor = const Color.fromRGBO(
-      10, 60, 60, 1.0);
+  final Color _friendsVisitedCountryColor =
+      const Color.fromRGBO(10, 60, 60, 1.0);
   final Color _myVisitedCountryColor = const Color.fromRGBO(80, 20, 50, 1.0);
   final Color _defaultCountryColor = const Color.fromRGBO(15, 25, 45, 1.0);
 
@@ -751,7 +750,6 @@ class _MapScreenState extends State<MapScreen> {
   late List<String> _countryList;
   Map<String, List<Trip>> map = {};
 
-
   String _dropdownSearchSelectedItem = "";
 
   @override
@@ -1342,8 +1340,8 @@ class _MapScreenState extends State<MapScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Witaj!'),
-          content: Text(
-              'To jest okienko, które wyskakuje na początku aplikacji.'),
+          content:
+              Text('To jest okienko, które wyskakuje na początku aplikacji.'),
           actions: [
             TextButton(
               onPressed: () {
@@ -1363,7 +1361,7 @@ class _MapScreenState extends State<MapScreen> {
     return SafeArea(
       top: false,
       child: //Scaffold(
-      /*body:*/ Stack(
+          /*body:*/ Stack(
         children: [
           Container(
             color: _backgroundCountryColor,
@@ -1414,51 +1412,54 @@ class _MapScreenState extends State<MapScreen> {
                           int tempp = indexInKivis(value);
                           if (tempp == -1) {
                             print("Problem");
-                          }
-                          else {
+                          } else {
                             setState(() {
                               fidget = _countriesFromMapReal.indexOf(value) + 1;
                               _newCountryClickedIndex =
                                   _countriesFromMapReal.indexOf(value) + 1;
                             });
-                            _zoomPanBehavior.focalLatLng = MapLatLng(double
-                                .parse(
-                                _countriesFromDifferentSource[tempp].latitude),
+                            _zoomPanBehavior.focalLatLng = MapLatLng(
+                                double.parse(
+                                    _countriesFromDifferentSource[tempp]
+                                        .latitude),
                                 double.parse(
                                     _countriesFromDifferentSource[tempp]
                                         .longitude));
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                             _snackBar = createSnackBar();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                _snackBar);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(_snackBar);
                             _snackTime = true;
                           }
                         },
                         compareFn: (i, s) => i == s,
-                        popupProps:
-                        PopupPropsMultiSelection.dialog(
+                        popupProps: PopupPropsMultiSelection.dialog(
                           //TODO dodać wyszarzenie tła
-                          searchDelay: const Duration(
-                              milliseconds: 300),
+                          searchDelay: const Duration(milliseconds: 300),
                           searchFieldProps: TextFieldProps(
                             decoration: InputDecoration(
+                              labelText: "Search",
+                              labelStyle: TextStyle(
+                                  color: CustomColors().secondaryTextColor),
                               border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 12,
-                                    color: CustomColors().myRedColor,
-                                    style: BorderStyle.solid),
-                                borderRadius: BorderRadius.circular(30.0),
+                                borderRadius: BorderRadius.circular(25.0),
                               ),
                             ),
                           ),
                           showSelectedItems: true,
                           // onItemAdded:
                           showSearchBox: true,
+                          dialogProps: DialogProps(
+                            barrierColor: Colors.black,
+                            shape: ContinuousRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  25.0), // Zaokrąglenie narożników
+                            ),
+                            backgroundColor: Colors.grey,
+                          ),
                         ),
-                        dropdownButtonProps:
-                        const DropdownButtonProps(
-                          icon:
-                          Icon(Icons.search, size: 24),
+                        dropdownButtonProps: const DropdownButtonProps(
+                          icon: Icon(Icons.search, size: 24),
                           color: Colors.white,
                         ),
                       ),
@@ -1472,12 +1473,10 @@ class _MapScreenState extends State<MapScreen> {
                         onPressed: () {
                           getTrips();
                           refreshMap();
-                        }
-                    ),
+                        }),
                   )
                 ],
-              )
-          ),
+              )),
         ],
       ),
       //),
@@ -1534,14 +1533,14 @@ class _MapScreenState extends State<MapScreen> {
     return 0;
   }
 
-
   Future<void> getTrips() async {
     _trips = await DatabaseService.fetchTrips();
 
     print("jestem 0");
 
-    _countryPlusFriend = _trips.map((trip) =>
-        CountryPlusFriend(trip.country, trip.user.username)).toList();
+    _countryPlusFriend = _trips
+        .map((trip) => CountryPlusFriend(trip.country, trip.user.username))
+        .toList();
     _countryList = _trips.map((trip) => trip.country).toList();
     Set<String> pom = _countryList.toSet();
     print(_countryList);
@@ -1630,15 +1629,15 @@ class _MapScreenState extends State<MapScreen> {
                     onPressed: () {
                       ScaffoldMessenger.of(context).hideCurrentSnackBar();
                       Navigator.of(context).pushNamed(AppRoutes.newTripForm,
-                        arguments: Trip(
-                          country: _data[_newCountryClickedIndex].name,
-                          city: "",
-                          dateFrom: DateTime.now(),
-                          dateTo: DateTime.now(),
-                          description: "",
-                          rate: 3,
-                          user: UserShort(userId: "id", username: "user")));
-                      },
+                          arguments: Trip(
+                              country: _data[_newCountryClickedIndex].name,
+                              city: "",
+                              dateFrom: DateTime.now(),
+                              dateTo: DateTime.now(),
+                              description: "",
+                              rate: 3,
+                              user: UserShort(userId: "id", username: "user")));
+                    },
                     child: const Text(
                       "Add trip",
                       style: TextStyle(
@@ -1660,14 +1659,17 @@ class _MapScreenState extends State<MapScreen> {
                         Navigator.of(context).pushNamed(
                             AppRoutes.countrySiteScreen,
                             arguments: DowolnyPakiet(
-                                friends: map[_countriesFromMap[_newCountryClickedIndex]]!,
-                                country: _countriesFromMap[_newCountryClickedIndex]));
-                      }
-                      else {
+                                friends: map[_countriesFromMap[
+                                    _newCountryClickedIndex]]!,
+                                country: _countriesFromMap[
+                                    _newCountryClickedIndex]));
+                      } else {
                         Navigator.of(context).pushNamed(
                             AppRoutes.countrySiteScreen,
-                            arguments: DowolnyPakiet(friends: [],
-                                country: _countriesFromMap[_newCountryClickedIndex]));
+                            arguments: DowolnyPakiet(
+                                friends: [],
+                                country: _countriesFromMap[
+                                    _newCountryClickedIndex]));
                       }
                     },
                     child: const Text(
@@ -1684,7 +1686,6 @@ class _MapScreenState extends State<MapScreen> {
     return _tempSnackBar;
   }
 }
-
 
 /// Collection of Australia state code data.
 class MyModel {

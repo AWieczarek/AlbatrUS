@@ -12,6 +12,7 @@ import 'package:country_state_city/country_state_city.dart' as countries;
 import 'package:flutter/services.dart';
 
 import '../models/trip.dart';
+import '../rounded_elevated_button.dart';
 
 class NewTripForm extends StatefulWidget {
   NewTripForm({super.key, required this.tripData});
@@ -79,7 +80,7 @@ class _NewTripFormState extends State<NewTripForm> {
         dateTo: widget.tripData.dateTo,
         description: widget.tripData.description,
         rate: widget.tripData.rate,
-        user: UserShort(userId: "user!.uid", username: "user!.displayName!"),
+        user: UserShort(userId: user!.uid, username: user!.displayName!),
       ));
       Navigator.of(context).pop();
     } else {
@@ -220,25 +221,7 @@ class _NewTripFormState extends State<NewTripForm> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ElevatedButton(
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25.0), // Zaokrąglenie narożników
-                              ),
-                            ),
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(CustomColors().myGrayColor)),
-                        onPressed: _saveTrip,
-                        child: const Padding(
-                          padding: EdgeInsets.all(12.0),
-                          child: Row(
-                            children: [
-                              Text("Save ", style: TextStyle(fontSize: 18),),
-                            ],
-                          ),
-                        ),
-                      ),
+                      RoundedElevatedButton(onPress: _saveTrip, title:  "save",)
                     ],
                   ),
                 ],

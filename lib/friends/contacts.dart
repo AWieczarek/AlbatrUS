@@ -27,7 +27,7 @@ class Contacts extends StatelessWidget {
             List<UserData> userTo = snapshot.data![1];
             return Column(
               children: [
-                const Text("Friends to accept: "),
+                const Text("Friends to accept: ", style: TextStyle(color: Colors.white),),
                 Expanded(
                   child: ListView.builder(
                       itemCount: userToAccept.length,
@@ -36,7 +36,7 @@ class Contacts extends StatelessWidget {
                             ownerId: user!.uid, user: userToAccept[index]);
                       }),
                 ),
-                const Text("Friends to add: "),
+                const Text("Friends to add: ", style: TextStyle(color: Colors.white)),
                 Expanded(
                   child: ListView.builder(
                       itemCount: userTo.length,

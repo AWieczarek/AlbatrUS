@@ -1,6 +1,9 @@
 import 'package:albatrus/database_service.dart';
+import 'package:albatrus/rounded_elevated_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'custom_colors.dart';
 
 class MyFriends extends StatefulWidget {
   MyFriends({Key? key}) : super(key: key);
@@ -15,7 +18,12 @@ class _MyFriendsState extends State<MyFriends> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text("Friends", style: TextStyle(color: Colors.white),),
+        centerTitle: true,
+        backgroundColor: CustomColors().backgroundColor,
+      ),
+      backgroundColor: CustomColors().backgroundColor,
       body: FutureBuilder(
           future: DatabaseService.fetchUserById(user!.uid),
           builder: (context, snapshot) {
@@ -36,36 +44,29 @@ class _MyFriendsState extends State<MyFriends> {
                     } else if (snapshot2.hasError) {
                       return const Text('Country Selector Error');
                     } else if (snapshot2.hasData) {
-                      return Column(
-                        children: [
-                          const Text("Friends: "),
-                          Expanded(
-                            child: ListView.builder(
-                                itemCount: snapshot.data!.friends.length,
-                                itemBuilder: (BuildContext ctxt, int index) {
-                                  return ListTile(
-                                    title: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(snapshot2.data![index].username),
-                                        ElevatedButton(
-                                          onPressed: () async {
-                                            await DatabaseService
-                                                .removeFriend(
-                                                user!.uid, snapshot.data!.friends[index]);
-                                            setState(() {
+                      return ListView.builder(
+                          itemCount: snapshot.data!.friends.length,
+                          itemBuilder: (BuildContext ctxt, int index) {
+                            return ListTile(
+                              title: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(snapshot2.data![index].username, style: TextStyle(color: Colors.white),),
+                                  RoundedElevatedButton(
+                                    onPress: () async {
+                                      await DatabaseService
+                                          .removeFriend(
+                                          user!.uid, snapshot.data!.friends[index]);
+                                      setState(() {
 
-                                            });
-                                          },
-                                          child: const Text("Remove"),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }),
-                          ),
-                        ],
-                      );
+                                      });
+                                    },
+                                    title: "Remove",
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
                     } else {
                       return const Text("Inconsistant");
                     }
